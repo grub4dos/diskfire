@@ -84,34 +84,17 @@ windisk_read(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size, 
 	__int64 distance = sector << GRUB_DISK_SECTOR_BITS;
 	LARGE_INTEGER li = { 0 };
 	DWORD dwsize;
-	char* aligned_buf = NULL;
 	grub_dprintf("windisk", "windisk read %s sector 0x%llx size 0x%llx\n", disk->name, sector, size);
-	if (size > 0xfffff000)
+	if (size > (DWORD_MAX >> GRUB_DISK_SECTOR_BITS))
 		return grub_error(GRUB_ERR_OUT_OF_RANGE, "attempt to read more than 4GB data");
-	dwsize = (DWORD)size;
+	dwsize = (DWORD)(size << GRUB_DISK_SECTOR_BITS);
 	li.QuadPart = distance;
 	li.LowPart = SetFilePointer(dh, li.LowPart, &li.HighPart, FILE_BEGIN);
 	if (li.LowPart == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR)
 		return grub_error(GRUB_ERR_OUT_OF_RANGE, "attempt to read outside of disk %s", disk->name);
-	if (dwsize & 0xFFF)
-	{
-		dwsize = (dwsize + 0xFFF) & 0xFFFFF000;
-		aligned_buf = grub_malloc(dwsize);
-		if (!aligned_buf)
-			return grub_error(GRUB_ERR_OUT_OF_MEMORY, "out of memory");
-	}
 	grub_dprintf("windisk", "windisk readfile offset 0x%llx size 0x%lx\n", distance, dwsize);
-	if (ReadFile(dh, aligned_buf ? aligned_buf : buf, dwsize, &dwsize, NULL))
-	{
-		if (aligned_buf)
-		{
-			grub_memcpy(buf, aligned_buf, size);
-			grub_free(aligned_buf);
-		}
+	if (ReadFile(dh, buf, dwsize, &dwsize, NULL))
 		return GRUB_ERR_NONE;
-	}
-	if (aligned_buf)
-		grub_free(aligned_buf);
 	grub_dprintf("windisk", "windisk readfile failed %u\n", GetLastError());
 	return grub_error(GRUB_ERR_READ_ERROR, "failure reading sector 0x%llx from %s", sector, disk->name);
 }
@@ -123,9 +106,9 @@ windisk_write(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size,
 	__int64 distance = sector << GRUB_DISK_SECTOR_BITS;
 	LARGE_INTEGER li = { 0 };
 	DWORD dwsize;
-	if (size > MAXDWORD)
+	if (size > (DWORD_MAX >> GRUB_DISK_SECTOR_BITS))
 		return grub_error(GRUB_ERR_OUT_OF_RANGE, "attempt to write more than 4GB data");
-	dwsize = (DWORD)size;
+	dwsize = (DWORD)(size << GRUB_DISK_SECTOR_BITS);
 	li.QuadPart = distance;
 	li.LowPart = SetFilePointer(dh, li.LowPart, &li.HighPart, FILE_BEGIN);
 	if (li.LowPart == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR)

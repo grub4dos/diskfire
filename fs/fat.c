@@ -1224,7 +1224,7 @@ grub_fat_uuid(grub_disk_t disk, char** uuid)
 	{
 		*uuid = grub_malloc(sizeof("1234-5678"));
 		if (*uuid)
-			grub_snprintf(*uuid, sizeof(uuid), "%04X-%04X", (grub_uint16_t)(data->uuid >> 16), (grub_uint16_t)data->uuid);
+			grub_snprintf(*uuid, sizeof("1234-5678"), "%04X-%04X", (grub_uint16_t)(data->uuid >> 16), (grub_uint16_t)data->uuid);
 	}
 	else
 		*uuid = NULL;

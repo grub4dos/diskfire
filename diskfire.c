@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 		printf("permission denied\n");
 		return 1;
 	}
-	SetDebug("disk,partition,fs");
+	SetDebug("");
 	grub_fs_init();
 	grub_partmap_init();
 	if (argc < 2)
