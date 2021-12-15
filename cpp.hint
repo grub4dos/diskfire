@@ -1,0 +1,2 @@
+#define PRAGMA_END_PACKED __pragma(pack(pop))
+#define PRAGMA_BEGIN_PACKED __pragma(pack(push, 1))

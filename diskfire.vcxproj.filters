@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="分区表">
+      <UniqueIdentifier>{573ad48c-4253-4ad0-98f9-e3ad87423d0e}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="文件系统">
+      <UniqueIdentifier>{60430864-f5ac-430f-bb4b-806a7977795a}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="命令">
+      <UniqueIdentifier>{c189e181-e980-4dfc-834f-52c05ea55b2a}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="diskfire.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="diskio.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="compat.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="partition.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="windisk.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="misc.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="fs.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="file.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="partmap\gpt.c">
+      <Filter>分区表</Filter>
+    </ClCompile>
+    <ClCompile Include="partmap\msdos.c">
+      <Filter>分区表</Filter>
+    </ClCompile>
+    <ClCompile Include="partmap\apple.c">
+      <Filter>分区表</Filter>
+    </ClCompile>
+    <ClCompile Include="partmap\bsdlabel.c">
+      <Filter>分区表</Filter>
+    </ClCompile>
+    <ClCompile Include="partmap\dfly.c">
+      <Filter>分区表</Filter>
+    </ClCompile>
+    <ClCompile Include="archelp.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="fshelp.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="fs\exfat.c">
+      <Filter>文件系统</Filter>
+    </ClCompile>
+    <ClCompile Include="fs\fat.c">
+      <Filter>文件系统</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\ls.c">
+      <Filter>命令</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\disk.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\compat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\partition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\misc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\file.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="partmap\gpt_partition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="partmap\msdos_partition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="partmap\bsdlabel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fshelp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\archelp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\charset.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\datetime.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="fs\exfat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="fs\fat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\commands.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
