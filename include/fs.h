@@ -86,6 +86,7 @@ extern struct grub_fs grub_fat_fs;
 extern struct grub_fs grub_exfat_fs;
 extern struct grub_fs grub_ntfs_fs;
 extern struct grub_fs grub_fbfs_fs;
+extern struct grub_fs grub_ext2_fs;
 
 void grub_fs_init(void);
 

@@ -113,6 +113,7 @@
     <ClCompile Include="fs.c" />
     <ClCompile Include="fshelp.c" />
     <ClCompile Include="fs\exfat.c" />
+    <ClCompile Include="fs\ext2.c" />
     <ClCompile Include="fs\fat.c" />
     <ClCompile Include="fs\fbfs.c" />
     <ClCompile Include="fs\ntfs.c" />
