@@ -51,6 +51,7 @@ grub_fs_init(void)
 	grub_fs_register(&grub_fat_fs);
 	grub_fs_register(&grub_exfat_fs);
 	grub_fs_register(&grub_ntfs_fs);
+	grub_fs_register(&grub_fbfs_fs);
 }
 
 /* Block list support routines.  */

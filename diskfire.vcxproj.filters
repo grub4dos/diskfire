@@ -84,6 +84,9 @@
     <ClCompile Include="fs\ntfs.c">
       <Filter>文件系统</Filter>
     </ClCompile>
+    <ClCompile Include="fs\fbfs.c">
+      <Filter>文件系统</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -139,6 +142,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="fs\ntfs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="fs\fbfs.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
