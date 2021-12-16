@@ -114,11 +114,18 @@
     <ClCompile Include="file.c" />
     <ClCompile Include="fs.c" />
     <ClCompile Include="fshelp.c" />
+    <ClCompile Include="fs\cpio.c" />
+    <ClCompile Include="fs\cpio_be.c" />
+    <ClCompile Include="fs\cpio_common.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="fs\exfat.c" />
     <ClCompile Include="fs\ext2.c" />
     <ClCompile Include="fs\fat.c" />
     <ClCompile Include="fs\fbfs.c" />
     <ClCompile Include="fs\iso9660.c" />
+    <ClCompile Include="fs\newc.c" />
     <ClCompile Include="fs\ntfs.c" />
     <ClCompile Include="fs\udf.c" />
     <ClCompile Include="partition.c" />

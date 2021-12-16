@@ -54,7 +54,10 @@ grub_fs_init(void)
 	grub_fs_register(&grub_fbfs_fs);
 	grub_fs_register(&grub_ext2_fs);
 	grub_fs_register(&grub_udf_fs);
-	grub_fs_register(&grub_iso9660_fs);;
+	grub_fs_register(&grub_iso9660_fs);
+	grub_fs_register(&grub_cpio_be_fs);
+	grub_fs_register(&grub_cpio_fs);
+	grub_fs_register(&grub_newc_fs);
 }
 
 /* Block list support routines.  */

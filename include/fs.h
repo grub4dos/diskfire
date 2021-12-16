@@ -89,6 +89,9 @@ extern struct grub_fs grub_fbfs_fs;
 extern struct grub_fs grub_ext2_fs;
 extern struct grub_fs grub_udf_fs;
 extern struct grub_fs grub_iso9660_fs;
+extern struct grub_fs grub_cpio_be_fs;
+extern struct grub_fs grub_cpio_fs;
+extern struct grub_fs grub_newc_fs;
 
 void grub_fs_init(void);
 

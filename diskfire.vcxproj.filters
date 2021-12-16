@@ -103,6 +103,18 @@
     <ClCompile Include="disk\loopback.c">
       <Filter>磁盘设备</Filter>
     </ClCompile>
+    <ClCompile Include="fs\cpio.c">
+      <Filter>文件系统</Filter>
+    </ClCompile>
+    <ClCompile Include="fs\cpio_be.c">
+      <Filter>文件系统</Filter>
+    </ClCompile>
+    <ClCompile Include="fs\cpio_common.c">
+      <Filter>文件系统</Filter>
+    </ClCompile>
+    <ClCompile Include="fs\newc.c">
+      <Filter>文件系统</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
