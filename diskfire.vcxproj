@@ -116,6 +116,7 @@
     <ClCompile Include="fs\ext2.c" />
     <ClCompile Include="fs\fat.c" />
     <ClCompile Include="fs\fbfs.c" />
+    <ClCompile Include="fs\iso9660.c" />
     <ClCompile Include="fs\ntfs.c" />
     <ClCompile Include="partition.c" />
     <ClCompile Include="diskio.c" />

@@ -90,6 +90,9 @@
     <ClCompile Include="fs\ext2.c">
       <Filter>文件系统</Filter>
     </ClCompile>
+    <ClCompile Include="fs\iso9660.c">
+      <Filter>文件系统</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
