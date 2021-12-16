@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-//#define MODE_EXFAT 1
+
 #include "compat.h"
 #include "disk.h"
 #include "fs.h"

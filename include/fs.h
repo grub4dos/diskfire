@@ -82,8 +82,9 @@ grub_fs_unregister(grub_fs_t fs)
 
 grub_fs_t grub_fs_probe (grub_disk_t disk);
 
-struct grub_fs grub_fat_fs;
-struct grub_fs grub_exfat_fs;
+extern struct grub_fs grub_fat_fs;
+extern struct grub_fs grub_exfat_fs;
+extern struct grub_fs grub_ntfs_fs;
 
 void grub_fs_init(void);
 

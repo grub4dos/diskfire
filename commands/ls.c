@@ -64,9 +64,8 @@ ls_print_disk_info(const char* name)
 			grub_printf("No known filesystem detected");
 
 		if (disk->partition)
-			grub_printf(" - Partition start at %llu%sKiB",
-				(unsigned long long) (grub_partition_get_start(disk->partition) >> 1),
-				(grub_partition_get_start(disk->partition) & 1) ? ".5" : "");
+			grub_printf(" - Partition start at %s",
+				grub_get_human_size(grub_partition_get_start(disk->partition) << GRUB_DISK_SECTOR_BITS, d_human_sizes, 1024));
 		else
 			grub_printf(" - Sector size %uB", 1ULL << disk->log_sector_size);
 		if (grub_disk_native_sectors(disk) == GRUB_DISK_SIZE_UNKNOWN)

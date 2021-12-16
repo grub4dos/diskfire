@@ -114,6 +114,7 @@
     <ClCompile Include="fshelp.c" />
     <ClCompile Include="fs\exfat.c" />
     <ClCompile Include="fs\fat.c" />
+    <ClCompile Include="fs\ntfs.c" />
     <ClCompile Include="partition.c" />
     <ClCompile Include="diskio.c" />
     <ClCompile Include="misc.c" />
@@ -131,6 +132,7 @@
   <ItemGroup>
     <ClInclude Include="fs\exfat.h" />
     <ClInclude Include="fs\fat.h" />
+    <ClInclude Include="fs\ntfs.h" />
     <ClInclude Include="include\archelp.h" />
     <ClInclude Include="include\charset.h" />
     <ClInclude Include="include\commands.h" />

@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 		printf("permission denied\n");
 		return 1;
 	}
+	SetConsoleOutputCP(65001);
 	SetDebug("");
 	grub_fs_init();
 	grub_partmap_init();
