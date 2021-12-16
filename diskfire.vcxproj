@@ -109,6 +109,8 @@
     <ClCompile Include="commands\ls.c" />
     <ClCompile Include="compat.c" />
     <ClCompile Include="diskfire.c" />
+    <ClCompile Include="disk\loopback.c" />
+    <ClCompile Include="disk\windisk.c" />
     <ClCompile Include="file.c" />
     <ClCompile Include="fs.c" />
     <ClCompile Include="fshelp.c" />
@@ -127,7 +129,6 @@
     <ClCompile Include="partmap\dfly.c" />
     <ClCompile Include="partmap\gpt.c" />
     <ClCompile Include="partmap\msdos.c" />
-    <ClCompile Include="windisk.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

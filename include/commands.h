@@ -7,4 +7,10 @@
 
 grub_err_t cmd_ls(int argc, char* argv[]);
 
+grub_err_t
+loopback_delete(const char* name);
+
+grub_err_t
+loopback_add(const char* name);
+
 #endif

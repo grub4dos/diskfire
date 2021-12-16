@@ -104,6 +104,8 @@ grub_disk_iterate(grub_disk_iterate_hook_t hook, void* hook_data)
 	struct grub_disk_iterate_ctx ctx = { hook, hook_data, NULL };
 	if (windisk_iterate(iterate_disk, &ctx))
 		return 1;
+	if (loopback_iterate(iterate_disk, &ctx))
+		return 1;
 	return 0;
 }
 
@@ -291,6 +293,16 @@ find_part_sep(const char* name)
 	return NULL;
 }
 
+static grub_err_t
+open_by_type(const char* name, grub_disk_t disk)
+{
+	if (name[0] == 'h' && name[1] == 'd')
+		return windisk_open(name, disk);
+	else if (name[0] == 'l' && name[1] == 'd')
+		return loopback_open(name, disk);
+	return grub_error(GRUB_ERR_UNKNOWN_DEVICE, "loopback %s not found", name);
+}
+
 grub_disk_t
 grub_disk_open(const char* name)
 {
@@ -298,6 +310,9 @@ grub_disk_open(const char* name)
 	grub_disk_t disk;
 	char* raw = (char*)name;
 	grub_uint64_t current_time;
+
+	if (!name)
+		return 0;
 
 	grub_dprintf("disk", "Opening %s...\n", name);
 
@@ -327,7 +342,7 @@ grub_disk_open(const char* name)
 	if (!disk->name)
 		goto fail;
 
-	if (windisk_open(raw, disk) != GRUB_ERR_NONE)
+	if (open_by_type(raw, disk) != GRUB_ERR_NONE)
 	{
 		grub_error(GRUB_ERR_UNKNOWN_DEVICE, "disk %s not found", name);
 		goto fail;
@@ -389,7 +404,9 @@ grub_disk_close(grub_disk_t disk)
 	grub_dprintf("disk", "Closing %s.\n", disk->name);
 
 	if (disk->type == GRUB_DISK_WINDISK_ID)
-		windisk_close (disk);
+		windisk_close(disk);
+	else if (disk->type == GRUB_DISK_LOOPBACK_ID)
+		loopback_close(disk);
 
 	/* Reset the timer.  */
 	grub_last_time = grub_get_time_ms();
@@ -411,6 +428,8 @@ read_by_type(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size, 
 	{
 	case GRUB_DISK_WINDISK_ID:
 		return windisk_read(disk, sector, size, buf);
+	case GRUB_DISK_LOOPBACK_ID:
+		return loopback_read(disk, sector, size, buf);
 	}
 	return grub_error(GRUB_ERR_UNKNOWN_DEVICE, "unknown device");
 }
@@ -422,6 +441,8 @@ write_by_type(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size,
 	{
 	case GRUB_DISK_WINDISK_ID:
 		return windisk_write(disk, sector, size, buf);
+	case GRUB_DISK_LOOPBACK_ID:
+		return loopback_write(disk, sector, size, buf);
 	}
 	return grub_error(GRUB_ERR_UNKNOWN_DEVICE, "unknown device");
 }

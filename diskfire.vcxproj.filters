@@ -25,6 +25,10 @@
       <UniqueIdentifier>{c189e181-e980-4dfc-834f-52c05ea55b2a}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="磁盘设备">
+      <UniqueIdentifier>{1ad4e89e-251a-4d77-9669-16b479febb3c}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="diskfire.c">
@@ -37,9 +41,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="partition.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="windisk.c">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="misc.c">
@@ -95,6 +96,12 @@
     </ClCompile>
     <ClCompile Include="fs\udf.c">
       <Filter>文件系统</Filter>
+    </ClCompile>
+    <ClCompile Include="disk\windisk.c">
+      <Filter>磁盘设备</Filter>
+    </ClCompile>
+    <ClCompile Include="disk\loopback.c">
+      <Filter>磁盘设备</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

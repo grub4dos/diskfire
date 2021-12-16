@@ -43,7 +43,7 @@ grub_file_open(const char* name, enum grub_file_type type)
 	grub_file_filter_id_t filter;
 
 	device_name = grub_file_get_device_name(name);
-	if (grub_errno)
+	if (!device_name || grub_errno)
 		goto fail;
 
 	/* Get the file part of NAME.  */

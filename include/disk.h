@@ -140,4 +140,19 @@ windisk_read(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size, 
 grub_err_t
 windisk_write(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size, const char* buf);
 
+int
+loopback_iterate(grub_disk_iterate_hook_t hook, void* hook_data);
+
+grub_err_t
+loopback_open(const char* name, grub_disk_t disk);
+
+void
+loopback_close(struct grub_disk* disk);
+
+grub_err_t
+loopback_read(grub_disk_t disk, grub_disk_addr_t sector, grub_size_t size, char* buf);
+
+grub_err_t
+loopback_write(grub_disk_t disk, grub_disk_addr_t sector, grub_size_t size, const char* buf);
+
 #endif
