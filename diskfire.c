@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	grub_partmap_init();
 	if (argc < 2)
 	{
-		printf("Commands: ls\n");
+		printf("Commands: ls, extract\n");
 		return 0;
 	}
 	for (i = 1; i < argc; i++)
@@ -32,13 +32,22 @@ int main(int argc, char *argv[])
 		else if (_strnicmp(argv[i], "-m=", 3) == 0 && argv[i][3])
 		{
 			if (loopback_add(&argv[i][3]))
+			{
+				grub_print_error();
 				return grub_errno;
+			}
 		}
 		else if (_stricmp(argv[i], "ls") == 0)
 		{
 			int new_argc = argc - i - 1;
 			char** new_argv = new_argc ? &argv[i + 1] : NULL;
 			return cmd_ls(new_argc, new_argv);
+		}
+		else if (_stricmp(argv[i], "extract") == 0)
+		{
+			int new_argc = argc - i - 1;
+			char** new_argv = new_argc ? &argv[i + 1] : NULL;
+			return cmd_extract(new_argc, new_argv);
 		}
 		else
 			break;

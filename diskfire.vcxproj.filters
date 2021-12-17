@@ -118,6 +118,9 @@
     <ClCompile Include="fs\tar.c">
       <Filter>文件系统</Filter>
     </ClCompile>
+    <ClCompile Include="commands\extract.c">
+      <Filter>命令</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

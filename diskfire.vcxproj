@@ -106,6 +106,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="archelp.c" />
+    <ClCompile Include="commands\extract.c" />
     <ClCompile Include="commands\ls.c" />
     <ClCompile Include="compat.c" />
     <ClCompile Include="diskfire.c" />
