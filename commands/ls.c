@@ -192,5 +192,7 @@ cmd_ls(int argc, char* argv[])
 		ls_list_disks(1);
 	else
 		ls_list_files(argv[0]);
+	if (grub_error)
+		grub_print_error();
 	return 0;
 }
