@@ -3,6 +3,8 @@
 #include "disk.h"
 #include "fs.h"
 #include "file.h"
+#include "misc.h"
+#include <windows.h>
 
 grub_fs_t grub_fs_list = 0;
 
@@ -190,5 +192,56 @@ struct grub_fs grub_fs_blocklist =
   .fs_open = grub_fs_blocklist_open,
   .fs_read = grub_fs_blocklist_read,
   .fs_close = 0,
+  .next = 0
+};
+
+static grub_err_t
+grub_fs_winfile_open(grub_file_t file, const char* name)
+{
+	LARGE_INTEGER li;
+	HANDLE fd = INVALID_HANDLE_VALUE;
+	grub_dprintf("fs", "winfile %s\n", name);
+	fd = CreateFileA(name, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+	if (fd == INVALID_HANDLE_VALUE)
+		return grub_error(GRUB_ERR_BAD_FILENAME, "invalid winfile %s", name);
+	if (GetFileSizeEx(fd, &li))
+		file->size = li.QuadPart;
+	else
+		file->size = 0;
+	file->data = fd;
+	return GRUB_ERR_NONE;
+}
+
+static grub_ssize_t
+grub_fs_winfile_read(grub_file_t file, char* buf, grub_size_t len)
+{
+	grub_ssize_t ret = -1;
+	LARGE_INTEGER li;
+	HANDLE fd = file->data;
+	DWORD dwsize = (DWORD)len;
+	li.QuadPart = file->offset;
+	li.LowPart = SetFilePointer(fd, li.LowPart, &li.HighPart, FILE_BEGIN);
+	if (li.LowPart == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR)
+		return -1;
+	if (ReadFile(fd, buf, dwsize, &dwsize, NULL))
+		ret = (grub_ssize_t)dwsize;
+	return ret;
+}
+
+static grub_err_t
+grub_fs_winfile_close(struct grub_file* file)
+{
+	HANDLE fd = file->data;
+	CHECK_CLOSE_HANDLE(fd);
+	return GRUB_ERR_NONE;
+}
+
+struct grub_fs grub_fs_winfile =
+{
+  .name = "winfile",
+  .fs_dir = 0,
+  .fs_open = grub_fs_winfile_open,
+  .fs_read = grub_fs_winfile_read,
+  .fs_close = grub_fs_winfile_close,
   .next = 0
 };

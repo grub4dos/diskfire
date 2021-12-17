@@ -42,29 +42,31 @@ grub_file_open(const char* name, enum grub_file_type type)
 	const char* file_name;
 	grub_file_filter_id_t filter;
 
-	device_name = grub_file_get_device_name(name);
-	if (!device_name || grub_errno)
+	file = (grub_file_t)grub_zalloc(sizeof(*file));
+	if (!file)
 		goto fail;
 
 	/* Get the file part of NAME.  */
 	file_name = (name[0] == '(') ? grub_strchr(name, ')') : NULL;
 	if (file_name)
+	{
 		file_name++;
-	else
+		device_name = grub_file_get_device_name(name);
+		if (grub_errno)
+			goto fail;
+		disk = grub_disk_open(device_name);
+		grub_free(device_name);
+		if (!disk)
+			goto fail;
+		file->disk = disk;
+	}
+
+	if (!file_name)
+	{
 		file_name = name;
-
-	disk = grub_disk_open(device_name);
-	grub_free(device_name);
-	if (!disk)
-		goto fail;
-
-	file = (grub_file_t)grub_zalloc(sizeof(*file));
-	if (!file)
-		goto fail;
-
-	file->disk = disk;
-
-	if (file_name[0] != '/')
+		file->fs = &grub_fs_winfile;
+	}
+	else if (file_name[0] != '/')
 		/* This is a block list.  */
 		file->fs = &grub_fs_blocklist;
 	else
@@ -76,6 +78,7 @@ grub_file_open(const char* name, enum grub_file_type type)
 
 	if ((file->fs->fs_open) (file, file_name) != GRUB_ERR_NONE)
 		goto fail;
+
 
 	file->name = grub_strdup(name);
 	grub_errno = GRUB_ERR_NONE;

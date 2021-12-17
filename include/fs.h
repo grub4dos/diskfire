@@ -61,9 +61,6 @@ struct grub_fs
 };
 typedef struct grub_fs* grub_fs_t;
 
-/* This is special, because block lists are not files in usual sense.  */
-extern struct grub_fs grub_fs_blocklist;
-
 extern grub_fs_t grub_fs_list;
 
 static inline void
@@ -81,6 +78,9 @@ grub_fs_unregister(grub_fs_t fs)
 #define FOR_FILESYSTEMS(var) FOR_LIST_ELEMENTS((var), (grub_fs_list))
 
 grub_fs_t grub_fs_probe (grub_disk_t disk);
+
+extern struct grub_fs grub_fs_winfile;
+extern struct grub_fs grub_fs_blocklist;
 
 extern struct grub_fs grub_fat_fs;
 extern struct grub_fs grub_exfat_fs;

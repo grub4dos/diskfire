@@ -25,7 +25,11 @@ int main(int argc, char *argv[])
 	}
 	for (i = 1; i < argc; i++)
 	{
-		if (_strnicmp(argv[i], "-m=", 3) == 0 && argv[i][3])
+		if (_strnicmp(argv[i], "-d=", 3) == 0 && argv[i][3])
+		{
+			SetDebug(&argv[i][3]);
+		}
+		else if (_strnicmp(argv[i], "-m=", 3) == 0 && argv[i][3])
 		{
 			if (loopback_add(&argv[i][3]))
 				return grub_errno;
