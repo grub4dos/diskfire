@@ -119,4 +119,7 @@ grub_gzio_open(grub_file_t io, enum grub_file_type type);
 grub_file_t
 grub_xzio_open(grub_file_t io, enum grub_file_type type);
 
+grub_file_t
+grub_lzopio_open(grub_file_t io, enum grub_file_type type);
+
 #endif

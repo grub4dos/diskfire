@@ -138,6 +138,10 @@
     <ClCompile Include="fs\tar.c" />
     <ClCompile Include="fs\udf.c" />
     <ClCompile Include="io\gzio.c" />
+    <ClCompile Include="io\lzopio.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)minilzo</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)minilzo</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="io\xzio.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)xzembed</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)xzembed</AdditionalIncludeDirectories>

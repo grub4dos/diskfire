@@ -192,6 +192,9 @@
     <ClCompile Include="minilzo\minilzo.c">
       <Filter>源文件\minilzo</Filter>
     </ClCompile>
+    <ClCompile Include="io\lzopio.c">
+      <Filter>源文件\压缩</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
