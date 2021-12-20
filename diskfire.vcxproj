@@ -136,6 +136,10 @@
     <ClCompile Include="fs\tar.c" />
     <ClCompile Include="fs\udf.c" />
     <ClCompile Include="io\gzio.c" />
+    <ClCompile Include="io\xzio.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)xzembed</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)xzembed</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="partition.c" />
     <ClCompile Include="diskio.c" />
     <ClCompile Include="misc.c" />

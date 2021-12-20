@@ -183,6 +183,9 @@
     <ClCompile Include="xzembed\xz_dec_stream.c">
       <Filter>源文件\xzembed</Filter>
     </ClCompile>
+    <ClCompile Include="io\xzio.c">
+      <Filter>源文件\压缩</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -179,4 +179,5 @@ void
 grub_file_filter_init(void)
 {
 	grub_file_filter_register(GRUB_FILE_FILTER_GZIO, grub_gzio_open);
+	grub_file_filter_register(GRUB_FILE_FILTER_XZIO, grub_xzio_open);
 }

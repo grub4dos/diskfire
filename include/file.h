@@ -116,4 +116,7 @@ grub_file_filter_init(void);
 grub_file_t
 grub_gzio_open(grub_file_t io, enum grub_file_type type);
 
+grub_file_t
+grub_xzio_open(grub_file_t io, enum grub_file_type type);
+
 #endif
