@@ -204,7 +204,7 @@ grub_vhdio_open(grub_file_t io, enum grub_file_type type)
 
 	vhdio->file->offset = vhdfc->tableOffset;
 	grub_file_read(vhdio->file, vhdfc->blockAllocationTable, batSize);
-	vhdfc->currentBlockOffset = -1LL;
+	vhdfc->currentBlockOffset = (grub_uint32_t)-1LL;
 
 	file->size = vhdfc->volumeSize;
 

@@ -10,9 +10,9 @@
 #define PRAGMA_BEGIN_PACKED __pragma(pack(push, 1))
 #define PRAGMA_END_PACKED   __pragma(pack(pop))
 
-#define grub_add(a, b, res)	(UIntPtrAdd(a, b, res) != S_OK)
-#define grub_sub(a, b, res)	(UIntPtrSub(a, b, res) != S_OK)
-#define grub_mul(a, b, res)	(UIntPtrMult(a, b, res) != S_OK)
+#define grub_add(a, b, res)	(UIntPtrAdd(a, b, (UINT_PTR *)res) != S_OK)
+#define grub_sub(a, b, res)	(UIntPtrSub(a, b, (UINT_PTR *)res) != S_OK)
+#define grub_mul(a, b, res)	(UIntPtrMult(a, b, (UINT_PTR *)res) != S_OK)
 
 #define N_(x) x
 

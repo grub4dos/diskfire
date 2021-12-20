@@ -204,6 +204,9 @@
     <ClCompile Include="lzmasdk\LzmaDec.c">
       <Filter>源文件\lzma_sdk</Filter>
     </ClCompile>
+    <ClCompile Include="io\lzmaio.c">
+      <Filter>源文件\压缩</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

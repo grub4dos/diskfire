@@ -24,6 +24,8 @@
  * See <http://www.7-zip.org>, for more information about LZMA.
  */
 
+#pragma warning(disable:4457)
+
 #include "LzmaDec.h"
 #include "compat.h"
 #define memcpy grub_memcpy
