@@ -5,6 +5,11 @@
 
 #include "compat.h"
 
+/* Don't rely on this. Check!  */
+#define GRUB_CRYPTO_MAX_MDLEN 64
+#define GRUB_CRYPTO_MAX_CIPHER_BLOCKSIZE 16
+#define GRUB_CRYPTO_MAX_MD_CONTEXT_SIZE 256
+
 /* Type for the md_init function.  */
 typedef void (*gcry_md_init_t) (void* c);
 
@@ -41,6 +46,12 @@ typedef struct gcry_md_spec
 #endif
 	struct gcry_md_spec* next;
 } gcry_md_spec_t;
+
+void
+grub_crypto_hash(const gcry_md_spec_t* hash, void* out, const void* in, grub_size_t inlen);
+
+const gcry_md_spec_t*
+grub_crypto_lookup_md_by_name(const char* name);
 
 extern gcry_md_spec_t _gcry_digest_spec_adler32;
 extern gcry_md_spec_t _gcry_digest_spec_crc32;

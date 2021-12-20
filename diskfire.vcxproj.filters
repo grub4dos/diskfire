@@ -61,6 +61,9 @@
       <UniqueIdentifier>{f5959a85-d4c6-48b9-843b-fdd66c164d62}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="源文件\xzembed">
+      <UniqueIdentifier>{e5f88c4d-f590-4b39-9087-53ad185ad89d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="diskfire.c">
@@ -171,6 +174,15 @@
     <ClCompile Include="crypto\crypto.c">
       <Filter>源文件\加密</Filter>
     </ClCompile>
+    <ClCompile Include="xzembed\xz_dec_bcj.c">
+      <Filter>源文件\xzembed</Filter>
+    </ClCompile>
+    <ClCompile Include="xzembed\xz_dec_lzma2.c">
+      <Filter>源文件\xzembed</Filter>
+    </ClCompile>
+    <ClCompile Include="xzembed\xz_dec_stream.c">
+      <Filter>源文件\xzembed</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -239,6 +251,21 @@
     </ClInclude>
     <ClInclude Include="crypto\gcry_wrap.h">
       <Filter>头文件\加密</Filter>
+    </ClInclude>
+    <ClInclude Include="xzembed\xz.h">
+      <Filter>源文件\xzembed</Filter>
+    </ClInclude>
+    <ClInclude Include="xzembed\xz_config.h">
+      <Filter>源文件\xzembed</Filter>
+    </ClInclude>
+    <ClInclude Include="xzembed\xz_lzma2.h">
+      <Filter>源文件\xzembed</Filter>
+    </ClInclude>
+    <ClInclude Include="xzembed\xz_private.h">
+      <Filter>源文件\xzembed</Filter>
+    </ClInclude>
+    <ClInclude Include="xzembed\xz_stream.h">
+      <Filter>源文件\xzembed</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

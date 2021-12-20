@@ -144,6 +144,9 @@
     <ClCompile Include="partmap\dfly.c" />
     <ClCompile Include="partmap\gpt.c" />
     <ClCompile Include="partmap\msdos.c" />
+    <ClCompile Include="xzembed\xz_dec_bcj.c" />
+    <ClCompile Include="xzembed\xz_dec_lzma2.c" />
+    <ClCompile Include="xzembed\xz_dec_stream.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -171,6 +174,11 @@
     <ClInclude Include="partmap\bsdlabel.h" />
     <ClInclude Include="partmap\gpt_partition.h" />
     <ClInclude Include="partmap\msdos_partition.h" />
+    <ClInclude Include="xzembed\xz.h" />
+    <ClInclude Include="xzembed\xz_config.h" />
+    <ClInclude Include="xzembed\xz_lzma2.h" />
+    <ClInclude Include="xzembed\xz_private.h" />
+    <ClInclude Include="xzembed\xz_stream.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
