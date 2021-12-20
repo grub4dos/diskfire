@@ -195,6 +195,9 @@
     <ClCompile Include="io\lzopio.c">
       <Filter>源文件\压缩</Filter>
     </ClCompile>
+    <ClCompile Include="io\vhdio.c">
+      <Filter>源文件\压缩</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
