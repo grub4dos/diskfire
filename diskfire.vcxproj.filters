@@ -156,7 +156,19 @@
     <ClCompile Include="io\gzio.c">
       <Filter>源文件\压缩</Filter>
     </ClCompile>
-    <ClCompile Include="crypto\crc.c">
+    <ClCompile Include="crypto\crc32.c">
+      <Filter>源文件\加密</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\adler32.c">
+      <Filter>源文件\加密</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\crc64.c">
+      <Filter>源文件\加密</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\sha256.c">
+      <Filter>源文件\加密</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\crypto.c">
       <Filter>源文件\加密</Filter>
     </ClCompile>
   </ItemGroup>

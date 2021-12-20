@@ -109,7 +109,11 @@
     <ClCompile Include="commands\extract.c" />
     <ClCompile Include="commands\ls.c" />
     <ClCompile Include="compat.c" />
-    <ClCompile Include="crypto\crc.c" />
+    <ClCompile Include="crypto\adler32.c" />
+    <ClCompile Include="crypto\crc32.c" />
+    <ClCompile Include="crypto\crc64.c" />
+    <ClCompile Include="crypto\crypto.c" />
+    <ClCompile Include="crypto\sha256.c" />
     <ClCompile Include="diskfire.c" />
     <ClCompile Include="disk\loopback.c" />
     <ClCompile Include="disk\windisk.c" />

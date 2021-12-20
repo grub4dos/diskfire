@@ -42,8 +42,38 @@ typedef struct gcry_md_spec
 	struct gcry_md_spec* next;
 } gcry_md_spec_t;
 
+extern gcry_md_spec_t _gcry_digest_spec_adler32;
 extern gcry_md_spec_t _gcry_digest_spec_crc32;
+extern gcry_md_spec_t _gcry_digest_spec_crc64;
+extern gcry_md_spec_t _gcry_digest_spec_sha256;
 
+#define GRUB_MD_ADLER32 ((const gcry_md_spec_t *) &_gcry_digest_spec_adler32)
 #define GRUB_MD_CRC32 ((const gcry_md_spec_t *) &_gcry_digest_spec_crc32)
+#define GRUB_MD_CRC64 ((const gcry_md_spec_t *) &_gcry_digest_spec_crc64)
+#define GRUB_MD_SHA256 ((const gcry_md_spec_t *) &_gcry_digest_spec_sha256)
+
+#ifndef STR
+#define STR(v) #v
+#endif
+#define STR2(v) STR(v)
+#define DIM(v) (sizeof(v)/sizeof((v)[0]))
+#define DIMof(type,member) DIM(((type *)0)->member)
+
+/* Stack burning.  */
+
+void _gcry_burn_stack(int bytes);
+
+
+/* To avoid that a compiler optimizes certain memset calls away, these
+   macros may be used instead. */
+#define wipememory2(_ptr,_set,_len) do { \
+              volatile char *_vptr=(volatile char *)(_ptr); \
+              size_t _vlen=(_len); \
+              while(_vlen) { *_vptr=(_set); _vptr++; _vlen--; } \
+                  } while(0)
+#define wipememory(_ptr,_len) wipememory2(_ptr,0,_len)
+
+#define rol(x,n) ( ((x) << (n)) | ((x) >> (32-(n))) )
+#define ror(x,n) ( ((x) >> (n)) | ((x) << (32-(n))) )
 
 #endif
