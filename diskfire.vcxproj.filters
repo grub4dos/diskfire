@@ -67,6 +67,9 @@
     <Filter Include="源文件\minilzo">
       <UniqueIdentifier>{9020e711-bb49-43b9-a948-92bc3fb88109}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\lzma_sdk">
+      <UniqueIdentifier>{ae7b37ab-1a92-4dbb-a817-d82c2e35aa54}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="diskfire.c">
@@ -198,6 +201,9 @@
     <ClCompile Include="io\vhdio.c">
       <Filter>源文件\压缩</Filter>
     </ClCompile>
+    <ClCompile Include="lzmasdk\LzmaDec.c">
+      <Filter>源文件\lzma_sdk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -290,6 +296,12 @@
     </ClInclude>
     <ClInclude Include="minilzo\minilzo.h">
       <Filter>源文件\minilzo</Filter>
+    </ClInclude>
+    <ClInclude Include="lzmasdk\LzmaDec.h">
+      <Filter>源文件\lzma_sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="lzmasdk\LzmaTypes.h">
+      <Filter>源文件\lzma_sdk</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
