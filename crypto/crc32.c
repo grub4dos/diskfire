@@ -315,7 +315,7 @@ crc32_init(void* context)
 }
 
 static void
-crc32_write(void* context, const void* inbuf_arg, size_t inlen)
+crc32_write(void* context, const void* inbuf_arg, grub_size_t inlen)
 {
     CRC_CONTEXT* ctx = (CRC_CONTEXT*)context;
     const byte* inbuf = inbuf_arg;

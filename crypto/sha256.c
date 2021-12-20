@@ -203,7 +203,7 @@ transform(SHA256_CONTEXT* hd, const unsigned char* data)
 /* Update the message digest with the contents of INBUF with length
   INLEN.  */
 static void
-sha256_write(void* context, const void* inbuf_arg, size_t inlen)
+sha256_write(void* context, const void* inbuf_arg, grub_size_t inlen)
 {
 	const unsigned char* inbuf = inbuf_arg;
 	SHA256_CONTEXT* hd = context;
