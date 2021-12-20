@@ -13,113 +13,151 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="分区表">
+    <Filter Include="源文件\磁盘设备">
+      <UniqueIdentifier>{1ad4e89e-251a-4d77-9669-16b479febb3c}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="源文件\分区表">
       <UniqueIdentifier>{573ad48c-4253-4ad0-98f9-e3ad87423d0e}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="文件系统">
-      <UniqueIdentifier>{60430864-f5ac-430f-bb4b-806a7977795a}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="命令">
+    <Filter Include="源文件\命令">
       <UniqueIdentifier>{c189e181-e980-4dfc-834f-52c05ea55b2a}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="磁盘设备">
-      <UniqueIdentifier>{1ad4e89e-251a-4d77-9669-16b479febb3c}</UniqueIdentifier>
+    <Filter Include="源文件\文件系统">
+      <UniqueIdentifier>{60430864-f5ac-430f-bb4b-806a7977795a}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="源文件\核心">
+      <UniqueIdentifier>{d83e29ea-e27a-48e4-88c9-eea6dc3e5c88}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="源文件\杂项">
+      <UniqueIdentifier>{d3a8576f-40ff-4223-acc9-08e950cfa577}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件\文件系统">
+      <UniqueIdentifier>{eab9731a-c27d-46f9-bb30-46d5b2672964}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="头文件\分区表">
+      <UniqueIdentifier>{4af2f182-480f-41b5-afa3-ab62a877cd58}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="头文件\压缩">
+      <UniqueIdentifier>{cb04850a-8f00-42b3-ace1-7f5eb7262c49}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="源文件\压缩">
+      <UniqueIdentifier>{2d8bfc30-bbc5-4a1a-a61c-7546fa9b11ae}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="源文件\加密">
+      <UniqueIdentifier>{abb78af0-1dbb-4ff4-9512-b2ddc37c0d2f}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件\加密">
+      <UniqueIdentifier>{f5959a85-d4c6-48b9-843b-fdd66c164d62}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="diskfire.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="diskio.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="compat.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="partition.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="misc.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="fs.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="file.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="partmap\gpt.c">
-      <Filter>分区表</Filter>
+      <Filter>源文件\分区表</Filter>
     </ClCompile>
     <ClCompile Include="partmap\msdos.c">
-      <Filter>分区表</Filter>
+      <Filter>源文件\分区表</Filter>
     </ClCompile>
     <ClCompile Include="partmap\apple.c">
-      <Filter>分区表</Filter>
+      <Filter>源文件\分区表</Filter>
     </ClCompile>
     <ClCompile Include="partmap\bsdlabel.c">
-      <Filter>分区表</Filter>
+      <Filter>源文件\分区表</Filter>
     </ClCompile>
     <ClCompile Include="partmap\dfly.c">
-      <Filter>分区表</Filter>
-    </ClCompile>
-    <ClCompile Include="archelp.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="fshelp.c">
-      <Filter>源文件</Filter>
+      <Filter>源文件\分区表</Filter>
     </ClCompile>
     <ClCompile Include="fs\exfat.c">
-      <Filter>文件系统</Filter>
+      <Filter>源文件\文件系统</Filter>
     </ClCompile>
     <ClCompile Include="fs\fat.c">
-      <Filter>文件系统</Filter>
+      <Filter>源文件\文件系统</Filter>
     </ClCompile>
     <ClCompile Include="commands\ls.c">
-      <Filter>命令</Filter>
+      <Filter>源文件\命令</Filter>
     </ClCompile>
     <ClCompile Include="fs\ntfs.c">
-      <Filter>文件系统</Filter>
+      <Filter>源文件\文件系统</Filter>
     </ClCompile>
     <ClCompile Include="fs\fbfs.c">
-      <Filter>文件系统</Filter>
+      <Filter>源文件\文件系统</Filter>
     </ClCompile>
     <ClCompile Include="fs\ext2.c">
-      <Filter>文件系统</Filter>
+      <Filter>源文件\文件系统</Filter>
     </ClCompile>
     <ClCompile Include="fs\iso9660.c">
-      <Filter>文件系统</Filter>
+      <Filter>源文件\文件系统</Filter>
     </ClCompile>
     <ClCompile Include="fs\udf.c">
-      <Filter>文件系统</Filter>
+      <Filter>源文件\文件系统</Filter>
     </ClCompile>
     <ClCompile Include="disk\windisk.c">
-      <Filter>磁盘设备</Filter>
+      <Filter>源文件\磁盘设备</Filter>
     </ClCompile>
     <ClCompile Include="disk\loopback.c">
-      <Filter>磁盘设备</Filter>
+      <Filter>源文件\磁盘设备</Filter>
     </ClCompile>
     <ClCompile Include="fs\cpio.c">
-      <Filter>文件系统</Filter>
+      <Filter>源文件\文件系统</Filter>
     </ClCompile>
     <ClCompile Include="fs\cpio_be.c">
-      <Filter>文件系统</Filter>
+      <Filter>源文件\文件系统</Filter>
     </ClCompile>
     <ClCompile Include="fs\cpio_common.c">
-      <Filter>文件系统</Filter>
+      <Filter>源文件\文件系统</Filter>
     </ClCompile>
     <ClCompile Include="fs\newc.c">
-      <Filter>文件系统</Filter>
+      <Filter>源文件\文件系统</Filter>
     </ClCompile>
     <ClCompile Include="fs\tar.c">
-      <Filter>文件系统</Filter>
+      <Filter>源文件\文件系统</Filter>
     </ClCompile>
     <ClCompile Include="commands\extract.c">
-      <Filter>命令</Filter>
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
+    <ClCompile Include="diskio.c">
+      <Filter>源文件\核心</Filter>
+    </ClCompile>
+    <ClCompile Include="file.c">
+      <Filter>源文件\核心</Filter>
+    </ClCompile>
+    <ClCompile Include="fs.c">
+      <Filter>源文件\核心</Filter>
+    </ClCompile>
+    <ClCompile Include="partition.c">
+      <Filter>源文件\核心</Filter>
+    </ClCompile>
+    <ClCompile Include="archelp.c">
+      <Filter>源文件\杂项</Filter>
+    </ClCompile>
+    <ClCompile Include="compat.c">
+      <Filter>源文件\核心</Filter>
+    </ClCompile>
+    <ClCompile Include="fshelp.c">
+      <Filter>源文件\杂项</Filter>
+    </ClCompile>
+    <ClCompile Include="misc.c">
+      <Filter>源文件\杂项</Filter>
+    </ClCompile>
+    <ClCompile Include="io\gzio.c">
+      <Filter>源文件\压缩</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\crc.c">
+      <Filter>源文件\加密</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,15 +183,6 @@
     <ClInclude Include="include\file.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="partmap\gpt_partition.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="partmap\msdos_partition.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="partmap\bsdlabel.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\fshelp.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -166,20 +195,38 @@
     <ClInclude Include="include\datetime.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="fs\exfat.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="fs\fat.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\commands.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="fs\ntfs.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="fs\exfat.h">
+      <Filter>头文件\文件系统</Filter>
+    </ClInclude>
+    <ClInclude Include="fs\fat.h">
+      <Filter>头文件\文件系统</Filter>
     </ClInclude>
     <ClInclude Include="fs\fbfs.h">
+      <Filter>头文件\文件系统</Filter>
+    </ClInclude>
+    <ClInclude Include="fs\ntfs.h">
+      <Filter>头文件\文件系统</Filter>
+    </ClInclude>
+    <ClInclude Include="partmap\bsdlabel.h">
+      <Filter>头文件\分区表</Filter>
+    </ClInclude>
+    <ClInclude Include="partmap\msdos_partition.h">
+      <Filter>头文件\分区表</Filter>
+    </ClInclude>
+    <ClInclude Include="partmap\gpt_partition.h">
+      <Filter>头文件\分区表</Filter>
+    </ClInclude>
+    <ClInclude Include="io\deflate.h">
+      <Filter>头文件\压缩</Filter>
+    </ClInclude>
+    <ClInclude Include="include\crypto.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\gcry_wrap.h">
+      <Filter>头文件\加密</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

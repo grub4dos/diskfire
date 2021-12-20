@@ -4,6 +4,7 @@
 #include "misc.h"
 #include "fs.h"
 #include "partition.h"
+#include "file.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +17,7 @@ int main(int argc, char *argv[])
 	}
 	SetConsoleOutputCP(65001);
 	SetDebug("");
+	grub_file_filter_init();
 	grub_fs_init();
 	grub_partmap_init();
 	if (argc < 2)

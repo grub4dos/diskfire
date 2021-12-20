@@ -109,6 +109,7 @@
     <ClCompile Include="commands\extract.c" />
     <ClCompile Include="commands\ls.c" />
     <ClCompile Include="compat.c" />
+    <ClCompile Include="crypto\crc.c" />
     <ClCompile Include="diskfire.c" />
     <ClCompile Include="disk\loopback.c" />
     <ClCompile Include="disk\windisk.c" />
@@ -130,6 +131,7 @@
     <ClCompile Include="fs\ntfs.c" />
     <ClCompile Include="fs\tar.c" />
     <ClCompile Include="fs\udf.c" />
+    <ClCompile Include="io\gzio.c" />
     <ClCompile Include="partition.c" />
     <ClCompile Include="diskio.c" />
     <ClCompile Include="misc.c" />
@@ -144,6 +146,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="crypto\gcry_wrap.h" />
     <ClInclude Include="fs\exfat.h" />
     <ClInclude Include="fs\fat.h" />
     <ClInclude Include="fs\fbfs.h" />
@@ -151,6 +154,7 @@
     <ClInclude Include="include\archelp.h" />
     <ClInclude Include="include\charset.h" />
     <ClInclude Include="include\commands.h" />
+    <ClInclude Include="include\crypto.h" />
     <ClInclude Include="include\datetime.h" />
     <ClInclude Include="include\disk.h" />
     <ClInclude Include="include\compat.h" />
@@ -159,6 +163,7 @@
     <ClInclude Include="include\fshelp.h" />
     <ClInclude Include="include\misc.h" />
     <ClInclude Include="include\partition.h" />
+    <ClInclude Include="io\deflate.h" />
     <ClInclude Include="partmap\bsdlabel.h" />
     <ClInclude Include="partmap\gpt_partition.h" />
     <ClInclude Include="partmap\msdos_partition.h" />

@@ -174,3 +174,9 @@ grub_file_seek(grub_file_t file, grub_off_t offset)
 
 	return old;
 }
+
+void
+grub_file_filter_init(void)
+{
+	grub_file_filter_register(GRUB_FILE_FILTER_GZIO, grub_gzio_open);
+}
