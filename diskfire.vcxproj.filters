@@ -64,6 +64,9 @@
     <Filter Include="源文件\xzembed">
       <UniqueIdentifier>{e5f88c4d-f590-4b39-9087-53ad185ad89d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\minilzo">
+      <UniqueIdentifier>{9020e711-bb49-43b9-a948-92bc3fb88109}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="diskfire.c">
@@ -186,6 +189,9 @@
     <ClCompile Include="io\xzio.c">
       <Filter>源文件\压缩</Filter>
     </ClCompile>
+    <ClCompile Include="minilzo\minilzo.c">
+      <Filter>源文件\minilzo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -269,6 +275,15 @@
     </ClInclude>
     <ClInclude Include="xzembed\xz_stream.h">
       <Filter>源文件\xzembed</Filter>
+    </ClInclude>
+    <ClInclude Include="minilzo\lzoconf.h">
+      <Filter>源文件\minilzo</Filter>
+    </ClInclude>
+    <ClInclude Include="minilzo\lzodefs.h">
+      <Filter>源文件\minilzo</Filter>
+    </ClInclude>
+    <ClInclude Include="minilzo\minilzo.h">
+      <Filter>源文件\minilzo</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
