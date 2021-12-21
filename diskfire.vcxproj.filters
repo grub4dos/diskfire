@@ -221,6 +221,9 @@
     <ClCompile Include="fs\squash4.c">
       <Filter>源文件\文件系统</Filter>
     </ClCompile>
+    <ClCompile Include="fs\f2fs.c">
+      <Filter>源文件\文件系统</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
