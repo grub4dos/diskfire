@@ -93,6 +93,7 @@ extern struct grub_fs grub_cpio_be_fs;
 extern struct grub_fs grub_cpio_fs;
 extern struct grub_fs grub_newc_fs;
 extern struct grub_fs grub_tar_fs;
+extern struct grub_fs grub_squash_fs;
 
 void grub_fs_init(void);
 

@@ -143,6 +143,10 @@
     <ClCompile Include="fs\iso9660.c" />
     <ClCompile Include="fs\newc.c" />
     <ClCompile Include="fs\ntfs.c" />
+    <ClCompile Include="fs\squash4.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)minilzo;$(SolutionDir)xzembed</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)minilzo;$(SolutionDir)xzembed</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="fs\tar.c" />
     <ClCompile Include="fs\udf.c" />
     <ClCompile Include="io\gzio.c" />
@@ -188,6 +192,7 @@
     <ClInclude Include="include\command.h" />
     <ClInclude Include="include\crypto.h" />
     <ClInclude Include="include\datetime.h" />
+    <ClInclude Include="include\deflate.h" />
     <ClInclude Include="include\disk.h" />
     <ClInclude Include="include\compat.h" />
     <ClInclude Include="include\file.h" />
@@ -195,7 +200,6 @@
     <ClInclude Include="include\fshelp.h" />
     <ClInclude Include="include\misc.h" />
     <ClInclude Include="include\partition.h" />
-    <ClInclude Include="io\deflate.h" />
     <ClInclude Include="lzmasdk\LzmaDec.h" />
     <ClInclude Include="lzmasdk\LzmaTypes.h" />
     <ClInclude Include="minilzo\lzoconf.h" />

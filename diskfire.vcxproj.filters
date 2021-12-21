@@ -45,10 +45,6 @@
       <UniqueIdentifier>{4af2f182-480f-41b5-afa3-ab62a877cd58}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="头文件\压缩">
-      <UniqueIdentifier>{cb04850a-8f00-42b3-ace1-7f5eb7262c49}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="源文件\压缩">
       <UniqueIdentifier>{2d8bfc30-bbc5-4a1a-a61c-7546fa9b11ae}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -222,6 +218,9 @@
     <ClCompile Include="commands\hashsum.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="fs\squash4.c">
+      <Filter>源文件\文件系统</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -282,9 +281,6 @@
     <ClInclude Include="partmap\gpt_partition.h">
       <Filter>头文件\分区表</Filter>
     </ClInclude>
-    <ClInclude Include="io\deflate.h">
-      <Filter>头文件\压缩</Filter>
-    </ClInclude>
     <ClInclude Include="include\crypto.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -320,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="lzmasdk\LzmaTypes.h">
       <Filter>源文件\lzma_sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\deflate.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
