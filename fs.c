@@ -63,6 +63,7 @@ grub_fs_init(void)
 	grub_fs_register(&grub_tar_fs);
 	grub_fs_register(&grub_squash_fs);
 	grub_fs_register(&grub_f2fs_fs);
+	grub_fs_register(&grub_xfs_fs);
 }
 
 /* Block list support routines.  */

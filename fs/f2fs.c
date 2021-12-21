@@ -1123,7 +1123,7 @@ grub_f2fs_dir(grub_disk_t disk, const char* path,
 	grub_f2fs_iterate_dir(fdiro, grub_f2fs_dir_iter, &ctx);
 
 fail:
-	if (fdiro != &ctx.data->diropen)
+	if (ctx.data && fdiro != &ctx.data->diropen)
 		grub_free(fdiro);
 	grub_free(ctx.data);
 
@@ -1267,12 +1267,12 @@ grub_f2fs_uuid(grub_disk_t disk, char** uuid)
 
 struct grub_fs grub_f2fs_fs =
 {
-  .name = "f2fs",
-  .fs_dir = grub_f2fs_dir,
-  .fs_open = grub_f2fs_open,
-  .fs_read = grub_f2fs_read,
-  .fs_close = grub_f2fs_close,
-  .fs_label = grub_f2fs_label,
-  .fs_uuid = grub_f2fs_uuid,
-  .next = 0
+	.name = "f2fs",
+	.fs_dir = grub_f2fs_dir,
+	.fs_open = grub_f2fs_open,
+	.fs_read = grub_f2fs_read,
+	.fs_close = grub_f2fs_close,
+	.fs_label = grub_f2fs_label,
+	.fs_uuid = grub_f2fs_uuid,
+	.next = 0
 };

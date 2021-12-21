@@ -150,6 +150,7 @@
     </ClCompile>
     <ClCompile Include="fs\tar.c" />
     <ClCompile Include="fs\udf.c" />
+    <ClCompile Include="fs\xfs.c" />
     <ClCompile Include="io\gzio.c" />
     <ClCompile Include="io\lzmaio.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)lzmasdk</AdditionalIncludeDirectories>

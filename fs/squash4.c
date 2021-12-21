@@ -1011,11 +1011,11 @@ grub_squash_mtime(grub_disk_t disk, grub_int64_t* tm)
 
 struct grub_fs grub_squash_fs =
 {
-  .name = "squash4",
-  .fs_dir = grub_squash_dir,
-  .fs_open = grub_squash_open,
-  .fs_read = grub_squash_read,
-  .fs_close = grub_squash_close,
-  .fs_mtime = grub_squash_mtime,
-  .next = 0
+	.name = "squash4",
+	.fs_dir = grub_squash_dir,
+	.fs_open = grub_squash_open,
+	.fs_read = grub_squash_read,
+	.fs_close = grub_squash_close,
+	.fs_mtime = grub_squash_mtime,
+	.next = 0
 };

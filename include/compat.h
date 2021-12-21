@@ -102,18 +102,16 @@ static inline grub_uint16_t grub_swap_bytes16(grub_uint16_t _x)
 
 #define grub_swap_bytes16_compile_time(x) ((((x) & 0xff) << 8) | (((x) & 0xff00) >> 8))
 #define grub_swap_bytes32_compile_time(x) ((((x) & 0xff) << 24) | (((x) & 0xff00) << 8) | (((x) & 0xff0000) >> 8) | (((x) & 0xff000000UL) >> 24))
-#define grub_swap_bytes64_compile_time(x)	\
-({ \
-   grub_uint64_t _x = (x); \
-   (grub_uint64_t) ((_x << 56) \
-					| ((_x & (grub_uint64_t) 0xFF00ULL) << 40) \
-					| ((_x & (grub_uint64_t) 0xFF0000ULL) << 24) \
-					| ((_x & (grub_uint64_t) 0xFF000000ULL) << 8) \
-					| ((_x & (grub_uint64_t) 0xFF00000000ULL) >> 8) \
-					| ((_x & (grub_uint64_t) 0xFF0000000000ULL) >> 24) \
-					| ((_x & (grub_uint64_t) 0xFF000000000000ULL) >> 40) \
-					| (_x >> 56)); \
-})
+#define grub_swap_bytes64_compile_time(x) \
+((grub_uint64_t) ((((grub_uint64_t)x) << 56) \
+					| ((((grub_uint64_t)x) & (grub_uint64_t) 0xFF00ULL) << 40) \
+					| ((((grub_uint64_t)x) & (grub_uint64_t) 0xFF0000ULL) << 24) \
+					| ((((grub_uint64_t)x) & (grub_uint64_t) 0xFF000000ULL) << 8) \
+					| ((((grub_uint64_t)x) & (grub_uint64_t) 0xFF00000000ULL) >> 8) \
+					| ((((grub_uint64_t)x) & (grub_uint64_t) 0xFF0000000000ULL) >> 24) \
+					| ((((grub_uint64_t)x) & (grub_uint64_t) 0xFF000000000000ULL) >> 40) \
+					| (((grub_uint64_t)x) >> 56)) \
+)
 
 static inline grub_uint32_t grub_swap_bytes32(grub_uint32_t _x)
 {
@@ -517,5 +515,7 @@ grub_uint64_t grub_get_time_ms(void);
 
 const char*
 grub_get_human_size(grub_uint64_t size, const char* human_sizes[6], grub_uint64_t base);
+
+#define NSEC_PER_SEC ((grub_int64_t) 1000000000)
 
 #endif
