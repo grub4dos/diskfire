@@ -207,6 +207,9 @@
     <ClCompile Include="io\lzmaio.c">
       <Filter>源文件\压缩</Filter>
     </ClCompile>
+    <ClCompile Include="commands\probe.c">
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

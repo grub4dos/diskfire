@@ -108,6 +108,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="archelp.c" />
+    <ClCompile Include="commands\probe.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)partmap</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)partmap</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="commands\extract.c" />
     <ClCompile Include="commands\ls.c" />
     <ClCompile Include="compat.c" />

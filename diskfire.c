@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	grub_partmap_init();
 	if (argc < 2)
 	{
-		printf("Commands: ls, extract\n");
+		printf("Commands: ls, extract, probe\n");
 		return 0;
 	}
 	for (i = 1; i < argc; i++)
@@ -50,6 +50,12 @@ int main(int argc, char *argv[])
 			int new_argc = argc - i - 1;
 			char** new_argv = new_argc ? &argv[i + 1] : NULL;
 			return cmd_extract(new_argc, new_argv);
+		}
+		else if (_stricmp(argv[i], "probe") == 0)
+		{
+			int new_argc = argc - i - 1;
+			char** new_argv = new_argc ? &argv[i + 1] : NULL;
+			return cmd_probe(new_argc, new_argv);
 		}
 		else
 			break;
