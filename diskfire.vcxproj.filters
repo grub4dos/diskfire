@@ -171,9 +171,6 @@
     <ClCompile Include="crypto\adler32.c">
       <Filter>源文件\加密</Filter>
     </ClCompile>
-    <ClCompile Include="crypto\crc64.c">
-      <Filter>源文件\加密</Filter>
-    </ClCompile>
     <ClCompile Include="crypto\sha256.c">
       <Filter>源文件\加密</Filter>
     </ClCompile>
@@ -215,6 +212,15 @@
     </ClCompile>
     <ClCompile Include="command.c">
       <Filter>源文件\核心</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\md5.c">
+      <Filter>源文件\加密</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\sha1.c">
+      <Filter>源文件\加密</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\hashsum.c">
+      <Filter>源文件\命令</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

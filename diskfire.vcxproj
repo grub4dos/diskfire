@@ -109,6 +109,7 @@
   <ItemGroup>
     <ClCompile Include="archelp.c" />
     <ClCompile Include="command.c" />
+    <ClCompile Include="commands\hashsum.c" />
     <ClCompile Include="commands\help.c" />
     <ClCompile Include="commands\probe.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)partmap</AdditionalIncludeDirectories>
@@ -119,8 +120,9 @@
     <ClCompile Include="compat.c" />
     <ClCompile Include="crypto\adler32.c" />
     <ClCompile Include="crypto\crc32.c" />
-    <ClCompile Include="crypto\crc64.c" />
     <ClCompile Include="crypto\crypto.c" />
+    <ClCompile Include="crypto\md5.c" />
+    <ClCompile Include="crypto\sha1.c" />
     <ClCompile Include="crypto\sha256.c" />
     <ClCompile Include="diskfire.c" />
     <ClCompile Include="disk\loopback.c" />

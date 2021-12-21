@@ -39,9 +39,13 @@ grub_crypto_lookup_md_by_name(const char* name)
 		md = GRUB_MD_ADLER32;
 	else if (grub_strcasecmp(name, "CRC32") == 0)
 		md = GRUB_MD_CRC32;
-	else if (grub_strcasecmp(name, "CRC64") == 0)
-		md = GRUB_MD_CRC64;
+	//else if (grub_strcasecmp(name, "CRC64") == 0)
+		//md = GRUB_MD_CRC64;
+	else if (grub_strcasecmp(name, "SHA1") == 0)
+		md = GRUB_MD_SHA1;
 	else if (grub_strcasecmp(name, "SHA256") == 0)
 		md = GRUB_MD_SHA256;
+	else if (grub_strcasecmp(name, "MD5") == 0)
+		md = GRUB_MD_MD5;
 	return md;
 }

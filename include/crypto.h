@@ -55,13 +55,17 @@ grub_crypto_lookup_md_by_name(const char* name);
 
 extern gcry_md_spec_t _gcry_digest_spec_adler32;
 extern gcry_md_spec_t _gcry_digest_spec_crc32;
-extern gcry_md_spec_t _gcry_digest_spec_crc64;
+//extern gcry_md_spec_t _gcry_digest_spec_crc64;
+extern gcry_md_spec_t _gcry_digest_spec_sha1;
 extern gcry_md_spec_t _gcry_digest_spec_sha256;
+extern gcry_md_spec_t _gcry_digest_spec_md5;
 
 #define GRUB_MD_ADLER32 ((const gcry_md_spec_t *) &_gcry_digest_spec_adler32)
 #define GRUB_MD_CRC32 ((const gcry_md_spec_t *) &_gcry_digest_spec_crc32)
-#define GRUB_MD_CRC64 ((const gcry_md_spec_t *) &_gcry_digest_spec_crc64)
+//#define GRUB_MD_CRC64 ((const gcry_md_spec_t *) &_gcry_digest_spec_crc64)
+#define GRUB_MD_SHA1 ((const gcry_md_spec_t *) &_gcry_digest_spec_sha1)
 #define GRUB_MD_SHA256 ((const gcry_md_spec_t *) &_gcry_digest_spec_sha256)
+#define GRUB_MD_MD5 ((const gcry_md_spec_t *) &_gcry_digest_spec_md5)
 
 #ifndef STR
 #define STR(v) #v
