@@ -1,6 +1,6 @@
 ﻿// SPDX-License-Identifier: GPL-3.0-or-later
 #include <stdio.h>
-#include "commands.h"
+#include "command.h"
 #include "misc.h"
 #include "fs.h"
 #include "partition.h"
@@ -9,6 +9,7 @@
 int main(int argc, char *argv[])
 {
 	int i;
+	grub_command_t p = NULL;
 	if (IsAdmin() != TRUE
 		|| ObtainPrivileges(SE_SYSTEM_ENVIRONMENT_NAME) != ERROR_SUCCESS)
 	{
@@ -17,12 +18,13 @@ int main(int argc, char *argv[])
 	}
 	SetConsoleOutputCP(65001);
 	SetDebug("");
+	grub_command_init();
 	grub_file_filter_init();
 	grub_fs_init();
 	grub_partmap_init();
 	if (argc < 2)
 	{
-		printf("Commands: ls, extract, probe\n");
+		grub_command_execute("help", 0, NULL);
 		return 0;
 	}
 	for (i = 1; i < argc; i++)
@@ -39,23 +41,11 @@ int main(int argc, char *argv[])
 				return grub_errno;
 			}
 		}
-		else if (_stricmp(argv[i], "ls") == 0)
+		else if ((p = grub_command_find(argv[i])) != NULL)
 		{
 			int new_argc = argc - i - 1;
 			char** new_argv = new_argc ? &argv[i + 1] : NULL;
-			return cmd_ls(new_argc, new_argv);
-		}
-		else if (_stricmp(argv[i], "extract") == 0)
-		{
-			int new_argc = argc - i - 1;
-			char** new_argv = new_argc ? &argv[i + 1] : NULL;
-			return cmd_extract(new_argc, new_argv);
-		}
-		else if (_stricmp(argv[i], "probe") == 0)
-		{
-			int new_argc = argc - i - 1;
-			char** new_argv = new_argc ? &argv[i + 1] : NULL;
-			return cmd_probe(new_argc, new_argv);
+			return p->func(p, new_argc, new_argv);
 		}
 		else
 			break;

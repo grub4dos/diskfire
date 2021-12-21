@@ -4,7 +4,7 @@
 #include "partition.h"
 #include "fs.h"
 #include "file.h"
-#include "commands.h"
+#include "command.h"
 
 static int probe_partmap_hook(struct grub_disk* disk, const grub_partition_t partition, void* data)
 {
@@ -114,15 +114,16 @@ parse_probe_opt(const char* arg, grub_disk_t disk)
 		return probe_label(disk);
 	if (grub_strcmp(arg, "--size") == 0)
 		return probe_size(disk);
-	if (grub_strcmp(arg, "--startlba") == 0)
+	if (grub_strcmp(arg, "--start") == 0)
 		return probe_startlba(disk);
 
 	return grub_error(GRUB_ERR_BAD_ARGUMENT, "invalid option %s\n", arg);
 }
 
-grub_err_t
-cmd_probe(int argc, char* argv[])
+static grub_err_t
+cmd_probe(struct grub_command* cmd, int argc, char* argv[])
 {
+	(void)cmd;
 	char* ptr;
 	grub_disk_t disk = 0;
 	if (argc < 2)
@@ -149,3 +150,24 @@ fail:
 		grub_print_error();
 	return 0;
 }
+
+static void
+help_probe(struct grub_command* cmd)
+{
+	grub_printf("%s OPTIONS DISK\n", cmd->name);
+	grub_printf("Retrieve disk info.\nOPTIONS:\n");
+	grub_printf("  --partmap   Determine partition map type.\n");
+	grub_printf("  --fs        Determine filesystem type.\n");
+	grub_printf("  --fsuuid    Determine filesystem UUID.\n");
+	grub_printf("  --label     Determine filesystem label.\n");
+	grub_printf("  --size      Determine disk/partition size (bytes).\n");
+	grub_printf("  --start     Determine partition starting LBA (sectors).\n");
+}
+
+struct grub_command grub_cmd_probe =
+{
+	.name = "probe",
+	.func = cmd_probe,
+	.help = help_probe,
+	.next = 0,
+};

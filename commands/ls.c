@@ -3,7 +3,7 @@
 #include "disk.h"
 #include "fs.h"
 #include "file.h"
-#include "commands.h"
+#include "command.h"
 #include "datetime.h"
 #include "partition.h"
 
@@ -240,10 +240,10 @@ fail:
 	return 0;
 }
 
-/* ls [ARG] */
-grub_err_t
-cmd_ls(int argc, char* argv[])
+static grub_err_t
+cmd_ls(struct grub_command* cmd, int argc, char* argv[])
 {
+	(void)cmd;
 	int longlist = 0;
 	if (argc > 0 && grub_strcmp(argv[0], "-l") == 0)
 		longlist = 1;
@@ -255,3 +255,20 @@ cmd_ls(int argc, char* argv[])
 		grub_print_error();
 	return 0;
 }
+
+static void
+help_ls(struct grub_command* cmd)
+{
+	grub_printf("%s [-l] [FILE|DISK]\n", cmd->name);
+	grub_printf("List disks and files.\n");
+	grub_printf("  -l  Show a long list with more detailed information.\n");
+}
+
+struct grub_command grub_cmd_ls =
+{
+	.name = "ls",
+	.func = cmd_ls,
+	.help = help_ls,
+	.next = 0,
+};
+

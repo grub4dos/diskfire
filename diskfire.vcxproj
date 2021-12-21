@@ -108,6 +108,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="archelp.c" />
+    <ClCompile Include="command.c" />
+    <ClCompile Include="commands\help.c" />
     <ClCompile Include="commands\probe.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)partmap</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)partmap</AdditionalIncludeDirectories>
@@ -181,7 +183,7 @@
     <ClInclude Include="fs\ntfs.h" />
     <ClInclude Include="include\archelp.h" />
     <ClInclude Include="include\charset.h" />
-    <ClInclude Include="include\commands.h" />
+    <ClInclude Include="include\command.h" />
     <ClInclude Include="include\crypto.h" />
     <ClInclude Include="include\datetime.h" />
     <ClInclude Include="include\disk.h" />

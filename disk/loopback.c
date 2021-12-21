@@ -2,7 +2,7 @@
 #include "compat.h"
 #include "disk.h"
 #include "file.h"
-#include "commands.h"
+#include "command.h"
 
 struct grub_loopback
 {

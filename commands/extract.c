@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "compat.h"
 #include "file.h"
-#include "commands.h"
+#include "command.h"
 #include "misc.h"
 
 static const char* d_human_sizes[6] =
 { " B", " KB", " MB", " GB", " TB", " PB", };
 
-grub_err_t
-cmd_extract(int argc, char* argv[])
+static grub_err_t
+cmd_extract(struct grub_command* cmd, int argc, char* argv[])
 {
+	(void)cmd;
 	const char* in = NULL, * out = NULL;
 	grub_file_t file = 0;
 	enum grub_file_type type = GRUB_FILE_TYPE_EXTRACT;
@@ -78,3 +79,19 @@ fail:
 		grub_free(buf);
 	return grub_errno;
 }
+
+static void
+help_extract(struct grub_command* cmd)
+{
+	grub_printf("%s [-d] SRC_FILE DST_FILE\n", cmd->name);
+	grub_printf("Extract file from source location.\n");
+	grub_printf("  -d  Decompress source file.\n");
+}
+
+struct grub_command grub_cmd_extract =
+{
+	.name = "extract",
+	.func = cmd_extract,
+	.help = help_extract,
+	.next = 0,
+};

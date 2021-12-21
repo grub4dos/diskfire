@@ -210,6 +210,12 @@
     <ClCompile Include="commands\probe.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="commands\help.c">
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
+    <ClCompile Include="command.c">
+      <Filter>源文件\核心</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -246,7 +252,7 @@
     <ClInclude Include="include\datetime.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\commands.h">
+    <ClInclude Include="include\command.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="fs\exfat.h">
