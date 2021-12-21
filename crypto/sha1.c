@@ -64,7 +64,7 @@ sha1_init(void* context)
  * Transform NBLOCKS of each 64 bytes (16 32-bit words) at DATA.
  */
 static void
-transform(SHA1_CONTEXT* hd, const unsigned char* data, size_t nblocks)
+transform(SHA1_CONTEXT* hd, const unsigned char* data, grub_size_t nblocks)
 {
 	register u32 a, b, c, d, e; /* Local copies of the chaining variables.  */
 	register u32 tm;            /* Helper.  */
@@ -193,11 +193,11 @@ transform(SHA1_CONTEXT* hd, const unsigned char* data, size_t nblocks)
  * of INBUF with length INLEN.
  */
 static void
-sha1_write(void* context, const void* inbuf_arg, size_t inlen)
+sha1_write(void* context, const void* inbuf_arg, grub_size_t inlen)
 {
 	const unsigned char* inbuf = inbuf_arg;
 	SHA1_CONTEXT* hd = context;
-	size_t nblocks;
+	grub_size_t nblocks;
 
 	if (hd->count == 64)  /* Flush the buffer. */
 	{
@@ -322,7 +322,7 @@ sha1_read(void* context)
  */
 #if 0
 void
-_gcry_sha1_hash_buffer(void* outbuf, const void* buffer, size_t length)
+_gcry_sha1_hash_buffer(void* outbuf, const void* buffer, grub_size_t length)
 {
 	SHA1_CONTEXT hd;
 

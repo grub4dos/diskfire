@@ -181,7 +181,7 @@ transform(MD5_CONTEXT* ctx, const unsigned char* data)
  * in the message whose digest is being computed.
  */
 static void
-md5_write(void* context, const void* inbuf_arg, size_t inlen)
+md5_write(void* context, const void* inbuf_arg, grub_size_t inlen)
 {
 	const unsigned char* inbuf = inbuf_arg;
 	MD5_CONTEXT* hd = context;
