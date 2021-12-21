@@ -10,7 +10,7 @@
 static const char* d_human_sizes[6] =
 { "B", "KB", "MB", "GB", "TB", "PB", };
 
-grub_err_t
+static grub_err_t
 ls_print_disk_info(const char* name)
 {
 	grub_disk_t disk;
@@ -80,6 +80,44 @@ ls_print_disk_info(const char* name)
 	return grub_errno;
 }
 
+static grub_err_t
+ls_print_file_info(const char* filename, const struct grub_dirhook_info* info, const char *dirname)
+{
+	if (!info->dir)
+	{
+		grub_file_t file;
+		grub_size_t pathlen = grub_strlen(dirname) + grub_strlen(filename) + 2;
+		char* pathname = grub_malloc(pathlen);
+		if (!pathname)
+			return GRUB_ERR_OUT_OF_MEMORY;
+
+		if (dirname[grub_strlen(dirname) - 1] == '/')
+			grub_snprintf(pathname, pathlen, "%s%s", dirname, filename);
+		else
+			grub_snprintf(pathname, pathlen, "%s/%s", dirname, filename);
+
+		/* XXX: For ext2fs symlinks are detected as files while they
+		should be reported as directories.  */
+		file = grub_file_open(pathname, GRUB_FILE_TYPE_GET_SIZE | GRUB_FILE_TYPE_NO_DECOMPRESS);
+		if (!file)
+		{
+			grub_errno = 0;
+			grub_free(pathname);
+			return 0;
+		}
+
+		grub_printf("%-12s", grub_get_human_size(file->size, d_human_sizes, 1024));
+		grub_file_close(file);
+		grub_free(pathname);
+	}
+	else
+		grub_printf("%-12s", "DIR");
+
+	grub_printf("%s%s\n", filename, info->dir ? "/" : "");
+
+	return 0;
+}
+
 static int
 ls_print_disk(const char* name, void* data)
 {
@@ -100,16 +138,28 @@ ls_list_disks(int longlist)
 	return 0;
 }
 
-static int
-ls_print_files(const char* filename, const struct grub_dirhook_info* info, void* data)
+struct grub_ls_list_files_ctx
 {
-	(void)data;
-	grub_printf("%s%s ", filename, info->dir ? "/" : "");
+	const char* dirname;
+	int longlist;
+};
+
+static int
+ls_print_files(const char* filename, const struct grub_dirhook_info* info,
+	void* data)
+{
+	struct grub_ls_list_files_ctx* ctx = data;
+
+	if (ctx->longlist)
+		ls_print_file_info(filename, info, ctx->dirname);
+	else
+		grub_printf("%s%s ", filename, info->dir ? "/" : "");
+
 	return 0;
 }
 
 static grub_err_t
-ls_list_files(char* dirname)
+ls_list_files(char* dirname, int longlist)
 {
 	char* disk_name;
 	grub_fs_t fs;
@@ -143,7 +193,12 @@ ls_list_files(char* dirname)
 	}
 	else if (fs)
 	{
-		(fs->fs_dir) (disk, path, ls_print_files, NULL);
+		struct grub_ls_list_files_ctx ctx =
+		{
+		  .dirname = dirname,
+		  .longlist = longlist,
+		};
+		(fs->fs_dir) (disk, path, ls_print_files, &ctx);
 
 		if (grub_errno == GRUB_ERR_BAD_FILE_TYPE
 			&& path[grub_strlen(path) - 1] != '/')
@@ -166,7 +221,8 @@ ls_list_files(char* dirname)
 				goto fail;
 
 			grub_memset(&info, 0, sizeof(info));
-			ls_print_files(p, &info, NULL);
+			ctx.dirname = dirname;
+			ls_print_files(p, &info, &ctx);
 
 			grub_free(dirname);
 		}
@@ -188,10 +244,13 @@ fail:
 grub_err_t
 cmd_ls(int argc, char* argv[])
 {
-	if (argc == 0)
-		ls_list_disks(1);
+	int longlist = 0;
+	if (argc > 0 && grub_strcmp(argv[0], "-l") == 0)
+		longlist = 1;
+	if (argc - longlist < 1)
+		ls_list_disks(longlist);
 	else
-		ls_list_files(argv[0]);
+		ls_list_files(argv[longlist], longlist);
 	if (grub_error)
 		grub_print_error();
 	return 0;
