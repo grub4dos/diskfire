@@ -97,6 +97,8 @@ extern struct grub_fs grub_squash_fs;
 extern struct grub_fs grub_f2fs_fs;
 extern struct grub_fs grub_xfs_fs;
 extern struct grub_fs grub_jfs_fs;
+extern struct grub_fs grub_hfs_fs;
+extern struct grub_fs grub_hfsplus_fs;
 
 void grub_fs_init(void);
 

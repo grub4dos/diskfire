@@ -141,6 +141,8 @@
     <ClCompile Include="fs\f2fs.c" />
     <ClCompile Include="fs\fat.c" />
     <ClCompile Include="fs\fbfs.c" />
+    <ClCompile Include="fs\hfs.c" />
+    <ClCompile Include="fs\hfsplus.c" />
     <ClCompile Include="fs\iso9660.c" />
     <ClCompile Include="fs\jfs.c" />
     <ClCompile Include="fs\newc.c" />
@@ -189,6 +191,8 @@
     <ClInclude Include="fs\exfat.h" />
     <ClInclude Include="fs\fat.h" />
     <ClInclude Include="fs\fbfs.h" />
+    <ClInclude Include="fs\hfs.h" />
+    <ClInclude Include="fs\hfsplus.h" />
     <ClInclude Include="fs\ntfs.h" />
     <ClInclude Include="include\archelp.h" />
     <ClInclude Include="include\charset.h" />

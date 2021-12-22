@@ -230,6 +230,12 @@
     <ClCompile Include="fs\jfs.c">
       <Filter>源文件\文件系统</Filter>
     </ClCompile>
+    <ClCompile Include="fs\hfsplus.c">
+      <Filter>源文件\文件系统</Filter>
+    </ClCompile>
+    <ClCompile Include="fs\hfs.c">
+      <Filter>源文件\文件系统</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -328,6 +334,12 @@
     </ClInclude>
     <ClInclude Include="include\deflate.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="fs\hfsplus.h">
+      <Filter>头文件\文件系统</Filter>
+    </ClInclude>
+    <ClInclude Include="fs\hfs.h">
+      <Filter>头文件\文件系统</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
