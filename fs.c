@@ -68,6 +68,7 @@ grub_fs_init(void)
 	grub_fs_register(&grub_hfs_fs);
 	grub_fs_register(&grub_hfsplus_fs);
 	grub_fs_register(&grub_btrfs_fs);
+	grub_fs_register(&grub_reiserfs_fs);
 }
 
 /* Block list support routines.  */

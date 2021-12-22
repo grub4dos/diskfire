@@ -151,6 +151,7 @@
     <ClCompile Include="fs\jfs.c" />
     <ClCompile Include="fs\newc.c" />
     <ClCompile Include="fs\ntfs.c" />
+    <ClCompile Include="fs\reiserfs.c" />
     <ClCompile Include="fs\squash4.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)minilzo;$(SolutionDir)xzembed</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)minilzo;$(SolutionDir)xzembed</AdditionalIncludeDirectories>
