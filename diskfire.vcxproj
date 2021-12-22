@@ -181,6 +181,14 @@
     <ClCompile Include="xzembed\xz_dec_bcj.c" />
     <ClCompile Include="xzembed\xz_dec_lzma2.c" />
     <ClCompile Include="xzembed\xz_dec_stream.c" />
+    <ClCompile Include="zstd\debug.c" />
+    <ClCompile Include="zstd\entropy_common.c" />
+    <ClCompile Include="zstd\error_private.c" />
+    <ClCompile Include="zstd\fse_decompress.c" />
+    <ClCompile Include="zstd\huf_decompress.c" />
+    <ClCompile Include="zstd\xxhash.c" />
+    <ClCompile Include="zstd\zstd_common.c" />
+    <ClCompile Include="zstd\zstd_decompress.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -220,6 +228,18 @@
     <ClInclude Include="xzembed\xz_lzma2.h" />
     <ClInclude Include="xzembed\xz_private.h" />
     <ClInclude Include="xzembed\xz_stream.h" />
+    <ClInclude Include="zstd\bitstream.h" />
+    <ClInclude Include="zstd\compiler.h" />
+    <ClInclude Include="zstd\cpu.h" />
+    <ClInclude Include="zstd\debug.h" />
+    <ClInclude Include="zstd\error_private.h" />
+    <ClInclude Include="zstd\fse.h" />
+    <ClInclude Include="zstd\huf.h" />
+    <ClInclude Include="zstd\mem.h" />
+    <ClInclude Include="zstd\xxhash.h" />
+    <ClInclude Include="zstd\zstd.h" />
+    <ClInclude Include="zstd\zstd_errors.h" />
+    <ClInclude Include="zstd\zstd_internal.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

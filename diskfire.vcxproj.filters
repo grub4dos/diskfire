@@ -66,6 +66,9 @@
     <Filter Include="源文件\lzma_sdk">
       <UniqueIdentifier>{ae7b37ab-1a92-4dbb-a817-d82c2e35aa54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\zstd">
+      <UniqueIdentifier>{ce86f4bb-6911-4628-a4f6-dba4a94f3420}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="diskfire.c">
@@ -236,6 +239,30 @@
     <ClCompile Include="fs\hfs.c">
       <Filter>源文件\文件系统</Filter>
     </ClCompile>
+    <ClCompile Include="zstd\debug.c">
+      <Filter>源文件\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="zstd\entropy_common.c">
+      <Filter>源文件\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="zstd\error_private.c">
+      <Filter>源文件\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="zstd\fse_decompress.c">
+      <Filter>源文件\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="zstd\huf_decompress.c">
+      <Filter>源文件\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="zstd\xxhash.c">
+      <Filter>源文件\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="zstd\zstd_common.c">
+      <Filter>源文件\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="zstd\zstd_decompress.c">
+      <Filter>源文件\zstd</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -340,6 +367,42 @@
     </ClInclude>
     <ClInclude Include="fs\hfs.h">
       <Filter>头文件\文件系统</Filter>
+    </ClInclude>
+    <ClInclude Include="zstd\bitstream.h">
+      <Filter>源文件\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="zstd\compiler.h">
+      <Filter>源文件\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="zstd\cpu.h">
+      <Filter>源文件\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="zstd\debug.h">
+      <Filter>源文件\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="zstd\error_private.h">
+      <Filter>源文件\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="zstd\fse.h">
+      <Filter>源文件\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="zstd\huf.h">
+      <Filter>源文件\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="zstd\mem.h">
+      <Filter>源文件\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="zstd\xxhash.h">
+      <Filter>源文件\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="zstd\zstd.h">
+      <Filter>源文件\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="zstd\zstd_errors.h">
+      <Filter>源文件\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="zstd\zstd_internal.h">
+      <Filter>源文件\zstd</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
