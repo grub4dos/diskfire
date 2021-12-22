@@ -32,7 +32,7 @@
 
 #define STREAM_HEADER_SIZE 12
 
-static const uint8_t HEADER_MAGIC[6] = { 0xFD, '7', 'z', 'X', 'Z', 0x00 };
+#define HEADER_MAGIC "\xFD" "7zXZ\0"
 #define HEADER_MAGIC_SIZE 6
 
 #define FOOTER_MAGIC "YZ"

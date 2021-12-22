@@ -142,6 +142,7 @@
     <ClCompile Include="fs\fat.c" />
     <ClCompile Include="fs\fbfs.c" />
     <ClCompile Include="fs\iso9660.c" />
+    <ClCompile Include="fs\jfs.c" />
     <ClCompile Include="fs\newc.c" />
     <ClCompile Include="fs\ntfs.c" />
     <ClCompile Include="fs\squash4.c">

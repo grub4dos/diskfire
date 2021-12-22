@@ -1228,7 +1228,7 @@ enum xz_ret xz_dec_lzma2_reset(
   if (s->dict.allocated > 0 && s->dict.allocated < s->dict.size)
   {
     /* enlarge dictionary buffer */
-    uint8_t *newdict = realloc(s->dict.buf, s->dict.size);
+    uint8_t *newdict = grub_realloc(s->dict.buf, s->dict.size);
 
     if (! newdict)
       return XZ_MEMLIMIT_ERROR;

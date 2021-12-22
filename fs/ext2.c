@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#pragma warning(disable:4200)
 #pragma warning(disable:4201)
 
 /* Magic value used to identify an ext2 filesystem.  */
@@ -261,7 +262,7 @@ struct grub_ext3_journal_revoke_header
 {
 	struct grub_ext3_journal_header header;
 	grub_uint32_t count;
-	grub_uint32_t data[1];
+	grub_uint32_t data[0];
 };
 
 struct grub_ext3_journal_block_tag

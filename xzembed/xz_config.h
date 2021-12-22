@@ -65,17 +65,26 @@
 #include "xz.h"
 #include "compat.h"
 
+extern void grub_free(void* p);
+extern void* grub_malloc(grub_size_t size);
+extern void* grub_realloc(void* p, grub_size_t new_size);
+
 #define kmalloc(size, flags) grub_malloc(size)
 #define kfree(ptr) grub_free(ptr)
 #define vmalloc(size) grub_malloc(size)
 #define vfree(ptr) grub_free(ptr)
 
-#define memeq(a, b, size) (grub_memcmp(a, b, size) == 0)
-#define memzero(buf, size) grub_memset(buf, 0, size)
+#define memcmp grub_memcmp
+#define memcpy grub_memcpy
+#define memmove grub_memmove
+#define memset grub_memset
 
-#ifndef min
+#define memeq(a, b, size) (memcmp(a, b, size) == 0)
+#define memzero(buf, size) memset(buf, 0, size)
+
+#undef min
+#undef min_t
 #define min(x, y) ((x) < (y) ? (x) : (y))
-#endif
 #define min_t(type, x, y) min(x, y)
 
 /*
