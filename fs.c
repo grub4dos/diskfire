@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "compat.h"
 #include "disk.h"
+#include "partition.h"
 #include "fs.h"
 #include "file.h"
 #include "misc.h"
@@ -87,6 +88,7 @@ grub_fs_blocklist_open(grub_file_t file, const char* name)
 	unsigned i;
 	grub_disk_t disk = file->disk;
 	struct grub_fs_block* blocks;
+	grub_disk_addr_t part_sectors = 0;
 	grub_disk_addr_t max_sectors;
 
 	/* First, count the number of blocks.  */
@@ -106,42 +108,57 @@ grub_fs_blocklist_open(grub_file_t file, const char* name)
 	file->size = 0;
 	max_sectors = grub_disk_from_native_sector(disk, disk->total_sectors);
 	p = (char*)name;
-	for (i = 0; i < num; i++)
+	if (!*p)
 	{
-		if (*p != '+')
+		blocks[0].offset = 0;
+		if (disk->partition)
 		{
-			blocks[i].offset = grub_strtoull(p, &p, 0);
-			if (grub_errno != GRUB_ERR_NONE || *p != '+')
+			part_sectors = grub_disk_from_native_sector(disk, disk->partition->len);
+			blocks[0].length = part_sectors << GRUB_DISK_SECTOR_BITS;
+		}
+		else
+			blocks[0].length = max_sectors << GRUB_DISK_SECTOR_BITS;
+		file->size = blocks[0].length;
+	}
+	else
+	{
+		for (i = 0; i < num; i++)
+		{
+			if (*p != '+')
+			{
+				blocks[i].offset = grub_strtoull(p, &p, 0);
+				if (grub_errno != GRUB_ERR_NONE || *p != '+')
+				{
+					grub_error(GRUB_ERR_BAD_FILENAME,
+						N_("invalid file name `%s'"), name);
+					goto fail;
+				}
+			}
+
+			p++;
+			if (*p == '\0' || *p == ',')
+				blocks[i].length = max_sectors - blocks[i].offset;
+			else
+				blocks[i].length = grub_strtoull(p, &p, 0);
+
+			if (grub_errno != GRUB_ERR_NONE
+				|| blocks[i].length == 0
+				|| (*p && *p != ',' && !grub_isspace(*p)))
 			{
 				grub_error(GRUB_ERR_BAD_FILENAME,
-					N_("invalid file name `%s'"), name);
+					"invalid file name %s", name);
 				goto fail;
 			}
+
+			if (max_sectors < blocks[i].offset + blocks[i].length)
+			{
+				grub_error(GRUB_ERR_BAD_FILENAME, "beyond the total sectors");
+				goto fail;
+			}
+
+			file->size += (blocks[i].length << GRUB_DISK_SECTOR_BITS);
+			p++;
 		}
-
-		p++;
-		if (*p == '\0' || *p == ',')
-			blocks[i].length = max_sectors - blocks[i].offset;
-		else
-			blocks[i].length = grub_strtoull(p, &p, 0);
-
-		if (grub_errno != GRUB_ERR_NONE
-			|| blocks[i].length == 0
-			|| (*p && *p != ',' && !grub_isspace(*p)))
-		{
-			grub_error(GRUB_ERR_BAD_FILENAME,
-				"invalid file name %s", name);
-			goto fail;
-		}
-
-		if (max_sectors < blocks[i].offset + blocks[i].length)
-		{
-			grub_error(GRUB_ERR_BAD_FILENAME, "beyond the total sectors");
-			goto fail;
-		}
-
-		file->size += (blocks[i].length << GRUB_DISK_SECTOR_BITS);
-		p++;
 	}
 
 	file->data = blocks;
