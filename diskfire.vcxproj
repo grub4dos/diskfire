@@ -118,6 +118,7 @@
     </ClCompile>
     <ClCompile Include="commands\extract.c" />
     <ClCompile Include="commands\ls.c" />
+    <ClCompile Include="commands\stat.c" />
     <ClCompile Include="compat.c" />
     <ClCompile Include="crypto\adler32.c" />
     <ClCompile Include="crypto\crc32.c" />

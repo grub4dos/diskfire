@@ -89,4 +89,7 @@ grub_datetime2unixtime(const struct grub_datetime* datetime, grub_int64_t* nix)
 	return 1;
 }
 
+void
+grub_unixtime2datetime(grub_int64_t nix, struct grub_datetime* datetime);
+
 #endif
