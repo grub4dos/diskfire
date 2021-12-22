@@ -403,3 +403,102 @@ grub_get_human_size(grub_uint64_t size, const char* human_sizes[6], grub_uint64_
 		snprintf(buf, sizeof(buf), "%llu%s", size, umsg);
 	return buf;
 }
+
+static grub_uint32_t crc32c_table[256];
+
+/* Helper for init_crc32c_table.  */
+static grub_uint32_t
+reflect(grub_uint32_t ref, int len)
+{
+	grub_uint32_t result = 0;
+	int i;
+
+	for (i = 1; i <= len; i++)
+	{
+		if (ref & 1)
+			result |= 1 << (len - i);
+		ref >>= 1;
+	}
+
+	return result;
+}
+
+static void
+init_crc32c_table(void)
+{
+	grub_uint32_t polynomial = 0x1edc6f41;
+	int i, j;
+
+	for (i = 0; i < 256; i++)
+	{
+		crc32c_table[i] = reflect(i, 8) << 24;
+		for (j = 0; j < 8; j++)
+			crc32c_table[i] = (crc32c_table[i] << 1) ^
+			(crc32c_table[i] & (1 << 31) ? polynomial : 0);
+		crc32c_table[i] = reflect(crc32c_table[i], 32);
+	}
+}
+
+grub_uint32_t
+grub_getcrc32c(grub_uint32_t crc, const void* buf, int size)
+{
+	int i;
+	const grub_uint8_t* data = buf;
+
+	if (!crc32c_table[1])
+		init_crc32c_table();
+
+	crc ^= 0xffffffff;
+
+	for (i = 0; i < size; i++)
+	{
+		crc = (crc >> 8) ^ crc32c_table[(crc & 0xFF) ^ *data];
+		data++;
+	}
+
+	return crc ^ 0xffffffff;
+}
+
+/* Divide N by D, return the quotient, and store the remainder in *R.  */
+grub_uint64_t
+grub_divmod64(grub_uint64_t n, grub_uint64_t d, grub_uint64_t* r)
+{
+	/* This algorithm is typically implemented by hardware. The idea
+	   is to get the highest bit in N, 64 times, by keeping
+	   upper(N * 2^i) = (Q * D + M), where upper
+	   represents the high 64 bits in 128-bits space.  */
+	unsigned bits = 64;
+	grub_uint64_t q = 0;
+	grub_uint64_t m = 0;
+
+	/* Skip the slow computation if 32-bit arithmetic is possible.  */
+	if (n < 0xffffffff && d < 0xffffffff)
+	{
+		if (r)
+			*r = ((grub_uint32_t)n) % (grub_uint32_t)d;
+
+		return ((grub_uint32_t)n) / (grub_uint32_t)d;
+	}
+
+	while (bits--)
+	{
+		m <<= 1;
+
+		if (n & (1ULL << 63))
+			m |= 1;
+
+		q <<= 1;
+		n <<= 1;
+
+		if (m >= d)
+		{
+			q |= 1;
+			m -= d;
+		}
+	}
+
+	if (r)
+		*r = m;
+
+	return q;
+}

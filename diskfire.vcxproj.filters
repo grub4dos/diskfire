@@ -263,6 +263,9 @@
     <ClCompile Include="zstd\zstd_decompress.c">
       <Filter>源文件\zstd</Filter>
     </ClCompile>
+    <ClCompile Include="fs\btrfs.c">
+      <Filter>源文件\文件系统</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -403,6 +406,9 @@
     </ClInclude>
     <ClInclude Include="zstd\zstd_internal.h">
       <Filter>源文件\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="fs\btrfs.h">
+      <Filter>头文件\文件系统</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

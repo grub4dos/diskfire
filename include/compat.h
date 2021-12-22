@@ -518,4 +518,9 @@ grub_get_human_size(grub_uint64_t size, const char* human_sizes[6], grub_uint64_
 
 #define NSEC_PER_SEC ((grub_int64_t) 1000000000)
 
+grub_uint32_t grub_getcrc32c(grub_uint32_t crc, const void* buf, int size);
+
+grub_uint64_t
+grub_divmod64(grub_uint64_t n, grub_uint64_t d, grub_uint64_t* r);
+
 #endif

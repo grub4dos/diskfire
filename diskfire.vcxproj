@@ -130,6 +130,10 @@
     <ClCompile Include="file.c" />
     <ClCompile Include="fs.c" />
     <ClCompile Include="fshelp.c" />
+    <ClCompile Include="fs\btrfs.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)minilzo;$(SolutionDir)zstd</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)minilzo;$(SolutionDir)zstd</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="fs\cpio.c" />
     <ClCompile Include="fs\cpio_be.c" />
     <ClCompile Include="fs\cpio_common.c">
@@ -196,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crypto\gcry_wrap.h" />
+    <ClInclude Include="fs\btrfs.h" />
     <ClInclude Include="fs\exfat.h" />
     <ClInclude Include="fs\fat.h" />
     <ClInclude Include="fs\fbfs.h" />
