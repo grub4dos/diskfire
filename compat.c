@@ -535,7 +535,7 @@ grub_unixtime2datetime(grub_int64_t nix, struct grub_datetime* datetime)
 	else
 		days_epoch = grub_divmod64(nix, SECPERDAY, NULL);
 
-	secs_in_day = nix - days_epoch * SECPERDAY;
+	secs_in_day = nix - ((grub_int64_t)days_epoch) * SECPERDAY;
 	days = days_epoch + 69 * DAYSPERYEAR + 17;
 
 	datetime->year = 1901 + 4 * (days / DAYSPER4YEARS);

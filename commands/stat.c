@@ -74,7 +74,6 @@ get_file_info(grub_file_t file, struct grub_dirhook_info* info)
 	if (file->fs->fs_dir(file->disk, dir, info_hook, &ctx) == GRUB_ERR_NONE)
 		return 1;
 fail:
-	//grub_print_error();
 	grub_errno = GRUB_ERR_NONE;
 	if (dir)
 		grub_free(dir);
@@ -122,8 +121,6 @@ static grub_err_t cmd_stat(struct grub_command* cmd, int argc, char* argv[])
 	if (start != GRUB_FILE_SIZE_UNKNOWN)
 		grub_printf("%10s: %llu\n", "LBA", start);
 fail:
-	if (grub_errno)
-		grub_print_error();
 	if (file)
 		grub_file_close(file);
 	return grub_errno;

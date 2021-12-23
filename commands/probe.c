@@ -174,9 +174,7 @@ cmd_probe(struct grub_command* cmd, int argc, char* argv[])
 fail:
 	if (disk)
 		grub_disk_close(disk);
-	if (grub_error)
-		grub_print_error();
-	return 0;
+	return grub_errno;
 }
 
 static void

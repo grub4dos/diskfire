@@ -145,7 +145,7 @@ grub_file_read(grub_file_t file, void* buf, grub_size_t len)
 	return res;
 }
 
-grub_err_t
+void
 grub_file_close(grub_file_t file)
 {
 	if (file->fs->fs_close)
@@ -155,7 +155,6 @@ grub_file_close(grub_file_t file)
 		grub_disk_close(file->disk);
 	grub_free(file->name);
 	grub_free(file);
-	return grub_errno;
 }
 
 grub_off_t

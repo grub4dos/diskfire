@@ -35,8 +35,7 @@ int
 windisk_iterate(grub_disk_iterate_hook_t hook, void* hook_data)
 {
 	DWORD drive;
-	DWORD drive_max = GetDriveCount();
-	for (drive = 0; drive < drive_max; drive++)
+	for (drive = 0; drive < gDriveCount; drive++)
 	{
 		if (windisk_call_hook(hook, hook_data, drive))
 			return 1;

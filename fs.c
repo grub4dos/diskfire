@@ -232,7 +232,8 @@ grub_fs_winfile_open(grub_file_t file, const char* name)
 	if (GetFileSizeEx(fd, &li))
 		file->size = li.QuadPart;
 	else
-		file->size = 0;
+		file->size = GRUB_FILE_SIZE_UNKNOWN;
+	grub_dprintf("fs", "winfile size %llu\n", file->size);
 	file->data = fd;
 	return GRUB_ERR_NONE;
 }

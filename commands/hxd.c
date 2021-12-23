@@ -120,11 +120,7 @@ static grub_err_t cmd_hxd(struct grub_command* cmd, int argc, char* argv[])
 			filename = argv[i];
 	}
 	if (!filename)
-	{
-		grub_error(GRUB_ERR_BAD_ARGUMENT, "missing filename");
-		grub_print_error();
-		return grub_errno;
-	}
+		return grub_error(GRUB_ERR_BAD_ARGUMENT, "missing filename");
 	hxd_file(filename, decompress, skip, length);
 	return 0;
 }

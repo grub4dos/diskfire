@@ -251,9 +251,7 @@ cmd_ls(struct grub_command* cmd, int argc, char* argv[])
 		ls_list_disks(longlist);
 	else
 		ls_list_files(argv[longlist], longlist);
-	if (grub_error)
-		grub_print_error();
-	return 0;
+	return grub_errno;
 }
 
 static void

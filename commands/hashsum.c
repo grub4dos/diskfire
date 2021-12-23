@@ -77,8 +77,6 @@ static grub_err_t cmd_hashsum(struct grub_command* cmd, int argc, char* argv[])
 		goto out;
 	hash_opt(&argv[0][2], file);
 out:
-	if (grub_errno)
-		grub_print_error();
 	if (file)
 		grub_file_close(file);
 	return 0;

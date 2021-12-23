@@ -16,6 +16,18 @@
     }\
 }
 
+typedef struct PHY_DRIVE_INFO
+{
+	DWORD PhyDrive;
+	UINT64 SizeInBytes;
+	BYTE DeviceType;
+	BOOL RemovableMedia;
+	CHAR VendorId[128];
+	CHAR ProductId[128];
+	STORAGE_BUS_TYPE BusType;
+	CHAR DriveLetters[26];
+}PHY_DRIVE_INFO;
+
 BOOL IsAdmin(void);
 DWORD ObtainPrivileges(LPCTSTR Privilege);
 const CHAR* GuidToStr(UCHAR Guid[16]);
@@ -28,7 +40,11 @@ HANDLE GetHandleByLetter(char Letter);
 HANDLE GetHandleById(DWORD Id);
 BOOL GetDriveByLetter(char Letter, DWORD* pDrive);
 UINT64 GetDriveSize(HANDLE hDisk);
+BOOL GetDriveInfoList(PHY_DRIVE_INFO** pDriveList, DWORD* pDriveCount);
 
 void SetDebug(const char* cond);
+
+extern PHY_DRIVE_INFO* gDriveList;
+extern DWORD gDriveCount;
 
 #endif

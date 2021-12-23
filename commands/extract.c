@@ -70,8 +70,6 @@ cmd_extract(struct grub_command* cmd, int argc, char* argv[])
 		grub_printf("%llu%%\n", file->offset * 100 / file->size);
 	}
 fail:
-	if (grub_error)
-		grub_print_error();
 	if (file)
 		grub_file_close(file);
 	CHECK_CLOSE_HANDLE(fd);

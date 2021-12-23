@@ -187,3 +187,138 @@ GetDriveSize(HANDLE hDisk)
 		Size = LengthInfo.Length.QuadPart;
 	return Size;
 }
+
+static void AddLetter(CHAR* LogLetter, char Letter)
+{
+	if (Letter < 'A' || Letter > 'Z')
+		return;
+	for (int i = 0; i < 26; i++)
+	{
+		if (LogLetter[i] == 0)
+		{
+			LogLetter[i] = Letter;
+			break;
+		}
+	}
+}
+
+struct DRV_LETTER_LIST
+{
+	CHAR List[26];
+};
+
+BOOL GetDriveInfoList(PHY_DRIVE_INFO** pDriveList, DWORD* pDriveCount)
+{
+	DWORD i;
+	DWORD Count;
+	DWORD id;
+	char Letter = 'A';
+	BOOL  bRet;
+	DWORD dwBytes;
+	HANDLE Handle = INVALID_HANDLE_VALUE;
+	PHY_DRIVE_INFO* CurDrive;
+	GET_LENGTH_INFORMATION LengthInfo = { 0 };
+	STORAGE_PROPERTY_QUERY Query = { 0 };
+	STORAGE_DESCRIPTOR_HEADER DevDescHeader = { 0 };
+	STORAGE_DEVICE_DESCRIPTOR* pDevDesc;
+	struct DRV_LETTER_LIST* LogLetter = NULL;
+
+	Count = GetDriveCount();
+	if (Count == 0)
+		return FALSE;
+	LogLetter = calloc (Count, sizeof(struct DRV_LETTER_LIST));
+	if (!LogLetter)
+		return FALSE;
+	*pDriveList = calloc(Count, sizeof(PHY_DRIVE_INFO));
+	if (!*pDriveList)
+	{
+		free(LogLetter);
+		return FALSE;
+	}
+	CurDrive = *pDriveList;
+
+	dwBytes = GetLogicalDrives();
+
+	while (dwBytes)
+	{
+		if (dwBytes & 0x01)
+		{
+			if (GetDriveByLetter(Letter, &id) && id < Count)
+			{
+				AddLetter(LogLetter[id].List, Letter);
+			}
+		}
+		Letter++;
+		dwBytes >>= 1;
+	}
+
+	for (i = 0; i < Count; i++)
+	{
+		CHECK_CLOSE_HANDLE(Handle);
+
+		Handle = GetHandleById(i);
+
+		if (!Handle || Handle == INVALID_HANDLE_VALUE)
+			continue;
+
+		bRet = DeviceIoControl(Handle, IOCTL_DISK_GET_LENGTH_INFO, NULL, 0,
+			&LengthInfo, sizeof(LengthInfo), &dwBytes, NULL);
+		if (!bRet)
+			continue;
+
+		Query.PropertyId = StorageDeviceProperty;
+		Query.QueryType = PropertyStandardQuery;
+
+		bRet = DeviceIoControl(Handle, IOCTL_STORAGE_QUERY_PROPERTY, &Query, sizeof(Query),
+			&DevDescHeader, sizeof(STORAGE_DESCRIPTOR_HEADER), &dwBytes, NULL);
+		if (!bRet)
+			continue;
+
+		if (DevDescHeader.Size < sizeof(STORAGE_DEVICE_DESCRIPTOR))
+			continue;
+
+		pDevDesc = (STORAGE_DEVICE_DESCRIPTOR*)malloc(DevDescHeader.Size);
+		if (!pDevDesc)
+			continue;
+
+		bRet = DeviceIoControl(Handle, IOCTL_STORAGE_QUERY_PROPERTY, &Query, sizeof(Query),
+			pDevDesc, DevDescHeader.Size, &dwBytes, NULL);
+		if (!bRet)
+		{
+			free(pDevDesc);
+			continue;
+		}
+
+		CurDrive->PhyDrive = i;
+		CurDrive->SizeInBytes = LengthInfo.Length.QuadPart;
+		CurDrive->DeviceType = pDevDesc->DeviceType;
+		CurDrive->RemovableMedia = pDevDesc->RemovableMedia;
+		CurDrive->BusType = pDevDesc->BusType;
+
+		if (pDevDesc->VendorIdOffset)
+		{
+			strcpy_s(CurDrive->VendorId, sizeof(CurDrive->VendorId),
+				(char*)pDevDesc + pDevDesc->VendorIdOffset);
+			TrimString(CurDrive->VendorId);
+		}
+
+		if (pDevDesc->ProductIdOffset)
+		{
+			strcpy_s(CurDrive->ProductId, sizeof(CurDrive->ProductId),
+				(char*)pDevDesc + pDevDesc->ProductIdOffset);
+			TrimString(CurDrive->ProductId);
+		}
+
+		memcpy(CurDrive->DriveLetters, LogLetter[CurDrive->PhyDrive].List, 26);
+
+		CurDrive++;
+
+		free(pDevDesc);
+
+		CHECK_CLOSE_HANDLE(Handle);
+	}
+
+	*pDriveCount = Count;
+	free(LogLetter);
+	return TRUE;
+}
