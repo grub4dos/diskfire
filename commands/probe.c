@@ -2,9 +2,11 @@
 #include "compat.h"
 #include "disk.h"
 #include "partition.h"
+#include "gpt_partition.h"
 #include "fs.h"
 #include "file.h"
 #include "command.h"
+#include "misc.h"
 
 static int probe_partmap_hook(struct grub_disk* disk, const grub_partition_t partition, void* data)
 {
@@ -101,6 +103,134 @@ static grub_err_t probe_startlba(grub_disk_t disk)
 	return GRUB_ERR_NONE;
 }
 
+static grub_err_t probe_bus(grub_disk_t disk)
+{
+	if (disk->type != GRUB_DISK_WINDISK_ID)
+		return GRUB_ERR_NONE;
+	grub_printf("%s", GetBusTypeString(gDriveList[disk->id].BusType));
+	return GRUB_ERR_NONE;
+}
+
+static grub_err_t probe_removable(grub_disk_t disk)
+{
+	if (disk->type != GRUB_DISK_WINDISK_ID)
+		return GRUB_ERR_NONE;
+	grub_printf("%s", gDriveList[disk->id].RemovableMedia ? "REMOVABLE" : "FIXED");
+	return GRUB_ERR_NONE;
+}
+
+static grub_err_t probe_product(grub_disk_t disk)
+{
+	if (disk->type != GRUB_DISK_WINDISK_ID)
+		return GRUB_ERR_NONE;
+	grub_printf("%s", gDriveList[disk->id].ProductId);
+	return GRUB_ERR_NONE;
+}
+
+static grub_err_t probe_vendor(grub_disk_t disk)
+{
+	if (disk->type != GRUB_DISK_WINDISK_ID)
+		return GRUB_ERR_NONE;
+	grub_printf("%s", gDriveList[disk->id].VendorId);
+	return GRUB_ERR_NONE;
+}
+
+#define U64_SECTOR_SIZE (GRUB_DISK_SECTOR_SIZE / sizeof(grub_uint64_t))
+
+static int sector_cmp(const grub_uint64_t* src, const grub_uint64_t* dst)
+{
+	unsigned i;
+	for (i = 0; i < U64_SECTOR_SIZE; i++)
+	{
+		if (src[i] != dst[i])
+			return 1;
+	}
+	return 0;
+}
+
+static grub_err_t probe_letter(grub_disk_t disk)
+{
+	int i;
+	char path[] = "\\\\.\\C:";
+	grub_uint64_t src[U64_SECTOR_SIZE] = { 0 };
+	grub_uint64_t dst[U64_SECTOR_SIZE] = { 0 };
+	if (disk->type != GRUB_DISK_WINDISK_ID || !gDriveList[disk->id].DriveLetters[0])
+		goto fail;
+	if (!disk->partition)
+	{
+		for (i = 0; gDriveList[disk->id].DriveLetters[i] && i < 26; i++)
+			grub_printf(" %C:", gDriveList[disk->id].DriveLetters[i]);
+		goto fail;
+	}
+	if (grub_disk_read(disk, 0, 0, sizeof(src), src) != GRUB_ERR_NONE)
+		goto fail;
+	for (i = 0; gDriveList[disk->id].DriveLetters[i] && i < 26; i++)
+	{
+		
+		HANDLE fd = INVALID_HANDLE_VALUE;
+		DWORD dwsize = sizeof(dst);
+		grub_snprintf(path, sizeof(path), "\\\\.\\%C:", gDriveList[disk->id].DriveLetters[i]);
+		fd = CreateFileA(path, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+		if (!fd || fd == INVALID_HANDLE_VALUE)
+			continue;
+		if (!ReadFile(fd, dst, dwsize, &dwsize, NULL))
+		{
+			CHECK_CLOSE_HANDLE(fd);
+			continue;
+		}
+		if (sector_cmp(src, dst) == 0)
+		{
+			grub_printf("%C:", gDriveList[disk->id].DriveLetters[i]);
+			break;
+		}
+	}
+fail:
+	grub_errno = GRUB_ERR_NONE;
+	return GRUB_ERR_NONE;
+}
+
+#define GRUB_BOOT_MACHINE_WINDOWS_NT_MAGIC 0x1b8
+
+static grub_err_t probe_partuuid(grub_disk_t disk)
+{
+	struct grub_partition* p = disk->partition;
+	grub_disk_t parent = NULL;
+	if (!p)
+		goto fail;
+	parent = grub_disk_open(disk->name);
+	if (!parent)
+		goto fail;
+	if (grub_strcmp(disk->partition->partmap->name, "gpt") == 0)
+	{
+		struct grub_gpt_partentry entry;
+		grub_gpt_part_guid_t* guid;
+
+		if (grub_disk_read(parent, p->offset, p->index, sizeof(entry), &entry))
+			goto fail;
+
+		guid = &entry.guid;
+		grub_printf("%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+			grub_le_to_cpu32(guid->data1),
+			grub_le_to_cpu16(guid->data2),
+			grub_le_to_cpu16(guid->data3),
+			guid->data4[0], guid->data4[1], guid->data4[2],
+			guid->data4[3], guid->data4[4], guid->data4[5],
+			guid->data4[6], guid->data4[7]);
+	}
+	else if (grub_strcmp(disk->partition->partmap->name, "msdos") == 0)
+	{
+		grub_uint32_t nt_disk_sig;
+		if (grub_disk_read(parent, 0, GRUB_BOOT_MACHINE_WINDOWS_NT_MAGIC, sizeof(nt_disk_sig), &nt_disk_sig))
+			goto fail;
+		grub_printf("%08x-%02x", grub_le_to_cpu32(nt_disk_sig), 1 + p->number);
+	}
+fail:
+	if (parent)
+		grub_disk_close(parent);
+	grub_errno = GRUB_ERR_NONE;
+	return grub_errno;
+}
+
 static grub_err_t
 parse_probe_opt(const char* arg, grub_disk_t disk)
 {
@@ -116,6 +246,18 @@ parse_probe_opt(const char* arg, grub_disk_t disk)
 		return probe_size(disk);
 	if (grub_strcmp(arg, "--start") == 0)
 		return probe_startlba(disk);
+	if (grub_strcmp(arg, "--bus") == 0)
+		return probe_bus(disk);
+	if (grub_strcmp(arg, "--rm") == 0)
+		return probe_removable(disk);
+	if (grub_strcmp(arg, "--pid") == 0)
+		return probe_product(disk);
+	if (grub_strcmp(arg, "--vid") == 0)
+		return probe_vendor(disk);
+	if (grub_strcmp(arg, "--letter") == 0)
+		return probe_letter(disk);
+	if (grub_strcmp(arg, "--partuuid") == 0)
+		return probe_partuuid(disk);
 
 	return grub_error(GRUB_ERR_BAD_ARGUMENT, "invalid option %s\n", arg);
 }
@@ -188,6 +330,14 @@ help_probe(struct grub_command* cmd)
 	grub_printf("  --label     Determine filesystem label.\n");
 	grub_printf("  --size      Determine disk/partition size (bytes).\n");
 	grub_printf("  --start     Determine partition starting LBA (sectors).\n");
+
+	grub_printf("  --bus       Determine bus type.\n");
+	grub_printf("  --rm        Determine if the disk is removable.\n");
+	grub_printf("  --pid       Determine product id.\n");
+	grub_printf("  --vid       Determine vendor id.\n");
+	grub_printf("  --letter    Determine drive letters.\n");
+
+	grub_printf("  --partuuid  Determine partition UUID.\n");
 }
 
 struct grub_command grub_cmd_probe =
