@@ -3,10 +3,25 @@
 #include "disk.h"
 #include "partition.h"
 #include "gpt_partition.h"
+#include "msdos_partition.h"
 #include "fs.h"
 #include "file.h"
 #include "command.h"
 #include "misc.h"
+
+static const char*
+guid_to_str(grub_packed_guid_t *guid)
+{
+	static char str[37] = { 0 };
+	grub_snprintf(str, sizeof(str), "%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+		grub_le_to_cpu32(guid->data1),
+		grub_le_to_cpu16(guid->data2),
+		grub_le_to_cpu16(guid->data3),
+		guid->data4[0], guid->data4[1], guid->data4[2],
+		guid->data4[3], guid->data4[4], guid->data4[5],
+		guid->data4[6], guid->data4[7]);
+	return str;
+}
 
 static int probe_partmap_hook(struct grub_disk* disk, const grub_partition_t partition, void* data)
 {
@@ -209,13 +224,7 @@ static grub_err_t probe_partuuid(grub_disk_t disk)
 			goto fail;
 
 		guid = &entry.guid;
-		grub_printf("%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x",
-			grub_le_to_cpu32(guid->data1),
-			grub_le_to_cpu16(guid->data2),
-			grub_le_to_cpu16(guid->data3),
-			guid->data4[0], guid->data4[1], guid->data4[2],
-			guid->data4[3], guid->data4[4], guid->data4[5],
-			guid->data4[6], guid->data4[7]);
+		grub_printf("%s", guid_to_str(guid));
 	}
 	else if (grub_strcmp(disk->partition->partmap->name, "msdos") == 0)
 	{
@@ -229,6 +238,69 @@ fail:
 		grub_disk_close(parent);
 	grub_errno = GRUB_ERR_NONE;
 	return grub_errno;
+}
+
+struct gpt_type_info
+{
+	grub_packed_guid_t guid;
+	const char* name;
+};
+
+static struct gpt_type_info gpt_list[] =
+{
+	{ GRUB_GPT_PARTITION_TYPE_EMPTY, "EMPTY" },
+	{ GRUB_GPT_PARTITION_TYPE_EFI_SYSTEM, "ESP" },
+	{ GRUB_GPT_PARTITION_TYPE_BIOS_BOOT, "BIOS_BOOT" },
+	{ GRUB_GPT_PARTITION_TYPE_LEGACY_MBR, "MBR" },
+	{ GRUB_GPT_PARTITION_TYPE_LDM, "LDM" },
+	{ GRUB_GPT_PARTITION_TYPE_LDM_DATA, "LDM_DATA" },
+	{ GRUB_GPT_PARTITION_TYPE_MSR, "MSR" },
+	{ GRUB_GPT_PARTITION_TYPE_WINRE, "WINRE" },
+};
+
+static const char* gpt_type_to_str(grub_packed_guid_t* guid)
+{
+	unsigned i;
+	for (i = 0; i < ARRAY_SIZE(gpt_list); i++)
+	{
+		if (grub_memcmp(guid, &gpt_list[i].guid, sizeof(grub_packed_guid_t)) == 0)
+			return gpt_list[i].name;
+	}
+	return "DATA";
+}
+
+static grub_err_t probe_partflag(grub_disk_t disk)
+{
+	if (!disk->partition)
+		goto fail;
+	if (grub_strcmp(disk->partition->partmap->name, "gpt") == 0)
+	{
+		grub_printf("%s %s", guid_to_str(&disk->partition->gpttype), gpt_type_to_str(&disk->partition->gpttype));
+		if (grub_gpt_entry_attribute(disk->partition->flag, GRUB_GPT_PART_ATTR_OFFSET_REQUIRED))
+			grub_printf(" OEM");
+		if (grub_gpt_entry_attribute(disk->partition->flag, GRUB_GPT_PART_ATTR_OFFSET_NO_BLOCK_IO_PROTOCOL))
+			grub_printf(" EFI_IGNORE");
+		if (grub_gpt_entry_attribute(disk->partition->flag, GRUB_GPT_PART_ATTR_OFFSET_LEGACY_BIOS_BOOTABLE))
+			grub_printf(" BIOS_ACTIVE");
+		if (grub_gpt_entry_attribute(disk->partition->flag, GRUB_GPT_PART_ATTR_OFFSET_READ_ONLY))
+			grub_printf(" READ_ONLY");
+		if (grub_gpt_entry_attribute(disk->partition->flag, GRUB_GPT_PART_ATTR_OFFSET_SHADOW_COPY))
+			grub_printf(" SHADOW_COPY");
+		if (grub_gpt_entry_attribute(disk->partition->flag, GRUB_GPT_PART_ATTR_OFFSET_HIDDEN))
+			grub_printf(" HIDDEN");
+		if (grub_gpt_entry_attribute(disk->partition->flag, GRUB_GPT_PART_ATTR_OFFSET_NO_AUTO))
+			grub_printf(" NO_LETTER");
+	}
+	else if (grub_strcmp(disk->partition->partmap->name, "msdos") == 0)
+	{
+		grub_printf("%s %02X%s%s",
+			disk->partition->offset ? "EXTENDED" : "PRIMARY",
+			disk->partition->msdostype,
+			disk->partition->msdostype & GRUB_PC_PARTITION_TYPE_HIDDEN_FLAG ? " HIDDEN" : "",
+			disk->partition->flag & 0x80 ? " ACTIVE" : "");
+	}
+fail:
+	return GRUB_ERR_NONE;
 }
 
 static grub_err_t
@@ -258,6 +330,8 @@ parse_probe_opt(const char* arg, grub_disk_t disk)
 		return probe_letter(disk);
 	if (grub_strcmp(arg, "--partuuid") == 0)
 		return probe_partuuid(disk);
+	if (grub_strcmp(arg, "--flag") == 0)
+		return probe_partflag(disk);
 
 	return grub_error(GRUB_ERR_BAD_ARGUMENT, "invalid option %s\n", arg);
 }
@@ -338,6 +412,7 @@ help_probe(struct grub_command* cmd)
 	grub_printf("  --letter    Determine drive letters.\n");
 
 	grub_printf("  --partuuid  Determine partition UUID.\n");
+	grub_printf("  --flag      Determine partition flags.\n");
 }
 
 struct grub_command grub_cmd_probe =

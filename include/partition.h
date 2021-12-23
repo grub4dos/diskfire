@@ -42,8 +42,12 @@ struct grub_partition
 	struct grub_partition* parent;
 	/* The type partition map.  */
 	grub_partition_map_t partmap;
-	/* The type of partition whne it's on MSDOS. */
+	/* The type of partition when it's on MSDOS. */
 	grub_uint8_t msdostype;
+	/* The type of partition when it's on GPT. */
+	grub_packed_guid_t gpttype;
+	/* Partition flag */
+	grub_uint64_t flag;
 };
 
 grub_partition_t grub_partition_probe(struct grub_disk* disk, const char* str);
