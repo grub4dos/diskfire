@@ -48,6 +48,8 @@ struct grub_partition
 	grub_packed_guid_t gpttype;
 	/* Partition flag */
 	grub_uint64_t flag;
+	/* First usable LBA for partitions */
+	grub_disk_addr_t firstlba;
 };
 
 grub_partition_t grub_partition_probe(struct grub_disk* disk, const char* str);

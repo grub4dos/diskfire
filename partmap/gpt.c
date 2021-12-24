@@ -21,7 +21,7 @@ grub_gpt_partition_map_iterate(grub_disk_t disk,
 	grub_partition_iterate_hook_t hook,
 	void* hook_data)
 {
-	struct grub_partition part;
+	struct grub_partition part = { 0 };
 	struct grub_gpt_header gpt;
 	struct grub_gpt_partentry entry;
 	struct grub_msdos_partition_mbr mbr;
@@ -58,6 +58,7 @@ grub_gpt_partition_map_iterate(grub_disk_t disk,
 		return grub_error(GRUB_ERR_BAD_PART_TABLE, "no valid GPT header");
 
 	grub_dprintf("gpt", "Read a valid GPT header\n");
+	part.firstlba = gpt.start;
 
 	entries = grub_le_to_cpu64(gpt.partitions) << sector_log;
 	for (i = 0; i < grub_le_to_cpu32(gpt.maxpart); i++)

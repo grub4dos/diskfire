@@ -11,7 +11,7 @@ iterate_real(grub_disk_t disk, grub_disk_addr_t sector, int freebsd,
 	grub_partition_iterate_hook_t hook, void* hook_data)
 {
 	struct grub_partition_bsd_disk_label label;
-	struct grub_partition p;
+	struct grub_partition p = { 0 };
 	grub_disk_addr_t delta = 0;
 	grub_disk_addr_t pos;
 

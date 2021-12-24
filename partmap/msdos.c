@@ -9,7 +9,7 @@ grub_partition_msdos_iterate(grub_disk_t disk,
 	grub_partition_iterate_hook_t hook,
 	void* hook_data)
 {
-	struct grub_partition p;
+	struct grub_partition p = { 0 };
 	struct grub_msdos_partition_mbr mbr;
 	int labeln = 0;
 	grub_disk_addr_t lastaddr;
@@ -28,6 +28,7 @@ grub_partition_msdos_iterate(grub_disk_t disk,
 	ext_offset = 0;
 	p.number = -1;
 	p.partmap = &grub_msdos_partition_map;
+	p.firstlba = 1;
 
 	/* Any value different than `p.offset' will satisfy the check during
 	   first loop.  */

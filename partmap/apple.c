@@ -82,7 +82,7 @@ apple_partition_map_iterate(grub_disk_t disk,
 	grub_partition_iterate_hook_t hook,
 	void* hook_data)
 {
-	struct grub_partition part;
+	struct grub_partition part = { 0 };
 	struct grub_apple_header aheader;
 	struct grub_apple_part apart;
 	int partno = 0, partnum = 0;
