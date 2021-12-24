@@ -30,7 +30,6 @@ typedef struct PHY_DRIVE_INFO
 
 BOOL IsAdmin(void);
 DWORD ObtainPrivileges(LPCTSTR Privilege);
-const CHAR* GuidToStr(UCHAR Guid[16]);
 int GetRegDword(HKEY Key, LPCSTR SubKey, LPCSTR ValueName, DWORD* pValue);
 CHAR* GetRegSz(HKEY Key, LPCSTR SubKey, LPCSTR ValueName);
 void TrimString(CHAR* String);

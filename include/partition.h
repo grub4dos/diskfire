@@ -97,6 +97,9 @@ extern struct grub_partition_map grub_netbsdlabel_partition_map;
 extern struct grub_partition_map grub_openbsdlabel_partition_map;
 extern struct grub_partition_map grub_dfly_partition_map;
 
+grub_partition_map_t
+grub_partmap_probe(grub_disk_t disk);
+
 void grub_partmap_init(void);
 
 #endif

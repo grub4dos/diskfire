@@ -23,14 +23,6 @@ guid_to_str(grub_packed_guid_t *guid)
 	return str;
 }
 
-static int probe_partmap_hook(struct grub_disk* disk, const grub_partition_t partition, void* data)
-{
-	(void)disk;
-	(void)partition;
-	(void)data;
-	return 1;
-}
-
 static grub_err_t probe_partmap(grub_disk_t disk)
 {
 	grub_disk_t parent = 0;
@@ -43,17 +35,8 @@ static grub_err_t probe_partmap(grub_disk_t disk)
 	parent = grub_disk_open(disk->name);
 	if (!parent)
 		return grub_errno;
-	FOR_PARTITION_MAPS(partmap)
-	{
-		if (partmap->iterate(parent, probe_partmap_hook, NULL) == GRUB_ERR_NONE)
-		{
-			grub_printf("%s", partmap->name);
-			goto out;
-		}
-		grub_errno = GRUB_ERR_NONE;
-	}
-	grub_printf("none");
-out:
+	partmap = grub_partmap_probe(parent);
+	grub_printf("%s", partmap ? partmap->name : "none");
 	grub_errno = GRUB_ERR_NONE;
 	grub_disk_close(parent);
 	return grub_errno;

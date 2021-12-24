@@ -77,7 +77,18 @@ struct grub_msdos_partition_entry
 struct grub_msdos_partition_mbr
 {
 	/* The code area (actually, including BPB).  */
-	grub_uint8_t code[446];
+	union
+	{
+		grub_uint8_t code[446];
+		struct
+		{
+			grub_uint8_t code1[218];
+			grub_uint8_t timestamp[6];
+			grub_uint8_t code2[216];
+			grub_uint8_t disk_signature[4];
+			grub_uint16_t disk_flag; // 0x0000, 0x5a5a = copy-protected
+		} modern_code;
+	} bootstrap;
 
 	/* Four partition entries.  */
 	struct grub_msdos_partition_entry entries[4];
