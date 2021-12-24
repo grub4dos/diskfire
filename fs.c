@@ -74,12 +74,6 @@ grub_fs_init(void)
 
 /* Block list support routines.  */
 
-struct grub_fs_block
-{
-	grub_disk_addr_t offset;
-	grub_off_t length;
-};
-
 static grub_err_t
 grub_fs_blocklist_open(grub_file_t file, const char* name)
 {
@@ -171,7 +165,7 @@ fail:
 }
 
 static grub_ssize_t
-grub_fs_blocklist_read(grub_file_t file, char* buf, grub_size_t len)
+grub_fs_blocklist_rw(grub_file_t file, char* buf, grub_size_t len, int write)
 {
 	struct grub_fs_block* p;
 	grub_disk_addr_t sector;
@@ -194,8 +188,9 @@ grub_fs_blocklist_read(grub_file_t file, char* buf, grub_size_t len)
 				>> GRUB_DISK_SECTOR_BITS) > p->length - sector)
 				size = ((p->length - sector) << GRUB_DISK_SECTOR_BITS) - offset;
 
-			if (grub_disk_read(file->disk, p->offset + sector, offset,
-				size, buf) != GRUB_ERR_NONE)
+			if ((write ?
+				grub_disk_write(file->disk, 0, p->offset + offset, size, buf) :
+				grub_disk_read(file->disk, p->offset + sector, offset, size, buf)) != GRUB_ERR_NONE)
 				return -1;
 
 			ret += size;
@@ -207,6 +202,17 @@ grub_fs_blocklist_read(grub_file_t file, char* buf, grub_size_t len)
 			sector -= p->length;
 	}
 
+	return ret;
+}
+
+static grub_ssize_t
+grub_fs_blocklist_read(grub_file_t file, char* buf, grub_size_t len)
+{
+	grub_ssize_t ret;
+	file->disk->read_hook = file->read_hook;
+	file->disk->read_hook_data = file->read_hook_data;
+	ret = grub_fs_blocklist_rw(file, buf, len, 0);
+	file->disk->read_hook = 0;
 	return ret;
 }
 
@@ -271,3 +277,106 @@ struct grub_fs grub_fs_winfile =
   .fs_close = grub_fs_winfile_close,
   .next = 0
 };
+
+#define BLOCKLIST_INC_STEP	8
+
+struct read_blocklist_ctx
+{
+	grub_uint64_t num;
+	struct grub_fs_block* blocks;
+	grub_off_t total_size;
+	grub_disk_addr_t part_start;
+};
+
+static void
+read_blocklist(grub_disk_addr_t sector, unsigned offset,
+	unsigned length, void* ctx)
+{
+	struct read_blocklist_ctx* c = ctx;
+
+	sector = ((sector - c->part_start) << GRUB_DISK_SECTOR_BITS) + offset;
+
+	if ((c->num) &&
+		(c->blocks[c->num - 1].offset + c->blocks[c->num - 1].length == sector))
+	{
+		c->blocks[c->num - 1].length += length;
+		goto quit;
+	}
+
+	if ((c->num & (BLOCKLIST_INC_STEP - 1)) == 0)
+	{
+		c->blocks = grub_realloc(c->blocks, (c->num + BLOCKLIST_INC_STEP) * sizeof(struct grub_fs_block));
+		if (!c->blocks)
+			return;
+	}
+
+	c->blocks[c->num].offset = sector;
+	c->blocks[c->num].length = length;
+	c->num++;
+
+quit:
+	c->total_size += length;
+}
+
+static grub_uint64_t
+blocklist_count_frags(struct grub_fs_block* blocks, grub_off_t file_size)
+{
+	struct grub_fs_block* p;
+	grub_off_t offset = 0;
+	grub_uint64_t frags = 0;
+
+	for (p = blocks; p->length && offset < file_size; p++)
+	{
+		frags++;
+		offset += p->length;
+	}
+
+	return frags;
+}
+
+grub_uint64_t
+grub_blocklist_convert(grub_file_t file)
+{
+	struct read_blocklist_ctx c;
+	char buf[4 * GRUB_DISK_SECTOR_SIZE];
+
+	if (file->fs == &grub_fs_blocklist)
+		return blocklist_count_frags(file->data, file->size);
+
+	if (!file->disk || !file->size)
+		return 0;
+
+	file->offset = 0;
+
+	c.num = 0;
+	c.blocks = 0;
+	c.total_size = 0;
+	c.part_start = grub_partition_get_start(file->disk->partition);
+	file->read_hook = read_blocklist;
+	file->read_hook_data = &c;
+	while (grub_file_read(file, buf, sizeof(buf)) > 0)
+		;
+	file->read_hook = 0;
+	if ((grub_errno) || (c.total_size != file->size))
+	{
+		grub_errno = 0;
+		c.num = 0;
+		grub_free(c.blocks);
+	}
+	else
+	{
+		if (file->fs->fs_close)
+			(file->fs->fs_close) (file);
+		file->fs = &grub_fs_blocklist;
+		file->data = c.blocks;
+	}
+
+	file->offset = 0;
+	return c.num;
+}
+
+grub_ssize_t
+grub_blocklist_write(grub_file_t file, const char* buf, grub_size_t len)
+{
+	return (file->fs != &grub_fs_blocklist) ? -1 : grub_fs_blocklist_rw(file, (char*)buf, len, 1);
+}

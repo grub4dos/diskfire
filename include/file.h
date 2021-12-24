@@ -14,6 +14,7 @@ enum grub_file_type
 	GRUB_FILE_TYPE_EXTRACT,
 	GRUB_FILE_TYPE_LOOPBACK,
 	GRUB_FILE_TYPE_HASH,
+	GRUB_FILE_TYPE_BLOCKLIST,
 
 	GRUB_FILE_TYPE_MASK = 0xffff,
 
@@ -112,6 +113,18 @@ grub_file_seekable(const grub_file_t file)
 {
 	return !file->not_easily_seekable;
 }
+
+struct grub_fs_block
+{
+	grub_disk_addr_t offset;
+	grub_off_t length;
+};
+
+grub_uint64_t
+grub_blocklist_convert(grub_file_t file);
+
+grub_ssize_t
+grub_blocklist_write(grub_file_t file, const char* buf, grub_size_t len);
 
 void
 grub_file_filter_init(void);

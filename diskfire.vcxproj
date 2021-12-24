@@ -109,6 +109,7 @@
   <ItemGroup>
     <ClCompile Include="archelp.c" />
     <ClCompile Include="command.c" />
+    <ClCompile Include="commands\blocklist.c" />
     <ClCompile Include="commands\hashsum.c" />
     <ClCompile Include="commands\help.c" />
     <ClCompile Include="commands\hxd.c" />

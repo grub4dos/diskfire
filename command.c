@@ -41,6 +41,7 @@ grub_command_init(void)
 	grub_command_register(&grub_cmd_hashsum);
 	grub_command_register(&grub_cmd_hxd);
 	grub_command_register(&grub_cmd_stat);
+	grub_command_register(&grub_cmd_blocklist);
 
 	grub_command_register(&grub_cmd_help);
 }
