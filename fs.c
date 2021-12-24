@@ -120,7 +120,7 @@ grub_fs_blocklist_open(grub_file_t file, const char* name)
 		{
 			if (*p != '+')
 			{
-				blocks[i].offset = grub_strtoull(p, &p, 0);
+				blocks[i].offset = grub_strtoull(p, &p, 0) << GRUB_DISK_SECTOR_BITS;
 				if (grub_errno != GRUB_ERR_NONE || *p != '+')
 				{
 					grub_error(GRUB_ERR_BAD_FILENAME,
@@ -133,7 +133,7 @@ grub_fs_blocklist_open(grub_file_t file, const char* name)
 			if (*p == '\0' || *p == ',')
 				blocks[i].length = max_sectors - blocks[i].offset;
 			else
-				blocks[i].length = grub_strtoull(p, &p, 0);
+				blocks[i].length = grub_strtoull(p, &p, 0) << GRUB_DISK_SECTOR_BITS;
 
 			if (grub_errno != GRUB_ERR_NONE
 				|| blocks[i].length == 0
@@ -144,13 +144,13 @@ grub_fs_blocklist_open(grub_file_t file, const char* name)
 				goto fail;
 			}
 
-			if (max_sectors < blocks[i].offset + blocks[i].length)
+			if (max_sectors << GRUB_DISK_SECTOR_BITS < blocks[i].offset + blocks[i].length)
 			{
 				grub_error(GRUB_ERR_BAD_FILENAME, "beyond the total sectors");
 				goto fail;
 			}
 
-			file->size += (blocks[i].length << GRUB_DISK_SECTOR_BITS);
+			file->size += blocks[i].length;
 			p++;
 		}
 	}
@@ -168,38 +168,36 @@ static grub_ssize_t
 grub_fs_blocklist_rw(grub_file_t file, char* buf, grub_size_t len, int write)
 {
 	struct grub_fs_block* p;
-	grub_disk_addr_t sector;
 	grub_off_t offset;
 	grub_ssize_t ret = 0;
 
 	if (len > file->size - file->offset)
 		len = file->size - file->offset;
 
-	sector = (file->offset >> GRUB_DISK_SECTOR_BITS);
-	offset = (file->offset & (GRUB_DISK_SECTOR_SIZE - 1));
+	offset = file->offset;
 	for (p = file->data; p->length && len > 0; p++)
 	{
-		if (sector < p->length)
+		if (offset < p->length)
 		{
 			grub_size_t size;
 
 			size = len;
-			if (((size + offset + GRUB_DISK_SECTOR_SIZE - 1)
-				>> GRUB_DISK_SECTOR_BITS) > p->length - sector)
-				size = ((p->length - sector) << GRUB_DISK_SECTOR_BITS) - offset;
+			if (size + offset > p->length)
+				size = p->length - offset;
 
 			if ((write ?
 				grub_disk_write(file->disk, 0, p->offset + offset, size, buf) :
-				grub_disk_read(file->disk, p->offset + sector, offset, size, buf)) != GRUB_ERR_NONE)
+				grub_disk_read(file->disk, 0, p->offset + offset, size, buf)) != GRUB_ERR_NONE)
 				return -1;
 
 			ret += size;
 			len -= size;
-			sector -= ((size + offset) >> GRUB_DISK_SECTOR_BITS);
-			offset = ((size + offset) & (GRUB_DISK_SECTOR_SIZE - 1));
+			if (buf)
+				buf += size;
+			offset += size;
 		}
 		else
-			sector -= p->length;
+			offset -= p->length;
 	}
 
 	return ret;
