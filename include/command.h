@@ -39,6 +39,7 @@ extern struct grub_command grub_cmd_hashsum;
 extern struct grub_command grub_cmd_hxd;
 extern struct grub_command grub_cmd_stat;
 extern struct grub_command grub_cmd_blocklist;
+extern struct grub_command grub_cmd_mbr;
 
 extern struct grub_command grub_cmd_help;
 

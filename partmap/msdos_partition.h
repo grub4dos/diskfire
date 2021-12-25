@@ -83,8 +83,11 @@ struct grub_msdos_partition_mbr
 		struct
 		{
 			grub_uint8_t code1[218];
+			/* 0xda */
 			grub_uint8_t timestamp[6];
+			/* 0xe0 */
 			grub_uint8_t code2[216];
+			/* 0x1b8 */
 			grub_uint8_t disk_signature[4];
 			grub_uint16_t disk_flag; // 0x0000, 0x5a5a = copy-protected
 		} modern_code;
