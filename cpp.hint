@@ -1,3 +1,6 @@
 #define PRAGMA_END_PACKED __pragma(pack(pop))
 #define PRAGMA_BEGIN_PACKED __pragma(pack(push, 1))
 #define FOR_PARTITION_MAPS(var) FOR_LIST_ELEMENTS((var), (grub_partition_map_list))
+#define NULL
+#define NULL ((void *)0)
+#define FOR_BOOTRECORDS(var) FOR_LIST_ELEMENTS((var), (grub_br_list))

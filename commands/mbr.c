@@ -3,7 +3,7 @@
 #include "disk.h"
 #include "partition.h"
 #include "command.h"
-#include "gpt_partition.h"
+#include "br.h"
 
 struct reserved_ctx
 {
@@ -42,9 +42,12 @@ static void
 mbr_print_info(grub_disk_t disk)
 {
 	grub_disk_addr_t lba, count;
+	grub_br_t br = NULL;
 	grub_printf("%s\n", disk->name);
 	count = get_reserved_sectors(disk, &lba);
 	grub_printf("Reserved sectors: %llu+%llu\n", lba, count);
+	br = grub_br_probe(disk);
+	grub_printf("MBR: %s\n", br ? br->name : "UNKNOWN");
 }
 
 static grub_err_t cmd_mbr(struct grub_command* cmd, int argc, char* argv[])
@@ -98,9 +101,10 @@ help_mbr(struct grub_command* cmd)
 	grub_printf("MBR tool.\nOPTIONS:\n");
 	grub_printf("  -i=TYPE      Install MBR to disk.\n");
 	grub_printf("  TYPES:\n");
-	grub_printf("    GRUB4DOS   GRUB4DOS MBR\n");
-	grub_printf("    GRUB2      GRUB2 MBR\n");
-	grub_printf("    NT52       NT5.2 MBR (ntldr)\n");
+	grub_printf("    EMPTY      Empty MBR\n");
+	//grub_printf("    GRUB4DOS   GRUB4DOS MBR\n");
+	//grub_printf("    GRUB2      GRUB2 MBR\n");
+	grub_printf("    NT5        NT5 MBR (ntldr)\n");
 	grub_printf("    NT6        NT6 MBR (bootmgr)\n");
 	grub_printf("  -b=FILE  Backup MBR to FILE.\n");
 	grub_printf("    -s=N   Specify number of sectors to backup.\n");

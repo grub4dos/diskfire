@@ -69,6 +69,14 @@
     <Filter Include="源文件\zstd">
       <UniqueIdentifier>{ce86f4bb-6911-4628-a4f6-dba4a94f3420}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\引导记录">
+      <UniqueIdentifier>{abc7f449-5937-4076-a459-82fd6a79431f}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件\引导记录">
+      <UniqueIdentifier>{5c6d69c4-696a-49fd-9ef4-abf4140056dd}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="diskfire.c">
@@ -281,8 +289,20 @@
     <ClCompile Include="commands\mbr.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="br.c">
+      <Filter>源文件\核心</Filter>
+    </ClCompile>
+    <ClCompile Include="br\nt6_mbr.c">
+      <Filter>源文件\引导记录</Filter>
+    </ClCompile>
     <ClCompile Include="commands\bin2c.c">
       <Filter>源文件\命令</Filter>
+    </ClCompile>
+    <ClCompile Include="br\nt5_mbr.c">
+      <Filter>源文件\引导记录</Filter>
+    </ClCompile>
+    <ClCompile Include="br\empty_mbr.c">
+      <Filter>源文件\引导记录</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -427,6 +447,15 @@
     </ClInclude>
     <ClInclude Include="fs\btrfs.h">
       <Filter>头文件\文件系统</Filter>
+    </ClInclude>
+    <ClInclude Include="include\br.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="br\nt5_mbr.h">
+      <Filter>头文件\引导记录</Filter>
+    </ClInclude>
+    <ClInclude Include="br\nt6_mbr.h">
+      <Filter>头文件\引导记录</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

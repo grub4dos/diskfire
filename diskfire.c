@@ -5,6 +5,7 @@
 #include "fs.h"
 #include "partition.h"
 #include "file.h"
+#include "br.h"
 
 PHY_DRIVE_INFO* gDriveList = NULL;
 DWORD gDriveCount = 0;
@@ -30,6 +31,7 @@ int main(int argc, char *argv[])
 	grub_file_filter_init();
 	grub_fs_init();
 	grub_partmap_init();
+	grub_br_init();
 	if (argc < 2)
 	{
 		grub_command_execute("help", 0, NULL);

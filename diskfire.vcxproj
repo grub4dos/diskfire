@@ -108,6 +108,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="archelp.c" />
+    <ClCompile Include="br.c" />
+    <ClCompile Include="br\empty_mbr.c" />
+    <ClCompile Include="br\nt5_mbr.c" />
+    <ClCompile Include="br\nt6_mbr.c" />
     <ClCompile Include="command.c" />
     <ClCompile Include="commands\bin2c.c" />
     <ClCompile Include="commands\blocklist.c" />
@@ -208,6 +212,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="br\nt5_mbr.h" />
+    <ClInclude Include="br\nt6_mbr.h" />
     <ClInclude Include="crypto\gcry_wrap.h" />
     <ClInclude Include="fs\btrfs.h" />
     <ClInclude Include="fs\exfat.h" />
@@ -217,6 +223,7 @@
     <ClInclude Include="fs\hfsplus.h" />
     <ClInclude Include="fs\ntfs.h" />
     <ClInclude Include="include\archelp.h" />
+    <ClInclude Include="include\br.h" />
     <ClInclude Include="include\charset.h" />
     <ClInclude Include="include\command.h" />
     <ClInclude Include="include\crypto.h" />
