@@ -110,6 +110,7 @@
     <ClCompile Include="archelp.c" />
     <ClCompile Include="br.c" />
     <ClCompile Include="br\empty_mbr.c" />
+    <ClCompile Include="br\grldr_mbr.c" />
     <ClCompile Include="br\nt5_mbr.c" />
     <ClCompile Include="br\nt6_mbr.c" />
     <ClCompile Include="command.c" />
@@ -212,6 +213,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="br\grldr_mbr.h" />
     <ClInclude Include="br\nt5_mbr.h" />
     <ClInclude Include="br\nt6_mbr.h" />
     <ClInclude Include="crypto\gcry_wrap.h" />

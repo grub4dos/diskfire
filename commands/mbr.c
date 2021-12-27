@@ -5,46 +5,13 @@
 #include "command.h"
 #include "br.h"
 
-struct reserved_ctx
-{
-	grub_disk_addr_t firstlba;
-	grub_disk_addr_t partlba;
-	grub_partition_map_t partmap;
-};
-
-static int first_part_hook(struct grub_disk* disk, const grub_partition_t partition, void* data)
-{
-	(void)disk;
-	struct reserved_ctx *ctx = data;
-	grub_disk_addr_t start = grub_partition_get_start(partition);
-	if (start < ctx->partlba)
-		ctx->partlba = start;
-	if (!ctx->partmap)
-		ctx->partmap = partition->partmap;
-	if (!ctx->firstlba && partition->firstlba)
-		ctx->firstlba = partition->firstlba;
-	return 0;
-}
-
-static grub_disk_addr_t
-get_reserved_sectors(grub_disk_t disk, grub_disk_addr_t* start)
-{
-	struct reserved_ctx ctx = { .firstlba = 0, .partlba = GRUB_DISK_SIZE_UNKNOWN, .partmap = NULL };
-	grub_partition_iterate(disk, first_part_hook, &ctx);
-	if (!ctx.partmap || ctx.partlba <= 1 || !ctx.firstlba)
-		return 0;
-	if (start)
-		*start = ctx.firstlba;
-	return ctx.partlba - ctx.firstlba;
-}
-
 static void
 mbr_print_info(grub_disk_t disk)
 {
-	grub_disk_addr_t lba, count;
+	grub_disk_addr_t lba = 0, count = 0;
 	grub_br_t br = NULL;
 	grub_printf("%s\n", disk->name);
-	count = get_reserved_sectors(disk, &lba);
+	count = grub_br_get_reserved_sectors(disk, &lba);
 	grub_printf("Reserved sectors: %llu+%llu\n", lba, count);
 	br = grub_br_probe(disk);
 	grub_printf("MBR: %s\n", br ? br->name : "UNKNOWN");
@@ -59,6 +26,8 @@ mbr_install(grub_disk_t disk, const char* mbr)
 		return grub_mbr_nt5.install(disk, NULL);
 	else if (grub_strcasecmp(mbr, "NT6") == 0)
 		return grub_mbr_nt6.install(disk, NULL);
+	else if (grub_strcasecmp(mbr, "GRUB4DOS") == 0)
+		return grub_mbr_grldr.install(disk, NULL);
 	else
 		return grub_error(GRUB_ERR_BAD_ARGUMENT, "unknown mbr type");
 }
@@ -123,7 +92,7 @@ help_mbr(struct grub_command* cmd)
 	grub_printf("  -i=TYPE      Install MBR to disk.\n");
 	grub_printf("  TYPES:\n");
 	grub_printf("    EMPTY      Empty MBR\n");
-	//grub_printf("    GRUB4DOS   GRUB4DOS MBR\n");
+	grub_printf("    GRUB4DOS   GRUB4DOS MBR\n");
 	//grub_printf("    GRUB2      GRUB2 MBR\n");
 	grub_printf("    NT5        NT5 MBR (ntldr)\n");
 	grub_printf("    NT6        NT6 MBR (bootmgr)\n");
