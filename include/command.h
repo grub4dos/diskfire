@@ -32,6 +32,7 @@ grub_err_t grub_command_execute(const char* name, int argc, char** argv);
 
 void grub_command_init(void);
 
+extern struct grub_command grub_cmd_bin2c;
 extern struct grub_command grub_cmd_ls;
 extern struct grub_command grub_cmd_extract;
 extern struct grub_command grub_cmd_probe;

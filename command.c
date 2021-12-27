@@ -35,6 +35,7 @@ grub_command_execute(const char* name, int argc, char** argv)
 void
 grub_command_init(void)
 {
+	grub_command_register(&grub_cmd_bin2c);
 	grub_command_register(&grub_cmd_ls);
 	grub_command_register(&grub_cmd_extract);
 	grub_command_register(&grub_cmd_probe);
