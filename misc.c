@@ -136,14 +136,14 @@ HANDLE GetHandleByLetter(char Letter)
 {
 	char PhyPath[] = "\\\\.\\A:";
 	snprintf(PhyPath, sizeof(PhyPath), "\\\\.\\%C:", Letter);
-	return CreateFileA(PhyPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+	return CreateFileA(PhyPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
 }
 
 HANDLE GetHandleById(DWORD Id)
 {
 	char PhyPath[] = "\\\\.\\PhysicalDrive4294967295";
 	snprintf(PhyPath, sizeof(PhyPath), "\\\\.\\PhysicalDrive%u", Id);
-	return CreateFileA(PhyPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+	return CreateFileA(PhyPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
 }
 
 BOOL GetDriveByLetter(char Letter, DWORD* pDrive)

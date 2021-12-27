@@ -230,7 +230,7 @@ grub_fs_winfile_open(grub_file_t file, const char* name)
 	LARGE_INTEGER li;
 	HANDLE fd = INVALID_HANDLE_VALUE;
 	grub_dprintf("fs", "winfile %s\n", name);
-	fd = CreateFileA(name, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+	fd = CreateFileA(name, GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
 	if (fd == INVALID_HANDLE_VALUE)
 		return grub_error(GRUB_ERR_BAD_FILENAME, "invalid winfile %s", name);
 	if (GetFileSizeEx(fd, &li))

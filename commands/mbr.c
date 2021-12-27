@@ -50,12 +50,26 @@ mbr_print_info(grub_disk_t disk)
 	grub_printf("MBR: %s\n", br ? br->name : "UNKNOWN");
 }
 
+static grub_err_t
+mbr_install(grub_disk_t disk, const char* mbr)
+{
+	if (grub_strcasecmp(mbr, "EMPTY") == 0)
+		return grub_mbr_empty.install(disk, NULL);
+	else if (grub_strcasecmp(mbr, "NT5") == 0)
+		return grub_mbr_nt5.install(disk, NULL);
+	else if (grub_strcasecmp(mbr, "NT6") == 0)
+		return grub_mbr_nt6.install(disk, NULL);
+	else
+		return grub_error(GRUB_ERR_BAD_ARGUMENT, "unknown mbr type");
+}
+
 static grub_err_t cmd_mbr(struct grub_command* cmd, int argc, char* argv[])
 {
 	(void)cmd;
 	int i;
 	char* diskname = NULL;
 	grub_disk_t disk = 0;
+	const char* install = NULL;
 	for (i = 0; i < argc; i++)
 	{
 		if (argv[i][0] == '(')
@@ -65,6 +79,10 @@ static grub_err_t cmd_mbr(struct grub_command* cmd, int argc, char* argv[])
 				break;
 			argv[i][pos] = 0;
 			diskname = &argv[i][1];
+		}
+		else if (grub_strncmp(argv[i], "-i=", 3) == 0)
+		{
+			install = &argv[i][3];
 		}
 		else if (argv[i][0] != '-')
 			diskname = argv[i];
@@ -87,7 +105,10 @@ static grub_err_t cmd_mbr(struct grub_command* cmd, int argc, char* argv[])
 		grub_error(GRUB_ERR_BAD_ARGUMENT, "target disk is partition");
 		goto fail;
 	}
-	mbr_print_info(disk);
+	if (install)
+		mbr_install(disk, install);
+	else
+		mbr_print_info(disk);
 fail:
 	if (disk)
 		grub_disk_close(disk);
