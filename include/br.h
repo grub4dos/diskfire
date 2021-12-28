@@ -58,6 +58,7 @@ extern struct grub_br grub_mbr_nt5;
 extern struct grub_br grub_mbr_grldr;
 extern struct grub_br grub_mbr_grub2;
 extern struct grub_br grub_mbr_xorboot;
+extern struct grub_br grub_mbr_plop;
 extern struct grub_br grub_mbr_empty;
 
 #endif

@@ -2,7 +2,7 @@
 #include "compat.h"
 #include "br.h"
 
-#include "grldr_mbr.h"
+#include "mbr_grldr.h"
 
 static grub_uint8_t grldr_magic[] = { 0x47, 0x52, 0x55, 0xaa };
 

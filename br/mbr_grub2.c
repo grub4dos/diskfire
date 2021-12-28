@@ -6,7 +6,7 @@
 
 static int grub2_identify(grub_uint8_t* sector)
 {
-	return grub_br_check_data(sector, GRUB_DISK_SECTOR_SIZE, 0x180, (const grub_uint8_t*)GRUB2_MAGIC, sizeof(GRUB2_MAGIC));
+	return grub_br_check_data(sector, GRUB_DISK_SECTOR_SIZE, 0x180, (const grub_uint8_t*)GRUB2_MAGIC, grub_strlen(GRUB2_MAGIC));
 }
 
 static grub_err_t grub2_install(grub_disk_t disk, void* options)

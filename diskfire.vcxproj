@@ -109,12 +109,13 @@
   <ItemGroup>
     <ClCompile Include="archelp.c" />
     <ClCompile Include="br.c" />
-    <ClCompile Include="br\empty_mbr.c" />
-    <ClCompile Include="br\grldr_mbr.c" />
-    <ClCompile Include="br\grub2_mbr.c" />
-    <ClCompile Include="br\nt5_mbr.c" />
-    <ClCompile Include="br\nt6_mbr.c" />
-    <ClCompile Include="br\xorboot_mbr.c" />
+    <ClCompile Include="br\mbr_empty.c" />
+    <ClCompile Include="br\mbr_grldr.c" />
+    <ClCompile Include="br\mbr_grub2.c" />
+    <ClCompile Include="br\mbr_nt5.c" />
+    <ClCompile Include="br\mbr_nt6.c" />
+    <ClCompile Include="br\mbr_plop.c" />
+    <ClCompile Include="br\mbr_xorboot.c" />
     <ClCompile Include="command.c" />
     <ClCompile Include="commands\bin2c.c" />
     <ClCompile Include="commands\blocklist.c" />
@@ -215,9 +216,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="br\grldr_mbr.h" />
-    <ClInclude Include="br\nt5_mbr.h" />
-    <ClInclude Include="br\nt6_mbr.h" />
+    <ClInclude Include="br\mbr_grldr.h" />
+    <ClInclude Include="br\mbr_nt5.h" />
+    <ClInclude Include="br\mbr_nt6.h" />
     <ClInclude Include="crypto\gcry_wrap.h" />
     <ClInclude Include="fs\btrfs.h" />
     <ClInclude Include="fs\exfat.h" />

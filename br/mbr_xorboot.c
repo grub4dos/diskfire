@@ -6,7 +6,8 @@
 
 static int xorboot_identify(grub_uint8_t* sector)
 {
-	return grub_br_check_data(sector, GRUB_DISK_SECTOR_SIZE, 0x110, (const grub_uint8_t*)XORBOOT_MAGIC, sizeof(XORBOOT_MAGIC));
+	return grub_br_check_data(sector, GRUB_DISK_SECTOR_SIZE, 0x110,
+		(const grub_uint8_t*)XORBOOT_MAGIC, grub_strlen(XORBOOT_MAGIC));
 }
 
 static grub_err_t xorboot_install(grub_disk_t disk, void* options)
@@ -19,7 +20,7 @@ static grub_err_t xorboot_install(grub_disk_t disk, void* options)
 struct grub_br grub_mbr_xorboot = 
 {
 	.name = "XORBOOT",
-	.desc = "XORBOOT MBR",
+	.desc = "XorBoot",
 	.bootstrap_code = NULL,
 	.reserved_sectors = 62,
 	.identify = xorboot_identify,

@@ -292,25 +292,28 @@
     <ClCompile Include="br.c">
       <Filter>源文件\核心</Filter>
     </ClCompile>
-    <ClCompile Include="br\nt6_mbr.c">
+    <ClCompile Include="br\mbr_nt6.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
     <ClCompile Include="commands\bin2c.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
-    <ClCompile Include="br\nt5_mbr.c">
+    <ClCompile Include="br\mbr_nt5.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
-    <ClCompile Include="br\empty_mbr.c">
+    <ClCompile Include="br\mbr_empty.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
-    <ClCompile Include="br\grldr_mbr.c">
+    <ClCompile Include="br\mbr_grldr.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
-    <ClCompile Include="br\grub2_mbr.c">
+    <ClCompile Include="br\mbr_grub2.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
-    <ClCompile Include="br\xorboot_mbr.c">
+    <ClCompile Include="br\mbr_xorboot.c">
+      <Filter>源文件\引导记录</Filter>
+    </ClCompile>
+    <ClCompile Include="br\mbr_plop.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
   </ItemGroup>
@@ -460,13 +463,13 @@
     <ClInclude Include="include\br.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="br\nt5_mbr.h">
+    <ClInclude Include="br\mbr_nt5.h">
       <Filter>头文件\引导记录</Filter>
     </ClInclude>
-    <ClInclude Include="br\nt6_mbr.h">
+    <ClInclude Include="br\mbr_nt6.h">
       <Filter>头文件\引导记录</Filter>
     </ClInclude>
-    <ClInclude Include="br\grldr_mbr.h">
+    <ClInclude Include="br\mbr_grldr.h">
       <Filter>头文件\引导记录</Filter>
     </ClInclude>
   </ItemGroup>

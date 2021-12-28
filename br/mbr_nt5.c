@@ -2,7 +2,7 @@
 #include "compat.h"
 #include "br.h"
 
-#include "nt5_mbr.h"
+#include "mbr_nt5.h"
 
 static int nt5_identify(grub_uint8_t* sector)
 {
