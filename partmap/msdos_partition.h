@@ -93,10 +93,10 @@ struct grub_msdos_partition_mbr
 		} modern_code;
 	} bootstrap;
 
-	/* Four partition entries.  */
+	/* 0x1be Four partition entries.  */
 	struct grub_msdos_partition_entry entries[4];
 
-	/* The signature 0xaa55.  */
+	/* 0x1fe The signature 0xaa55.  */
 	grub_uint16_t signature;
 };
 PRAGMA_END_PACKED

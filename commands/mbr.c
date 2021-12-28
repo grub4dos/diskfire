@@ -2,8 +2,10 @@
 #include "compat.h"
 #include "disk.h"
 #include "partition.h"
+#include "file.h"
 #include "command.h"
 #include "br.h"
+#include "misc.h"
 
 static void
 mbr_print_info(grub_disk_t disk)
@@ -27,6 +29,54 @@ mbr_install(grub_disk_t disk, const char* mbr)
 	return br->install(disk, NULL);		
 }
 
+static grub_err_t
+mbr_backup(grub_disk_t disk, const char* dest, grub_disk_addr_t sectors)
+{
+	grub_disk_addr_t i;
+	HANDLE fd = INVALID_HANDLE_VALUE;
+	grub_uint8_t buf[GRUB_DISK_SECTOR_SIZE];
+	fd = CreateFileA(dest, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ, 0, CREATE_ALWAYS, 0, 0);
+	if (!fd || fd == INVALID_HANDLE_VALUE)
+		return grub_error(GRUB_ERR_BAD_FILENAME, "can't create file %s", dest);
+	for (i = 0; i < sectors; i++)
+	{
+		if (grub_disk_read(disk, i, 0, GRUB_DISK_SECTOR_SIZE, buf))
+			break;
+		if (!WriteFile(fd, buf, GRUB_DISK_SECTOR_SIZE, NULL, NULL))
+		{
+			grub_error(GRUB_ERR_WRITE_ERROR, "write failed");
+			break;
+		}
+	}
+
+	CHECK_CLOSE_HANDLE(fd);
+	return grub_errno;
+}
+
+static grub_err_t
+mbr_restore(grub_disk_t disk, const char* src, int keep)
+{
+	grub_disk_addr_t i;
+	grub_file_t file = 0;
+	grub_uint8_t buf[GRUB_DISK_SECTOR_SIZE];
+	file = grub_file_open(src, GRUB_FILE_TYPE_CAT | GRUB_FILE_TYPE_NO_DECOMPRESS);
+	if (!file)
+		return grub_error(GRUB_ERR_BAD_FILENAME, "can't open %s", src);
+	for (i = 0; i << GRUB_DISK_SECTOR_BITS < file->size; i++)
+	{
+		grub_file_read(file, buf, GRUB_DISK_SECTOR_SIZE);
+		if (grub_errno)
+			break;
+		if (i == 0 && keep)
+			grub_disk_read(disk, 0, 0x1b8, 0x1fe - 0x1b8, buf + 0x1b8);
+		grub_disk_write(disk, i, 0, GRUB_DISK_SECTOR_SIZE, buf);
+		if (grub_errno)
+			break;
+	}
+	grub_file_close(file);
+	return grub_errno;
+}
+
 static grub_err_t cmd_mbr(struct grub_command* cmd, int argc, char* argv[])
 {
 	(void)cmd;
@@ -34,6 +84,10 @@ static grub_err_t cmd_mbr(struct grub_command* cmd, int argc, char* argv[])
 	char* diskname = NULL;
 	grub_disk_t disk = 0;
 	const char* install = NULL;
+	const char* backup = NULL;
+	const char* restore = NULL;
+	grub_disk_addr_t backup_sectors = 1;
+	int keep_part_table = 1;
 	for (i = 0; i < argc; i++)
 	{
 		if (argv[i][0] == '(')
@@ -47,6 +101,22 @@ static grub_err_t cmd_mbr(struct grub_command* cmd, int argc, char* argv[])
 		else if (grub_strncmp(argv[i], "-i=", 3) == 0)
 		{
 			install = &argv[i][3];
+		}
+		else if (grub_strncmp(argv[i], "-b=", 3) == 0)
+		{
+			backup = &argv[i][3];
+		}
+		else if (grub_strncmp(argv[i], "-s=", 3) == 0)
+		{
+			backup_sectors = grub_strtoull(&argv[i][3], NULL, 0);
+		}
+		else if (grub_strncmp(argv[i], "-r=", 3) == 0)
+		{
+			restore = &argv[i][3];
+		}
+		else if (grub_strcmp(argv[i], "-x") == 0)
+		{
+			keep_part_table = 0;
 		}
 		else if (argv[i][0] != '-')
 			diskname = argv[i];
@@ -71,6 +141,10 @@ static grub_err_t cmd_mbr(struct grub_command* cmd, int argc, char* argv[])
 	}
 	if (install)
 		mbr_install(disk, install);
+	else if (backup)
+		mbr_backup(disk, backup, backup_sectors);
+	else if (restore)
+		mbr_restore(disk, restore, keep_part_table);
 	else
 		mbr_print_info(disk);
 fail:
@@ -94,7 +168,7 @@ help_mbr(struct grub_command* cmd)
 	grub_printf("  -b=FILE  Backup MBR to FILE.\n");
 	grub_printf("    -s=N   Specify number of sectors to backup.\n");
 	grub_printf("  -r=FILE  Restore MBR from FILE.\n");
-	grub_printf("    -k     Keep original disk signature and partition table.\n");
+	grub_printf("    -x     Do NOT keep original disk signature and partition table.\n");
 }
 
 struct grub_command grub_cmd_mbr =
