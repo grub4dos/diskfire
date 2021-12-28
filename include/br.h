@@ -11,6 +11,7 @@ struct grub_br
 	struct grub_br* next;
 	struct grub_br** prev;
 	const char* name;
+	const char* desc;
 	const grub_uint8_t* bootstrap_code;
 	grub_disk_addr_t reserved_sectors;
 	int (*identify) (grub_uint8_t *sector);

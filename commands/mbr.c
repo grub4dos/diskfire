@@ -14,22 +14,17 @@ mbr_print_info(grub_disk_t disk)
 	count = grub_br_get_reserved_sectors(disk, &lba);
 	grub_printf("Reserved sectors: %llu+%llu\n", lba, count);
 	br = grub_br_probe(disk);
-	grub_printf("MBR: %s\n", br ? br->name : "UNKNOWN");
+	grub_printf("MBR: %s\n", br ? br->desc : "UNKNOWN");
 }
 
 static grub_err_t
 mbr_install(grub_disk_t disk, const char* mbr)
 {
-	if (grub_strcasecmp(mbr, "EMPTY") == 0)
-		return grub_mbr_empty.install(disk, NULL);
-	else if (grub_strcasecmp(mbr, "NT5") == 0)
-		return grub_mbr_nt5.install(disk, NULL);
-	else if (grub_strcasecmp(mbr, "NT6") == 0)
-		return grub_mbr_nt6.install(disk, NULL);
-	else if (grub_strcasecmp(mbr, "GRUB4DOS") == 0)
-		return grub_mbr_grldr.install(disk, NULL);
-	else
+	grub_br_t br = NULL;
+	br = grub_br_find(mbr);
+	if (!br)
 		return grub_error(GRUB_ERR_BAD_ARGUMENT, "unknown mbr type");
+	return br->install(disk, NULL);		
 }
 
 static grub_err_t cmd_mbr(struct grub_command* cmd, int argc, char* argv[])

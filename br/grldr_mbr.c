@@ -25,7 +25,8 @@ static grub_err_t grldr_install(grub_disk_t disk, void* options)
 
 struct grub_br grub_mbr_grldr = 
 {
-	.name = "GRUB4DOS MBR",
+	.name = "GRUB4DOS",
+	.desc = "GRUB4DOS MBR",
 	.bootstrap_code = grldr_mbr,
 	.reserved_sectors = (sizeof(grldr_mbr) - 1) >> GRUB_DISK_SECTOR_BITS,
 	.identify = grldr_identify,

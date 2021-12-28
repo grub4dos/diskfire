@@ -17,7 +17,8 @@ static grub_err_t nt6_install(grub_disk_t disk, void* options)
 
 struct grub_br grub_mbr_nt6 = 
 {
-	.name = "Windows NT 6.x MBR",
+	.name = "NT6",
+	.desc = "Windows NT 6.x MBR",
 	.bootstrap_code = nt6_mbr,
 	.reserved_sectors = 0,
 	.identify = nt6_identify,

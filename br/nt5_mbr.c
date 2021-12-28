@@ -17,7 +17,8 @@ static grub_err_t nt5_install(grub_disk_t disk, void* options)
 
 struct grub_br grub_mbr_nt5 = 
 {
-	.name = "Windows NT 5.x MBR",
+	.name = "NT5",
+	.desc = "Windows NT 5.x MBR",
 	.bootstrap_code = nt5_mbr,
 	.reserved_sectors = 0,
 	.identify = nt5_identify,

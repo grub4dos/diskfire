@@ -17,7 +17,8 @@ static grub_err_t empty_install(grub_disk_t disk, void* options)
 
 struct grub_br grub_mbr_empty = 
 {
-	.name = "EMPTY MBR",
+	.name = "EMPTY",
+	.desc = "EMPTY MBR",
 	.bootstrap_code = empty_mbr,
 	.reserved_sectors = 0,
 	.identify = empty_identify,
