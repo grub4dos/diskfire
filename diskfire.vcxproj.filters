@@ -319,6 +319,9 @@
     <ClCompile Include="br\mbr_fbinst.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
+    <ClCompile Include="br\mbr_rufus.c">
+      <Filter>源文件\引导记录</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -473,6 +476,9 @@
       <Filter>头文件\引导记录</Filter>
     </ClInclude>
     <ClInclude Include="br\mbr_grldr.h">
+      <Filter>头文件\引导记录</Filter>
+    </ClInclude>
+    <ClInclude Include="br\mbr_rufus.h">
       <Filter>头文件\引导记录</Filter>
     </ClInclude>
   </ItemGroup>

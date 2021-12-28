@@ -165,10 +165,11 @@ help_mbr(struct grub_command* cmd)
 	//grub_printf("    GRUB2      GRUB2 MBR\n");
 	grub_printf("    NT5        NT5 MBR (ntldr)\n");
 	grub_printf("    NT6        NT6 MBR (bootmgr)\n");
-	grub_printf("  -b=FILE  Backup MBR to FILE.\n");
-	grub_printf("    -s=N   Specify number of sectors to backup.\n");
-	grub_printf("  -r=FILE  Restore MBR from FILE.\n");
-	grub_printf("    -x     Do NOT keep original disk signature and partition table.\n");
+	grub_printf("    RUFUS      Rufus MBR\n");
+	grub_printf("  -b=FILE      Backup MBR to FILE.\n");
+	grub_printf("    -s=N       Specify number of sectors to backup.\n");
+	grub_printf("  -r=FILE      Restore MBR from FILE.\n");
+	grub_printf("    -x         Do NOT keep original disk signature and partition table.\n");
 }
 
 struct grub_command grub_cmd_mbr =
