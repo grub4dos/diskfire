@@ -117,6 +117,7 @@
     <ClCompile Include="br\mbr_nt6.c" />
     <ClCompile Include="br\mbr_plop.c" />
     <ClCompile Include="br\mbr_rufus.c" />
+    <ClCompile Include="br\mbr_ventoy.c" />
     <ClCompile Include="br\mbr_xorboot.c" />
     <ClCompile Include="command.c" />
     <ClCompile Include="commands\bin2c.c" />
