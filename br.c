@@ -40,8 +40,8 @@ grub_br_get_reserved_sectors(grub_disk_t disk, grub_disk_addr_t* start)
 }
 
 int
-grub_br_check_data(grub_uint8_t *data, grub_size_t data_len,
-	grub_uint32_t offset, grub_uint8_t *buf, grub_uint32_t buf_len)
+grub_br_check_data(const grub_uint8_t *data, grub_size_t data_len,
+	grub_uint32_t offset, const grub_uint8_t *buf, grub_uint32_t buf_len)
 {
 	if (data_len < (grub_uint64_t)offset + buf_len)
 		return 0;
@@ -70,5 +70,6 @@ void grub_br_init(void)
 	grub_br_register(&grub_mbr_nt6);
 	grub_br_register(&grub_mbr_nt5);
 	grub_br_register(&grub_mbr_grldr);
+	grub_br_register(&grub_mbr_grub2);
 	grub_br_register(&grub_mbr_empty);
 }

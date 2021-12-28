@@ -45,8 +45,8 @@ grub_disk_addr_t
 grub_br_get_reserved_sectors(grub_disk_t disk, grub_disk_addr_t* start);
 
 int
-grub_br_check_data(grub_uint8_t* data, grub_size_t data_len,
-	grub_uint32_t offset, grub_uint8_t* buf, grub_uint32_t buf_len);
+grub_br_check_data(const grub_uint8_t* data, grub_size_t data_len,
+	grub_uint32_t offset, const grub_uint8_t* buf, grub_uint32_t buf_len);
 
 grub_br_t
 grub_br_probe(grub_disk_t disk);
@@ -56,6 +56,7 @@ void grub_br_init(void);
 extern struct grub_br grub_mbr_nt6;
 extern struct grub_br grub_mbr_nt5;
 extern struct grub_br grub_mbr_grldr;
+extern struct grub_br grub_mbr_grub2;
 extern struct grub_br grub_mbr_empty;
 
 #endif
