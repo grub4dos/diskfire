@@ -310,6 +310,9 @@
     <ClCompile Include="br\grub2_mbr.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
+    <ClCompile Include="br\xorboot_mbr.c">
+      <Filter>源文件\引导记录</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

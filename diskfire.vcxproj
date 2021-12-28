@@ -114,6 +114,7 @@
     <ClCompile Include="br\grub2_mbr.c" />
     <ClCompile Include="br\nt5_mbr.c" />
     <ClCompile Include="br\nt6_mbr.c" />
+    <ClCompile Include="br\xorboot_mbr.c" />
     <ClCompile Include="command.c" />
     <ClCompile Include="commands\bin2c.c" />
     <ClCompile Include="commands\blocklist.c" />
