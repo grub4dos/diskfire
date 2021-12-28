@@ -73,5 +73,6 @@ void grub_br_init(void)
 	grub_br_register(&grub_mbr_grub2);
 	grub_br_register(&grub_mbr_xorboot);
 	grub_br_register(&grub_mbr_plop);
+	grub_br_register(&grub_mbr_fbinst);
 	grub_br_register(&grub_mbr_empty);
 }

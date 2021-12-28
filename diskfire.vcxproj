@@ -110,6 +110,7 @@
     <ClCompile Include="archelp.c" />
     <ClCompile Include="br.c" />
     <ClCompile Include="br\mbr_empty.c" />
+    <ClCompile Include="br\mbr_fbinst.c" />
     <ClCompile Include="br\mbr_grldr.c" />
     <ClCompile Include="br\mbr_grub2.c" />
     <ClCompile Include="br\mbr_nt5.c" />

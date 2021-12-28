@@ -316,6 +316,9 @@
     <ClCompile Include="br\mbr_plop.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
+    <ClCompile Include="br\mbr_fbinst.c">
+      <Filter>源文件\引导记录</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
