@@ -325,6 +325,9 @@
     <ClCompile Include="br\mbr_ventoy.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
+    <ClCompile Include="br\mbr_ultraiso.c">
+      <Filter>源文件\引导记录</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -485,6 +488,9 @@
       <Filter>头文件\引导记录</Filter>
     </ClInclude>
     <ClInclude Include="br\mbr_grldr_gpt.h">
+      <Filter>头文件\引导记录</Filter>
+    </ClInclude>
+    <ClInclude Include="br\mbr_ultraiso.h">
       <Filter>头文件\引导记录</Filter>
     </ClInclude>
   </ItemGroup>

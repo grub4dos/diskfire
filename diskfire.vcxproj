@@ -117,6 +117,7 @@
     <ClCompile Include="br\mbr_nt6.c" />
     <ClCompile Include="br\mbr_plop.c" />
     <ClCompile Include="br\mbr_rufus.c" />
+    <ClCompile Include="br\mbr_ultraiso.c" />
     <ClCompile Include="br\mbr_ventoy.c" />
     <ClCompile Include="br\mbr_xorboot.c" />
     <ClCompile Include="command.c" />
@@ -224,6 +225,7 @@
     <ClInclude Include="br\mbr_nt5.h" />
     <ClInclude Include="br\mbr_nt6.h" />
     <ClInclude Include="br\mbr_rufus.h" />
+    <ClInclude Include="br\mbr_ultraiso.h" />
     <ClInclude Include="crypto\gcry_wrap.h" />
     <ClInclude Include="fs\btrfs.h" />
     <ClInclude Include="fs\exfat.h" />
