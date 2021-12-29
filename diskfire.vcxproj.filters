@@ -484,5 +484,8 @@
     <ClInclude Include="br\mbr_rufus.h">
       <Filter>头文件\引导记录</Filter>
     </ClInclude>
+    <ClInclude Include="br\mbr_grldr_gpt.h">
+      <Filter>头文件\引导记录</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

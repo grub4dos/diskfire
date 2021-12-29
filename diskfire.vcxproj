@@ -220,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="br\mbr_grldr.h" />
+    <ClInclude Include="br\mbr_grldr_gpt.h" />
     <ClInclude Include="br\mbr_nt5.h" />
     <ClInclude Include="br\mbr_nt6.h" />
     <ClInclude Include="br\mbr_rufus.h" />
