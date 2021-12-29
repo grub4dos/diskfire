@@ -84,6 +84,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -104,6 +105,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -259,6 +261,7 @@
     <ClInclude Include="partmap\bsdlabel.h" />
     <ClInclude Include="partmap\gpt_partition.h" />
     <ClInclude Include="partmap\msdos_partition.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="xzembed\xz.h" />
     <ClInclude Include="xzembed\xz_config.h" />
     <ClInclude Include="xzembed\xz_lzma2.h" />
@@ -276,6 +279,12 @@
     <ClInclude Include="zstd\zstd.h" />
     <ClInclude Include="zstd\zstd_errors.h" />
     <ClInclude Include="zstd\zstd_internal.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="diskfire.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="diskfire.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
