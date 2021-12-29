@@ -76,5 +76,6 @@ void grub_br_init(void)
 	grub_br_register(&grub_mbr_fbinst);
 	grub_br_register(&grub_mbr_ventoy);
 	grub_br_register(&grub_mbr_ultraiso);
+	grub_br_register(&grub_mbr_syslinux);
 	grub_br_register(&grub_mbr_empty);
 }

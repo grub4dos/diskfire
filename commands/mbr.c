@@ -163,9 +163,11 @@ help_mbr(struct grub_command* cmd)
 	grub_printf("    EMPTY      Empty MBR\n");
 	grub_printf("    GRUB4DOS   GRUB4DOS MBR\n");
 	//grub_printf("    GRUB2      GRUB2 MBR\n");
-	grub_printf("    NT5        NT5 MBR (ntldr)\n");
-	grub_printf("    NT6        NT6 MBR (bootmgr)\n");
+	grub_printf("    NT5        Windows NT5 MBR\n");
+	grub_printf("    NT6        Windows NT6+ MBR\n");
 	grub_printf("    RUFUS      Rufus MBR\n");
+	grub_printf("    ULTRAISO   UltraISO USB-HDD+ MBR\n");
+	grub_printf("    SYSLINUX   SYSLINUX 6.02 MBR\n");
 	grub_printf("  -b=FILE      Backup MBR to FILE.\n");
 	grub_printf("    -s=N       Specify number of sectors to backup.\n");
 	grub_printf("  -r=FILE      Restore MBR from FILE.\n");

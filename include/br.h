@@ -62,6 +62,7 @@ extern struct grub_br grub_mbr_plop;
 extern struct grub_br grub_mbr_fbinst;
 extern struct grub_br grub_mbr_ventoy;
 extern struct grub_br grub_mbr_ultraiso;
+extern struct grub_br grub_mbr_syslinux;
 extern struct grub_br grub_mbr_empty;
 
 #endif
