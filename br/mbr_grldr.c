@@ -31,8 +31,11 @@ static grub_err_t grldr_install(grub_disk_t disk, void* options)
 {
 	(void)options;
 	grub_disk_addr_t lba = 0, count = 0;
+	grub_disk_addr_t reserved = grub_mbr_grldr.reserved_sectors;
 	count = grub_br_get_reserved_sectors(disk, &lba);
-	if (lba < 1 || count < grub_mbr_nt6.reserved_sectors + (lba > 1)? 1 : 0)
+	if (lba == 0)
+		return grub_error(GRUB_ERR_BAD_PART_TABLE, "unsupported partition table");
+	if ((lba == 1 && count < reserved) || (lba > 1 && count < reserved + 1))
 		return grub_error(GRUB_ERR_BAD_DEVICE, "unsupported reserved sectors");
 	if (lba > 1)
 		return grldr_gpt_install(disk, lba, options);
