@@ -114,6 +114,8 @@ grub_file_seekable(const grub_file_t file)
 	return !file->not_easily_seekable;
 }
 
+char* grub_file_getline(grub_file_t file);
+
 struct grub_fs_block
 {
 	grub_disk_addr_t offset;

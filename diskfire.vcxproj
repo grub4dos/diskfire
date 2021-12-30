@@ -127,6 +127,7 @@
     <ClCompile Include="command.c" />
     <ClCompile Include="commands\bin2c.c" />
     <ClCompile Include="commands\blocklist.c" />
+    <ClCompile Include="commands\cat.c" />
     <ClCompile Include="commands\dd.c" />
     <ClCompile Include="commands\hashsum.c" />
     <ClCompile Include="commands\help.c" />

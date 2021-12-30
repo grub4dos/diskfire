@@ -334,6 +334,9 @@
     <ClCompile Include="fs\procfs.c">
       <Filter>源文件\文件系统</Filter>
     </ClCompile>
+    <ClCompile Include="commands\cat.c">
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
