@@ -334,6 +334,9 @@
     <ClCompile Include="br\mbr_wee.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
+    <ClCompile Include="commands\dd.c">
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
