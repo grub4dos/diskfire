@@ -31,7 +31,7 @@ windisk_call_hook(grub_disk_iterate_hook_t hook, void* hook_data, DWORD drive)
 	return hook(name, hook_data);
 }
 
-int
+static int
 windisk_iterate(grub_disk_iterate_hook_t hook, void* hook_data)
 {
 	DWORD drive;
@@ -43,7 +43,7 @@ windisk_iterate(grub_disk_iterate_hook_t hook, void* hook_data)
 	return 0;
 }
 
-grub_err_t
+static grub_err_t
 windisk_open(const char* name, struct grub_disk* disk)
 {
 	DWORD drive;
@@ -51,8 +51,6 @@ windisk_open(const char* name, struct grub_disk* disk)
 
 	if (!windisk_get_drive(name, &drive))
 		return grub_errno;
-
-	disk->type = GRUB_DISK_WINDISK_ID;
 
 	data = GetHandleById(drive);
 	if (data == INVALID_HANDLE_VALUE)
@@ -69,14 +67,14 @@ windisk_open(const char* name, struct grub_disk* disk)
 	return GRUB_ERR_NONE;
 }
 
-void
+static void
 windisk_close(struct grub_disk* disk)
 {
 	HANDLE* data = disk->data;
 	CHECK_CLOSE_HANDLE(data);
 }
 
-grub_err_t
+static grub_err_t
 windisk_read(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size, char* buf)
 {
 	HANDLE dh = disk->data;
@@ -98,7 +96,7 @@ windisk_read(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size, 
 	return grub_error(GRUB_ERR_READ_ERROR, "failure reading sector 0x%llx from %s", sector, disk->name);
 }
 
-grub_err_t
+static grub_err_t
 windisk_write(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size, const char* buf)
 {
 	HANDLE dh = disk->data;
@@ -117,3 +115,15 @@ windisk_write(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size,
 		return GRUB_ERR_NONE;
 	return grub_error(GRUB_ERR_READ_ERROR, "failure writing sector 0x%llx from %s", sector, disk->name);
 }
+
+struct grub_disk_dev grub_windisk_dev =
+{
+  .name = "windisk",
+  .id = GRUB_DISK_WINDISK_ID,
+  .disk_iterate = windisk_iterate,
+  .disk_open = windisk_open,
+  .disk_close = windisk_close,
+  .disk_read = windisk_read,
+  .disk_write = windisk_write,
+  .next = 0
+};

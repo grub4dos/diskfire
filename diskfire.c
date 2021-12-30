@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
 		grub_error(GRUB_ERR_UNKNOWN_DEVICE, "could not get drive info list\n");
 		goto fini;
 	}
+	grub_disk_dev_init();
 	grub_command_init();
 	grub_file_filter_init();
 	grub_fs_init();

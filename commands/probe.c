@@ -103,7 +103,7 @@ static grub_err_t probe_startlba(grub_disk_t disk)
 
 static grub_err_t probe_bus(grub_disk_t disk)
 {
-	if (disk->type != GRUB_DISK_WINDISK_ID)
+	if (disk->dev->id != GRUB_DISK_WINDISK_ID)
 		return GRUB_ERR_NONE;
 	grub_printf("%s", GetBusTypeString(gDriveList[disk->id].BusType));
 	return GRUB_ERR_NONE;
@@ -111,7 +111,7 @@ static grub_err_t probe_bus(grub_disk_t disk)
 
 static grub_err_t probe_removable(grub_disk_t disk)
 {
-	if (disk->type != GRUB_DISK_WINDISK_ID)
+	if (disk->dev->id != GRUB_DISK_WINDISK_ID)
 		return GRUB_ERR_NONE;
 	grub_printf("%s", gDriveList[disk->id].RemovableMedia ? "REMOVABLE" : "FIXED");
 	return GRUB_ERR_NONE;
@@ -119,7 +119,7 @@ static grub_err_t probe_removable(grub_disk_t disk)
 
 static grub_err_t probe_product(grub_disk_t disk)
 {
-	if (disk->type != GRUB_DISK_WINDISK_ID)
+	if (disk->dev->id != GRUB_DISK_WINDISK_ID)
 		return GRUB_ERR_NONE;
 	grub_printf("%s", gDriveList[disk->id].ProductId);
 	return GRUB_ERR_NONE;
@@ -127,7 +127,7 @@ static grub_err_t probe_product(grub_disk_t disk)
 
 static grub_err_t probe_vendor(grub_disk_t disk)
 {
-	if (disk->type != GRUB_DISK_WINDISK_ID)
+	if (disk->dev->id != GRUB_DISK_WINDISK_ID)
 		return GRUB_ERR_NONE;
 	grub_printf("%s", gDriveList[disk->id].VendorId);
 	return GRUB_ERR_NONE;
@@ -152,7 +152,7 @@ static grub_err_t probe_letter(grub_disk_t disk)
 	char path[] = "\\\\.\\C:";
 	grub_uint64_t src[U64_SECTOR_SIZE] = { 0 };
 	grub_uint64_t dst[U64_SECTOR_SIZE] = { 0 };
-	if (disk->type != GRUB_DISK_WINDISK_ID || !gDriveList[disk->id].DriveLetters[0])
+	if (disk->dev->id != GRUB_DISK_WINDISK_ID || !gDriveList[disk->id].DriveLetters[0])
 		goto fail;
 	if (!disk->partition)
 	{

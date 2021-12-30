@@ -83,8 +83,8 @@ grub_file_open(const char* name, enum grub_file_type type)
 	file->name = grub_strdup(name);
 	grub_errno = GRUB_ERR_NONE;
 
-	for (filter = 0; file && filter < ARRAY_SIZE(grub_file_filters);
-		filter++)
+	for (filter = 0; file && filter < ARRAY_SIZE(grub_file_filters); filter++)
+	{
 		if (grub_file_filters[filter])
 		{
 			last_file = file;
@@ -95,6 +95,7 @@ grub_file_open(const char* name, enum grub_file_type type)
 				grub_errno = GRUB_ERR_NONE;
 			}
 		}
+	}
 	if (!file)
 		grub_file_close(last_file);
 
@@ -181,5 +182,5 @@ grub_file_filter_init(void)
 	grub_file_filter_register(GRUB_FILE_FILTER_XZIO, grub_xzio_open);
 	grub_file_filter_register(GRUB_FILE_FILTER_LZOPIO, grub_lzopio_open);
 	grub_file_filter_register(GRUB_FILE_FILTER_VHDIO, grub_vhdio_open);
-	grub_file_filter_register(GRUB_FILE_FILTER_LZMAIO, grub_lzmaio_open);
+	//grub_file_filter_register(GRUB_FILE_FILTER_LZMAIO, grub_lzmaio_open);
 }

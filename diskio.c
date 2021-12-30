@@ -3,6 +3,8 @@
 #include "disk.h"
 #include "partition.h"
 
+grub_disk_dev_t grub_disk_dev_list;
+
 #define	GRUB_CACHE_TIMEOUT 2
 
 /* The last time the disk was used.  */
@@ -101,11 +103,13 @@ iterate_disk(const char* disk_name, void* data)
 int
 grub_disk_iterate(grub_disk_iterate_hook_t hook, void* hook_data)
 {
+	grub_disk_dev_t dev;
 	struct grub_disk_iterate_ctx ctx = { hook, hook_data, NULL };
-	if (windisk_iterate(iterate_disk, &ctx))
-		return 1;
-	if (loopback_iterate(iterate_disk, &ctx))
-		return 1;
+	FOR_DISKDEVS(dev)
+	{
+		if (dev->disk_iterate(iterate_disk, &ctx))
+			return 1;
+	}
 	return 0;
 }
 
@@ -293,16 +297,6 @@ find_part_sep(const char* name)
 	return NULL;
 }
 
-static grub_err_t
-open_by_type(const char* name, grub_disk_t disk)
-{
-	if (name[0] == 'h' && name[1] == 'd')
-		return windisk_open(name, disk);
-	else if (name[0] == 'l' && name[1] == 'd')
-		return loopback_open(name, disk);
-	return grub_error(GRUB_ERR_UNKNOWN_DEVICE, "loopback %s not found", name);
-}
-
 grub_disk_t
 grub_disk_open(const char* name)
 {
@@ -310,6 +304,7 @@ grub_disk_open(const char* name)
 	grub_disk_t disk;
 	char* raw = (char*)name;
 	grub_uint64_t current_time;
+	grub_disk_dev_t dev;
 
 	if (!name)
 		return 0;
@@ -342,7 +337,16 @@ grub_disk_open(const char* name)
 	if (!disk->name)
 		goto fail;
 
-	if (open_by_type(raw, disk) != GRUB_ERR_NONE)
+	FOR_DISKDEVS(dev)
+	{
+		if ((dev->disk_open) (raw, disk) == GRUB_ERR_NONE)
+			break;
+		else if (grub_errno == GRUB_ERR_UNKNOWN_DEVICE)
+			grub_errno = GRUB_ERR_NONE;
+		else
+			goto fail;
+	}
+	if (!dev)
 	{
 		grub_error(GRUB_ERR_UNKNOWN_DEVICE, "disk %s not found", name);
 		goto fail;
@@ -356,6 +360,8 @@ grub_disk_open(const char* name)
 			(1 << disk->log_sector_size));
 		goto fail;
 	}
+
+	disk->dev = dev;
 
 	if (p)
 	{
@@ -403,10 +409,8 @@ grub_disk_close(grub_disk_t disk)
 	grub_partition_t part;
 	grub_dprintf("disk", "Closing %s.\n", disk->name);
 
-	if (disk->type == GRUB_DISK_WINDISK_ID)
-		windisk_close(disk);
-	else if (disk->type == GRUB_DISK_LOOPBACK_ID)
-		loopback_close(disk);
+	if (disk->dev && disk->dev->disk_close)
+		(disk->dev->disk_close) (disk);
 
 	/* Reset the timer.  */
 	grub_last_time = grub_get_time_ms();
@@ -421,32 +425,6 @@ grub_disk_close(grub_disk_t disk)
 	grub_free(disk);
 }
 
-static grub_err_t
-read_by_type(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size, char* buf)
-{
-	switch (disk->type)
-	{
-	case GRUB_DISK_WINDISK_ID:
-		return windisk_read(disk, sector, size, buf);
-	case GRUB_DISK_LOOPBACK_ID:
-		return loopback_read(disk, sector, size, buf);
-	}
-	return grub_error(GRUB_ERR_UNKNOWN_DEVICE, "unknown device");
-}
-
-static grub_err_t
-write_by_type(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size, const char* buf)
-{
-	switch (disk->type)
-	{
-	case GRUB_DISK_WINDISK_ID:
-		return windisk_write(disk, sector, size, buf);
-	case GRUB_DISK_LOOPBACK_ID:
-		return loopback_write(disk, sector, size, buf);
-	}
-	return grub_error(GRUB_ERR_UNKNOWN_DEVICE, "unknown device");
-}
-
 /* Small read (less than cache size and not pass across cache unit boundaries).
    sector is already adjusted and is divisible by cache unit size.
  */
@@ -458,12 +436,12 @@ grub_disk_read_small_real(grub_disk_t disk, grub_disk_addr_t sector,
 	char* tmp_buf;
 
 	/* Fetch the cache.  */
-	data = grub_disk_cache_fetch(disk->type, disk->id, sector);
+	data = grub_disk_cache_fetch(disk->dev->id, disk->id, sector);
 	if (data)
 	{
 		/* Just copy it!  */
 		grub_memcpy(buf, data + offset, size);
-		grub_disk_cache_unlock(disk->type, disk->id, sector);
+		grub_disk_cache_unlock(disk->dev->id, disk->id, sector);
 		return GRUB_ERR_NONE;
 	}
 
@@ -478,13 +456,13 @@ grub_disk_read_small_real(grub_disk_t disk, grub_disk_addr_t sector,
 		< (disk->total_sectors << (disk->log_sector_size - GRUB_DISK_SECTOR_BITS)))
 	{
 		grub_err_t err;
-		err = read_by_type (disk, transform_sector(disk, sector),
+		err = disk->dev->disk_read(disk, transform_sector(disk, sector),
 			1ULL << (GRUB_DISK_CACHE_BITS + GRUB_DISK_SECTOR_BITS - disk->log_sector_size), tmp_buf);
 		if (!err)
 		{
 			/* Copy it and store it in the disk cache.  */
 			grub_memcpy(buf, tmp_buf + offset, size);
-			grub_disk_cache_store(disk->type, disk->id,
+			grub_disk_cache_store(disk->dev->id, disk->id,
 				sector, tmp_buf);
 			grub_free(tmp_buf);
 			return GRUB_ERR_NONE;
@@ -512,7 +490,7 @@ grub_disk_read_small_real(grub_disk_t disk, grub_disk_addr_t sector,
 		if (!tmp_buf)
 			return grub_errno;
 
-		if (read_by_type (disk, transform_sector(disk, aligned_sector),
+		if (disk->dev->disk_read(disk, transform_sector(disk, aligned_sector),
 			num, tmp_buf))
 		{
 			grub_error_push();
@@ -596,7 +574,7 @@ grub_disk_read(grub_disk_t disk, grub_disk_addr_t sector,
 			&& agglomerate < disk->max_agglomerate;
 			agglomerate++)
 		{
-			data = grub_disk_cache_fetch(disk->type, disk->id,
+			data = grub_disk_cache_fetch(disk->dev->id, disk->id,
 				sector + (agglomerate
 					<< GRUB_DISK_CACHE_BITS));
 			if (data)
@@ -609,7 +587,7 @@ grub_disk_read(grub_disk_t disk, grub_disk_addr_t sector,
 				+ (agglomerate << (GRUB_DISK_CACHE_BITS
 					+ GRUB_DISK_SECTOR_BITS)),
 				data, GRUB_DISK_CACHE_SIZE << GRUB_DISK_SECTOR_BITS);
-			grub_disk_cache_unlock(disk->type, disk->id,
+			grub_disk_cache_unlock(disk->dev->id, disk->id,
 				sector + (agglomerate
 					<< GRUB_DISK_CACHE_BITS));
 		}
@@ -618,7 +596,7 @@ grub_disk_read(grub_disk_t disk, grub_disk_addr_t sector,
 		{
 			grub_disk_addr_t i;
 
-			err = read_by_type (disk, transform_sector(disk, sector),
+			err = disk->dev->disk_read(disk, transform_sector(disk, sector),
 				agglomerate << (GRUB_DISK_CACHE_BITS
 					+ GRUB_DISK_SECTOR_BITS
 					- disk->log_sector_size),
@@ -627,7 +605,7 @@ grub_disk_read(grub_disk_t disk, grub_disk_addr_t sector,
 				return err;
 
 			for (i = 0; i < agglomerate; i++)
-				grub_disk_cache_store(disk->type, disk->id,
+				grub_disk_cache_store(disk->dev->id, disk->id,
 					sector + (i << GRUB_DISK_CACHE_BITS),
 					(char*)buf
 					+ (i << (GRUB_DISK_CACHE_BITS
@@ -716,9 +694,9 @@ grub_disk_write(grub_disk_t disk, grub_disk_addr_t sector,
 
 			grub_memcpy(tmp_buf + real_offset, buf, len);
 
-			grub_disk_cache_invalidate(disk->type, disk->id, sector);
+			grub_disk_cache_invalidate(disk->dev->id, disk->id, sector);
 
-			if (write_by_type (disk, transform_sector(disk, sector),
+			if (disk->dev->disk_write(disk, transform_sector(disk, sector),
 				1, tmp_buf) != GRUB_ERR_NONE)
 			{
 				grub_free(tmp_buf);
@@ -747,13 +725,13 @@ grub_disk_write(grub_disk_t disk, grub_disk_addr_t sector,
 					<< (GRUB_DISK_CACHE_BITS + GRUB_DISK_SECTOR_BITS
 						- disk->log_sector_size));
 
-			if (write_by_type (disk, transform_sector(disk, sector),
+			if (disk->dev->disk_write(disk, transform_sector(disk, sector),
 				n, buf) != GRUB_ERR_NONE)
 				goto finish;
 
 			while (n--)
 			{
-				grub_disk_cache_invalidate(disk->type, disk->id, sector);
+				grub_disk_cache_invalidate(disk->dev->id, disk->id, sector);
 				sector += (1ULL << (disk->log_sector_size - GRUB_DISK_SECTOR_BITS));
 			}
 
@@ -778,4 +756,9 @@ grub_disk_native_sectors(grub_disk_t disk)
 		return GRUB_DISK_SIZE_UNKNOWN;
 }
 
-
+void
+grub_disk_dev_init(void)
+{
+	grub_disk_dev_register(&grub_loopback_dev);
+	grub_disk_dev_register(&grub_windisk_dev);
+}

@@ -55,6 +55,7 @@ loopback_add(const char* name)
 	file = grub_file_open(name, GRUB_FILE_TYPE_LOOPBACK);
 	if (!file)
 		return grub_errno;
+	grub_dprintf("loop", "file %s size %llu fs %s\n", file->name, file->size, file->fs->name);
 
 	/* Unable to replace it, make a new entry.  */
 	newdev = grub_zalloc(sizeof(struct grub_loopback));
@@ -84,7 +85,7 @@ fail:
 	return ret;
 }
 
-int
+static int
 loopback_iterate(grub_disk_iterate_hook_t hook, void* hook_data)
 {
 	struct grub_loopback* d;
@@ -96,10 +97,13 @@ loopback_iterate(grub_disk_iterate_hook_t hook, void* hook_data)
 	return 0;
 }
 
-grub_err_t
+static grub_err_t
 loopback_open(const char* name, grub_disk_t disk)
 {
 	struct grub_loopback* dev;
+
+	if (name[0] != 'l' || name[1] != 'd' || !grub_isdigit(name[2]))
+		return grub_error(GRUB_ERR_UNKNOWN_DEVICE, "not a loopback disk");
 
 	for (dev = loopback_list; dev; dev = dev->next)
 		if (grub_strcmp(dev->devname, name) == 0)
@@ -116,8 +120,6 @@ loopback_open(const char* name, grub_disk_t disk)
 	/* Avoid reading more than 512M.  */
 	disk->max_agglomerate = 1 << (29 - GRUB_DISK_SECTOR_BITS - GRUB_DISK_CACHE_BITS);
 
-	disk->type = GRUB_DISK_LOOPBACK_ID;
-
 	disk->id = dev->id;
 
 	disk->data = dev;
@@ -125,13 +127,13 @@ loopback_open(const char* name, grub_disk_t disk)
 	return 0;
 }
 
-void
+static void
 loopback_close(struct grub_disk* disk)
 {
 	(void)disk;
 }
 
-grub_err_t
+static grub_err_t
 loopback_read(grub_disk_t disk, grub_disk_addr_t sector, grub_size_t size, char* buf)
 {
 	grub_file_t file = ((struct grub_loopback*)disk->data)->file;
@@ -155,7 +157,7 @@ loopback_read(grub_disk_t disk, grub_disk_addr_t sector, grub_size_t size, char*
 	return 0;
 }
 
-grub_err_t
+static grub_err_t
 loopback_write(grub_disk_t disk, grub_disk_addr_t sector, grub_size_t size, const char* buf)
 {
 	(void)disk;
@@ -164,3 +166,15 @@ loopback_write(grub_disk_t disk, grub_disk_addr_t sector, grub_size_t size, cons
 	(void)buf;
 	return grub_error(GRUB_ERR_NOT_IMPLEMENTED_YET, "loopback write is not supported");
 }
+
+struct grub_disk_dev grub_loopback_dev =
+{
+  .name = "loopback",
+  .id = GRUB_DISK_LOOPBACK_ID,
+  .disk_iterate = loopback_iterate,
+  .disk_open = loopback_open,
+  .disk_close = loopback_close,
+  .disk_read = loopback_read,
+  .disk_write = loopback_write,
+  .next = 0
+};

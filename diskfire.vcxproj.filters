@@ -63,9 +63,6 @@
     <Filter Include="源文件\minilzo">
       <UniqueIdentifier>{9020e711-bb49-43b9-a948-92bc3fb88109}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\lzma_sdk">
-      <UniqueIdentifier>{ae7b37ab-1a92-4dbb-a817-d82c2e35aa54}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\zstd">
       <UniqueIdentifier>{ce86f4bb-6911-4628-a4f6-dba4a94f3420}</UniqueIdentifier>
     </Filter>
@@ -203,12 +200,6 @@
       <Filter>源文件\压缩</Filter>
     </ClCompile>
     <ClCompile Include="io\vhdio.c">
-      <Filter>源文件\压缩</Filter>
-    </ClCompile>
-    <ClCompile Include="lzmasdk\LzmaDec.c">
-      <Filter>源文件\lzma_sdk</Filter>
-    </ClCompile>
-    <ClCompile Include="io\lzmaio.c">
       <Filter>源文件\压缩</Filter>
     </ClCompile>
     <ClCompile Include="commands\probe.c">
@@ -426,12 +417,6 @@
     </ClInclude>
     <ClInclude Include="minilzo\minilzo.h">
       <Filter>源文件\minilzo</Filter>
-    </ClInclude>
-    <ClInclude Include="lzmasdk\LzmaDec.h">
-      <Filter>源文件\lzma_sdk</Filter>
-    </ClInclude>
-    <ClInclude Include="lzmasdk\LzmaTypes.h">
-      <Filter>源文件\lzma_sdk</Filter>
     </ClInclude>
     <ClInclude Include="include\deflate.h">
       <Filter>头文件</Filter>
