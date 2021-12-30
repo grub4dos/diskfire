@@ -6,9 +6,21 @@
 #include "partition.h"
 #include "file.h"
 #include "br.h"
+#include "command.h"
 
 PHY_DRIVE_INFO* gDriveList = NULL;
 DWORD gDriveCount = 0;
+
+static char* build_date(grub_size_t* sz)
+{
+	*sz = sizeof(__DATE__);
+	return grub_strdup(__DATE__);
+}
+
+static void procfs_init(void)
+{
+	proc_add("build_date", build_date);
+}
 
 int main(int argc, char *argv[])
 {
@@ -27,6 +39,7 @@ int main(int argc, char *argv[])
 		grub_error(GRUB_ERR_UNKNOWN_DEVICE, "could not get drive info list\n");
 		goto fini;
 	}
+	procfs_init();
 	grub_disk_dev_init();
 	grub_command_init();
 	grub_file_filter_init();
