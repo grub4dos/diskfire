@@ -122,6 +122,7 @@
     <ClCompile Include="br\mbr_syslinux.c" />
     <ClCompile Include="br\mbr_ultraiso.c" />
     <ClCompile Include="br\mbr_ventoy.c" />
+    <ClCompile Include="br\mbr_wee.c" />
     <ClCompile Include="br\mbr_xorboot.c" />
     <ClCompile Include="command.c" />
     <ClCompile Include="commands\bin2c.c" />
@@ -231,6 +232,7 @@
     <ClInclude Include="br\mbr_syslinux.h" />
     <ClInclude Include="br\mbr_syslinux_gpt.h" />
     <ClInclude Include="br\mbr_ultraiso.h" />
+    <ClInclude Include="br\mbr_wee.h" />
     <ClInclude Include="crypto\gcry_wrap.h" />
     <ClInclude Include="fs\btrfs.h" />
     <ClInclude Include="fs\exfat.h" />

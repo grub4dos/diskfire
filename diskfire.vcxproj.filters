@@ -331,6 +331,9 @@
     <ClCompile Include="br\mbr_syslinux.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
+    <ClCompile Include="br\mbr_wee.c">
+      <Filter>源文件\引导记录</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -504,6 +507,9 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="br\mbr_wee.h">
+      <Filter>头文件\引导记录</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

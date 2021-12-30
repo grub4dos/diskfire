@@ -20,13 +20,13 @@ mbr_print_info(grub_disk_t disk)
 }
 
 static grub_err_t
-mbr_install(grub_disk_t disk, const char* mbr)
+mbr_install(grub_disk_t disk, const char* mbr, char *options)
 {
 	grub_br_t br = NULL;
 	br = grub_br_find(mbr);
 	if (!br)
 		return grub_error(GRUB_ERR_BAD_ARGUMENT, "unknown mbr type");
-	return br->install(disk, NULL);		
+	return br->install(disk, options);		
 }
 
 static grub_err_t
@@ -86,6 +86,7 @@ static grub_err_t cmd_mbr(struct grub_command* cmd, int argc, char* argv[])
 	const char* install = NULL;
 	const char* backup = NULL;
 	const char* restore = NULL;
+	char* extra = NULL;
 	grub_disk_addr_t backup_sectors = 1;
 	int keep_part_table = 1;
 	for (i = 0; i < argc; i++)
@@ -101,6 +102,10 @@ static grub_err_t cmd_mbr(struct grub_command* cmd, int argc, char* argv[])
 		else if (grub_strncmp(argv[i], "-i=", 3) == 0)
 		{
 			install = &argv[i][3];
+		}
+		else if (grub_strncmp(argv[i], "-o=", 3) == 0)
+		{
+			extra = &argv[i][3];
 		}
 		else if (grub_strncmp(argv[i], "-b=", 3) == 0)
 		{
@@ -140,7 +145,7 @@ static grub_err_t cmd_mbr(struct grub_command* cmd, int argc, char* argv[])
 		goto fail;
 	}
 	if (install)
-		mbr_install(disk, install);
+		mbr_install(disk, install, extra);
 	else if (backup)
 		mbr_backup(disk, backup, backup_sectors);
 	else if (restore)
@@ -159,6 +164,7 @@ help_mbr(struct grub_command* cmd)
 	grub_printf("%s [OPTIONS] DISK\n", cmd->name);
 	grub_printf("MBR tool.\nOPTIONS:\n");
 	grub_printf("  -i=TYPE      Install MBR to disk.\n");
+	grub_printf("    -o=CMD     Specify extra options for MBR.\n");
 	grub_printf("  TYPES:\n");
 	grub_printf("    EMPTY      Empty MBR\n");
 	grub_printf("    GRUB4DOS   GRUB4DOS MBR\n");
@@ -168,6 +174,8 @@ help_mbr(struct grub_command* cmd)
 	grub_printf("    RUFUS      Rufus MBR\n");
 	grub_printf("    ULTRAISO   UltraISO USB-HDD+ MBR\n");
 	grub_printf("    SYSLINUX   SYSLINUX 6.02 MBR\n");
+	grub_printf("    WEE        WEE63 MBR, extra options:\n");
+	grub_printf("      <MENU>     Import custom WEE menu.\n");
 	grub_printf("  -b=FILE      Backup MBR to FILE.\n");
 	grub_printf("    -s=N       Specify number of sectors to backup.\n");
 	grub_printf("  -r=FILE      Restore MBR from FILE.\n");
