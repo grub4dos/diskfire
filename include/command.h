@@ -51,4 +51,9 @@ loopback_delete(const char* name);
 grub_err_t
 loopback_add(const char* name);
 
+grub_err_t
+proc_add(const char* name, char* (*get_contents) (grub_size_t* sz));
+
+void proc_delete(const char* name);
+
 #endif

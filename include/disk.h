@@ -51,6 +51,7 @@ typedef struct grub_disk_dev* grub_disk_dev_t;
 
 extern grub_disk_dev_t grub_disk_dev_list;
 
+extern struct grub_disk_dev grub_procdisk_dev;
 extern struct grub_disk_dev grub_loopback_dev;
 extern struct grub_disk_dev grub_windisk_dev;
 

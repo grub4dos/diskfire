@@ -324,6 +324,8 @@ list_disk_iter(const char* name, void* data)
 {
 	const char* arg = data;
 	grub_disk_t disk = 0;
+	if (grub_strcmp(name, "proc") == 0)
+		return 0;
 	disk = grub_disk_open(name);
 	if (arg && disk)
 	{

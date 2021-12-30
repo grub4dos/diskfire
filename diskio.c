@@ -759,6 +759,7 @@ grub_disk_native_sectors(grub_disk_t disk)
 void
 grub_disk_dev_init(void)
 {
+	grub_disk_dev_register(&grub_procdisk_dev);
 	grub_disk_dev_register(&grub_loopback_dev);
 	grub_disk_dev_register(&grub_windisk_dev);
 }

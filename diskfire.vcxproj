@@ -151,6 +151,7 @@
     <ClCompile Include="crypto\sha256.c" />
     <ClCompile Include="diskfire.c" />
     <ClCompile Include="disk\loopback.c" />
+    <ClCompile Include="disk\procdisk.c" />
     <ClCompile Include="disk\windisk.c" />
     <ClCompile Include="file.c" />
     <ClCompile Include="fs.c" />
@@ -176,6 +177,7 @@
     <ClCompile Include="fs\jfs.c" />
     <ClCompile Include="fs\newc.c" />
     <ClCompile Include="fs\ntfs.c" />
+    <ClCompile Include="fs\procfs.c" />
     <ClCompile Include="fs\reiserfs.c" />
     <ClCompile Include="fs\squash4.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)minilzo;$(SolutionDir)xzembed</AdditionalIncludeDirectories>

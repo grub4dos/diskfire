@@ -328,6 +328,12 @@
     <ClCompile Include="commands\dd.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="disk\procdisk.c">
+      <Filter>源文件\磁盘设备</Filter>
+    </ClCompile>
+    <ClCompile Include="fs\procfs.c">
+      <Filter>源文件\文件系统</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

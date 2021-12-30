@@ -169,12 +169,12 @@ loopback_write(grub_disk_t disk, grub_disk_addr_t sector, grub_size_t size, cons
 
 struct grub_disk_dev grub_loopback_dev =
 {
-  .name = "loopback",
-  .id = GRUB_DISK_LOOPBACK_ID,
-  .disk_iterate = loopback_iterate,
-  .disk_open = loopback_open,
-  .disk_close = loopback_close,
-  .disk_read = loopback_read,
-  .disk_write = loopback_write,
-  .next = 0
+	.name = "loopback",
+	.id = GRUB_DISK_LOOPBACK_ID,
+	.disk_iterate = loopback_iterate,
+	.disk_open = loopback_open,
+	.disk_close = loopback_close,
+	.disk_read = loopback_read,
+	.disk_write = loopback_write,
+	.next = 0
 };

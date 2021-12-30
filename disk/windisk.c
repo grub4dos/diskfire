@@ -118,12 +118,12 @@ windisk_write(struct grub_disk* disk, grub_disk_addr_t sector, grub_size_t size,
 
 struct grub_disk_dev grub_windisk_dev =
 {
-  .name = "windisk",
-  .id = GRUB_DISK_WINDISK_ID,
-  .disk_iterate = windisk_iterate,
-  .disk_open = windisk_open,
-  .disk_close = windisk_close,
-  .disk_read = windisk_read,
-  .disk_write = windisk_write,
-  .next = 0
+	.name = "windisk",
+	.id = GRUB_DISK_WINDISK_ID,
+	.disk_iterate = windisk_iterate,
+	.disk_open = windisk_open,
+	.disk_close = windisk_close,
+	.disk_read = windisk_read,
+	.disk_write = windisk_write,
+	.next = 0
 };
