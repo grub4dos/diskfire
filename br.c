@@ -3,6 +3,8 @@
 #include "disk.h"
 #include "partition.h"
 #include "br.h"
+#include "command.h"
+#include "file.h"
 
 grub_br_t grub_br_list;
 
@@ -63,6 +65,29 @@ grub_br_probe(grub_disk_t disk)
 			return br;
 	}
 	return NULL;
+}
+
+static
+grub_off_t br_proc_read(struct grub_file* file, void* data, grub_size_t sz)
+{
+	struct grub_procfs_entry* entry = file->data;
+	grub_br_t br = entry->data;
+	if (!br || !br->code || !br->code_size)
+		return 0;
+	if (data)
+		grub_memcpy(data, br->code + file->offset, sz);
+	return br->code_size;
+}
+
+void grub_br_register(grub_br_t br)
+{
+	char proc_name[64];
+	grub_list_push(GRUB_AS_LIST_P(&grub_br_list), GRUB_AS_LIST(br));
+	if (br->code && br->code_size)
+	{
+		grub_snprintf(proc_name, sizeof(proc_name), "%s.mbr", br->name);
+		proc_add(proc_name, br, br_proc_read);
+	}
 }
 
 void grub_br_init(void)

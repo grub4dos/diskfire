@@ -21,7 +21,7 @@ struct grub_br grub_mbr_xorboot =
 {
 	.name = "XORBOOT",
 	.desc = "XorBoot",
-	.bootstrap_code = NULL,
+	.code = NULL,
 	.reserved_sectors = 62,
 	.identify = xorboot_identify,
 	.install = xorboot_install,

@@ -11,15 +11,28 @@
 PHY_DRIVE_INFO* gDriveList = NULL;
 DWORD gDriveCount = 0;
 
-static char* build_date(grub_size_t* sz)
+static
+grub_off_t build_time_read (struct grub_file* file, void* data, grub_size_t sz)
 {
-	*sz = sizeof(__DATE__);
-	return grub_strdup(__DATE__);
+	const char date[] = __DATE__ " " __TIME__;
+	if (data)
+		grub_memcpy(data, date + file->offset, sz);
+	return sizeof(date);
+}
+
+static
+grub_off_t dd_zero_read(struct grub_file* file, void* data, grub_size_t sz)
+{
+	(void)file;
+	if (data)
+		grub_memset(data, 0, sz);
+	return GRUB_FILE_SIZE_UNKNOWN;
 }
 
 static void procfs_init(void)
 {
-	proc_add("build_date", build_date);
+	proc_add("build_time", NULL, build_time_read);
+	proc_add("zero", NULL, dd_zero_read);
 }
 
 int main(int argc, char *argv[])

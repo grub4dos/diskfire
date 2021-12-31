@@ -59,7 +59,8 @@ struct grub_br grub_mbr_wee =
 {
 	.name = "WEE",
 	.desc = "WEE",
-	.bootstrap_code = wee_mbr,
+	.code = wee_mbr,
+	.code_size = sizeof(wee_mbr),
 	.reserved_sectors = (sizeof(wee_mbr) - 1) >> GRUB_DISK_SECTOR_BITS,
 	.identify = wee_identify,
 	.install = wee_install,

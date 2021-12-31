@@ -16,6 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with GRUB.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef _PARTITION_HEADER
 #define _PARTITION_HEADER 1
 

@@ -20,7 +20,7 @@ struct grub_br grub_mbr_ventoy =
 {
 	.name = "VENTOY",
 	.desc = "Ventoy MBR",
-	.bootstrap_code = NULL,
+	.code = NULL,
 	.reserved_sectors = 62,
 	.identify = vt_identify,
 	.install = vt_install,

@@ -32,7 +32,8 @@ struct grub_br grub_mbr_syslinux =
 {
 	.name = "SYSLINUX",
 	.desc = "Syslinux 6.02 MBR",
-	.bootstrap_code = syslinux_mbr,
+	.code = syslinux_mbr,
+	.code_size = sizeof(syslinux_mbr),
 	.reserved_sectors = 0,
 	.identify = syslinux_identify,
 	.install = syslinux_install,

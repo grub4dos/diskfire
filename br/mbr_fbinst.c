@@ -20,7 +20,7 @@ struct grub_br grub_mbr_fbinst =
 {
 	.name = "FBINST",
 	.desc = "Fbinst",
-	.bootstrap_code = NULL,
+	.code = NULL,
 	.reserved_sectors = 0,
 	.identify = fbinst_identify,
 	.install = fbinst_install,

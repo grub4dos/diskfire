@@ -5,3 +5,4 @@
 #define NULL ((void *)0)
 #define FOR_BOOTRECORDS(var) FOR_LIST_ELEMENTS((var), (grub_br_list))
 #define FOR_DISKDEVS(var) FOR_LIST_ELEMENTS((var), (grub_disk_dev_list))
+#define GRUB_FILE_SIZE_UNKNOWN

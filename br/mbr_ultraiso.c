@@ -19,7 +19,8 @@ struct grub_br grub_mbr_ultraiso =
 {
 	.name = "ULTRAISO",
 	.desc = "UltraISO USB-HDD+",
-	.bootstrap_code = ultraiso_hdd,
+	.code = ultraiso_hdd,
+	.code_size = sizeof(ultraiso_hdd),
 	.reserved_sectors = 0,
 	.identify = ultraiso_identify,
 	.install = ultraiso_install,

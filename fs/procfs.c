@@ -6,18 +6,11 @@
 #include "command.h"
 #include "archelp.h"
 
-struct grub_procfs_entry
-{
-	struct grub_procfs_entry* next;
-	struct grub_procfs_entry** prev;
-	char* name;
-	char* (*get_contents) (grub_size_t* sz);
-};
-
 static struct grub_procfs_entry* grub_procfs_entries;
 
 grub_err_t
-proc_add(const char* name, char* (*get_contents) (grub_size_t* sz))
+proc_add(const char* name, void* data,
+	grub_off_t (*get_contents) (struct grub_file* file, void* data, grub_size_t sz))
 {
 	struct grub_procfs_entry* entry = grub_zalloc(sizeof(struct grub_procfs_entry));
 	if (!entry)
@@ -29,6 +22,7 @@ proc_add(const char* name, char* (*get_contents) (grub_size_t* sz))
 		grub_free(entry);
 		return grub_error(GRUB_ERR_OUT_OF_MEMORY, "out of memory");
 	}
+	entry->data = data;
 	entry->get_contents = get_contents;
 	grub_list_push(GRUB_AS_LIST_P(&grub_procfs_entries), GRUB_AS_LIST(entry));
 	return GRUB_ERR_NONE;
@@ -83,21 +77,15 @@ static struct grub_archelp_ops arcops =
 static grub_ssize_t
 grub_procfs_read(grub_file_t file, char* buf, grub_size_t len)
 {
-	char* data = file->data;
-
-	grub_memcpy(buf, data + file->offset, len);
-
+	struct grub_procfs_entry* entry = file->data;
+	entry->get_contents(file, buf, len);
 	return len;
 }
 
 static grub_err_t
 grub_procfs_close(grub_file_t file)
 {
-	char* data;
-
-	data = file->data;
-	grub_free(data);
-
+	(void)file;
 	return GRUB_ERR_NONE;
 }
 
@@ -122,17 +110,16 @@ grub_procfs_open(struct grub_file* file, const char* path)
 {
 	grub_err_t err;
 	struct grub_archelp_data data;
-	grub_size_t sz;
 
 	grub_procfs_rewind(&data);
 
 	err = grub_archelp_open(&data, &arcops, path);
 	if (err)
 		return err;
-	file->data = data.entry->get_contents(&sz);
+	file->data = data.entry;
 	if (!file->data)
 		return grub_errno;
-	file->size = sz;
+	file->size = data.entry->get_contents(file, NULL, 0);
 	return GRUB_ERR_NONE;
 }
 

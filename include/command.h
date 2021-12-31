@@ -5,6 +5,7 @@
 
 #include "compat.h"
 
+struct grub_file;
 struct grub_command;
 
 typedef grub_err_t(*grub_command_func_t) (struct grub_command* cmd, int argc, char* argv[]);
@@ -52,8 +53,18 @@ loopback_delete(const char* name);
 grub_err_t
 loopback_add(const char* name);
 
+struct grub_procfs_entry
+{
+	struct grub_procfs_entry* next;
+	struct grub_procfs_entry** prev;
+	char* name;
+	void* data;
+	grub_off_t(*get_contents) (struct grub_file* file, void* data, grub_size_t sz);
+};
+
 grub_err_t
-proc_add(const char* name, char* (*get_contents) (grub_size_t* sz));
+proc_add(const char* name, void* data,
+	grub_off_t(*get_contents) (struct grub_file *file, void* data, grub_size_t sz));
 
 void proc_delete(const char* name);
 

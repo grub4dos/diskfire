@@ -19,7 +19,8 @@ struct grub_br grub_mbr_rufus =
 {
 	.name = "RUFUS",
 	.desc = "Rufus Custom MBR",
-	.bootstrap_code = rufus_mbr,
+	.code = rufus_mbr,
+	.code_size = sizeof(rufus_mbr),
 	.reserved_sectors = 0,
 	.identify = rufus_identify,
 	.install = rufus_install,

@@ -12,7 +12,8 @@ struct grub_br
 	struct grub_br** prev;
 	const char* name;
 	const char* desc;
-	const grub_uint8_t* bootstrap_code;
+	const grub_uint8_t* code;
+	grub_size_t code_size;
 	grub_disk_addr_t reserved_sectors;
 	int (*identify) (grub_uint8_t *sector);
 	grub_err_t(*install) (grub_disk_t disk, void* options);
@@ -21,11 +22,7 @@ typedef struct grub_br* grub_br_t;
 
 extern grub_br_t grub_br_list;
 
-static inline void
-grub_br_register(grub_br_t br)
-{
-	grub_list_push(GRUB_AS_LIST_P(&grub_br_list), GRUB_AS_LIST(br));
-}
+void grub_br_register(grub_br_t br);
 
 static inline void
 grub_br_unregister(grub_br_t br)

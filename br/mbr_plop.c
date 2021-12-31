@@ -20,7 +20,7 @@ struct grub_br grub_mbr_plop =
 {
 	.name = "PLOP",
 	.desc = "PLoP Boot Manager",
-	.bootstrap_code = NULL,
+	.code = NULL,
 	.reserved_sectors = 62,
 	.identify = plop_identify,
 	.install = plop_install,

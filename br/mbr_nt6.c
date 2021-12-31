@@ -19,7 +19,8 @@ struct grub_br grub_mbr_nt6 =
 {
 	.name = "NT6",
 	.desc = "Windows NT 6.x MBR",
-	.bootstrap_code = nt6_mbr,
+	.code = nt6_mbr,
+	.code_size = sizeof(nt6_mbr),
 	.reserved_sectors = 0,
 	.identify = nt6_identify,
 	.install = nt6_install,

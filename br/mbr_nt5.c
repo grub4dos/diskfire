@@ -19,7 +19,8 @@ struct grub_br grub_mbr_nt5 =
 {
 	.name = "NT5",
 	.desc = "Windows NT 5.x MBR",
-	.bootstrap_code = nt5_mbr,
+	.code = nt5_mbr,
+	.code_size = sizeof(nt5_mbr),
 	.reserved_sectors = 0,
 	.identify = nt5_identify,
 	.install = nt5_install,

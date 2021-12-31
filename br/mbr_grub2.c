@@ -20,7 +20,7 @@ struct grub_br grub_mbr_grub2 =
 {
 	.name = "GRUB2",
 	.desc = "GNU GRUB 2 MBR",
-	.bootstrap_code = NULL,
+	.code = NULL,
 	.reserved_sectors = 62,
 	.identify = grub2_identify,
 	.install = grub2_install,

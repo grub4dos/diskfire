@@ -19,7 +19,8 @@ struct grub_br grub_mbr_empty =
 {
 	.name = "EMPTY",
 	.desc = "EMPTY MBR",
-	.bootstrap_code = empty_mbr,
+	.code = empty_mbr,
+	.code_size = sizeof(empty_mbr),
 	.reserved_sectors = 0,
 	.identify = empty_identify,
 	.install = empty_install,
