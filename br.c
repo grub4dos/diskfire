@@ -5,6 +5,8 @@
 #include "br.h"
 #include "command.h"
 #include "file.h"
+#include "fat.h"
+#include "exfat.h"
 
 grub_br_t grub_br_list;
 
@@ -90,6 +92,75 @@ void grub_br_register(grub_br_t br)
 	}
 }
 
+struct grub_fat_data
+{
+	int logical_sector_bits;
+	grub_uint32_t num_sectors;
+	grub_uint32_t fat_sector;
+	grub_uint32_t sectors_per_fat;
+	int fat_size;
+	grub_uint32_t root_cluster;
+	grub_uint32_t root_sector;
+	grub_uint32_t num_root_sectors;
+	int cluster_bits;
+	grub_uint32_t cluster_eof_mark;
+	grub_uint32_t cluster_sector;
+	grub_uint32_t num_clusters;
+	grub_uint32_t uuid;
+};
+
+const char*
+grub_br_get_fs_type(grub_disk_t disk)
+{
+	int fat_size = 0;
+	struct grub_fat_data* data;
+	grub_fs_t fs = grub_fs_probe(disk);
+	if (!fs)
+		return "unknown";
+	if (grub_strcmp(fs->name, "fat") != 0)
+		return fs->name;
+	data = grub_fat_mount(disk);
+	if (data)
+	{
+		fat_size = data->fat_size;
+		grub_free(data);
+	}
+	switch (fat_size)
+	{
+	case 12: return "fat12";
+	case 16: return "fat16";
+	case 32: return "fat32";
+	}
+	return "error";
+}
+
+grub_disk_addr_t
+grub_br_get_fs_reserved_sectors(grub_disk_t disk)
+{
+	grub_disk_addr_t reserved = 0;
+	grub_uint8_t vbr[GRUB_DISK_SECTOR_SIZE];
+	const char* fs_name = grub_br_get_fs_type(disk);
+	grub_errno = GRUB_ERR_NONE;
+	if (!fs_name)
+		goto out;
+	if (grub_disk_read(disk, 0, 0, GRUB_DISK_SECTOR_SIZE, vbr))
+		goto out;
+	if (grub_strncmp(fs_name, "fat", 3) == 0)
+	{
+		struct grub_fat_bpb* bpb = (void*)vbr;
+		reserved = bpb->num_reserved_sectors;
+	}
+	else if (grub_strcmp(fs_name, "exfat") == 0)
+	{
+		struct grub_exfat_bpb* bpb = (void*)vbr;
+		reserved = bpb->num_reserved_sectors;
+	}
+	else if (grub_strcmp(fs_name, "ntfs") == 0)
+		reserved = 9; // FIXME
+out:
+	return reserved;
+}
+
 void grub_br_init(void)
 {
 	grub_br_register(&grub_mbr_nt6);
@@ -104,4 +175,6 @@ void grub_br_init(void)
 	grub_br_register(&grub_mbr_syslinux);
 	grub_br_register(&grub_mbr_wee);
 	grub_br_register(&grub_mbr_empty);
+
+	grub_br_register(&grub_pbr_grldr);
 }

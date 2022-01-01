@@ -225,7 +225,7 @@ fat_log2(unsigned x)
 }
 #endif
 
-static struct grub_fat_data*
+struct grub_fat_data*
 grub_fat_mount(grub_disk_t disk)
 {
 	grub_current_fat_bpb_t bpb;

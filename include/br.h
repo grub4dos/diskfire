@@ -48,6 +48,12 @@ grub_br_check_data(const grub_uint8_t* data, grub_size_t data_len,
 grub_br_t
 grub_br_probe(grub_disk_t disk);
 
+const char*
+grub_br_get_fs_type(grub_disk_t disk);
+
+grub_disk_addr_t
+grub_br_get_fs_reserved_sectors(grub_disk_t disk);
+
 void grub_br_init(void);
 
 extern struct grub_br grub_mbr_nt6;
@@ -62,5 +68,7 @@ extern struct grub_br grub_mbr_ultraiso;
 extern struct grub_br grub_mbr_syslinux;
 extern struct grub_br grub_mbr_wee;
 extern struct grub_br grub_mbr_empty;
+
+extern struct grub_br grub_pbr_grldr;
 
 #endif

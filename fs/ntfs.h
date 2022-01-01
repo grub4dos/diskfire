@@ -16,6 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with GRUB.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef _NTFS_HEADER
 #define _NTFS_HEADER 1
 
@@ -126,8 +127,8 @@ struct grub_ntfs_bpb
 	grub_int8_t reserved_5[3];
 	grub_int8_t clusters_per_index;
 	grub_int8_t reserved_6[3];
-	grub_uint64_t num_serial;
-	grub_uint32_t checksum;
+	grub_uint64_t num_serial; /* 0x48 */
+	grub_uint32_t checksum; /* 0x50 */
 };
 PRAGMA_END_PACKED
 

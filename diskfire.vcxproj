@@ -110,7 +110,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="archelp.c" />
-    <ClCompile Include="br.c" />
+    <ClCompile Include="br.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)fs</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)fs</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="br\mbr_empty.c" />
     <ClCompile Include="br\mbr_fbinst.c" />
     <ClCompile Include="br\mbr_grldr.c" />
@@ -124,6 +127,7 @@
     <ClCompile Include="br\mbr_ventoy.c" />
     <ClCompile Include="br\mbr_wee.c" />
     <ClCompile Include="br\mbr_xorboot.c" />
+    <ClCompile Include="br\pbr_grldr.c" />
     <ClCompile Include="command.c" />
     <ClCompile Include="commands\bin2c.c" />
     <ClCompile Include="commands\blocklist.c" />
@@ -135,6 +139,10 @@
     <ClCompile Include="commands\mbr.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)partmap</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)partmap</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="commands\pbr.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)fs</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)fs</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="commands\probe.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)partmap</AdditionalIncludeDirectories>
@@ -232,9 +240,11 @@
     <ClInclude Include="br\mbr_syslinux_gpt.h" />
     <ClInclude Include="br\mbr_ultraiso.h" />
     <ClInclude Include="br\mbr_wee.h" />
+    <ClInclude Include="br\pbr_grldr.h" />
     <ClInclude Include="crypto\gcry_wrap.h" />
     <ClInclude Include="fs\btrfs.h" />
     <ClInclude Include="fs\exfat.h" />
+    <ClInclude Include="fs\ext2.h" />
     <ClInclude Include="fs\fat.h" />
     <ClInclude Include="fs\fbfs.h" />
     <ClInclude Include="fs\hfs.h" />

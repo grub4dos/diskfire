@@ -78,20 +78,20 @@
 #define EXT2_FEATURE_COMPAT_EXT_ATTR		0x0008
 #define EXT2_FEATURE_COMPAT_RESIZE_INODE	0x0010
 #define EXT2_FEATURE_COMPAT_DIR_INDEX		0x0020
- /* Superblock filesystem feature flags (RO compatible)
-  * A filesystem with any of these enabled can be safely read by a driver that
-  * does not understand them, but should not be written to, usually because
-  * additional metadata is required.  */
+/* Superblock filesystem feature flags (RO compatible)
+ * A filesystem with any of these enabled can be safely read by a driver that
+ * does not understand them, but should not be written to, usually because
+ * additional metadata is required.  */
 #define EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER	0x0001
 #define EXT2_FEATURE_RO_COMPAT_LARGE_FILE	0x0002
 #define EXT2_FEATURE_RO_COMPAT_BTREE_DIR	0x0004
 #define EXT4_FEATURE_RO_COMPAT_GDT_CSUM		0x0010
 #define EXT4_FEATURE_RO_COMPAT_DIR_NLINK	0x0020
 #define EXT4_FEATURE_RO_COMPAT_EXTRA_ISIZE	0x0040
-  /* Superblock filesystem feature flags (back-incompatible)
-   * A filesystem with any of these enabled should not be attempted to be read
-   * by a driver that does not understand them, since they usually indicate
-   * metadata format changes that might confuse the reader.  */
+/* Superblock filesystem feature flags (back-incompatible)
+ * A filesystem with any of these enabled should not be attempted to be read
+ * by a driver that does not understand them, since they usually indicate
+ * metadata format changes that might confuse the reader.  */
 #define EXT2_FEATURE_INCOMPAT_COMPRESSION	0x0001
 #define EXT2_FEATURE_INCOMPAT_FILETYPE		0x0002
 #define EXT3_FEATURE_INCOMPAT_RECOVER		0x0004 /* Needs recovery */
@@ -104,30 +104,30 @@
 #define EXT4_FEATURE_INCOMPAT_CSUM_SEED		0x2000
 #define EXT4_FEATURE_INCOMPAT_ENCRYPT          0x10000
 
-   /* The set of back-incompatible features this driver DOES support. Add (OR)
-	* flags here as the related features are implemented into the driver.  */
+/* The set of back-incompatible features this driver DOES support. Add (OR)
+ * flags here as the related features are implemented into the driver.  */
 #define EXT2_DRIVER_SUPPORTED_INCOMPAT ( EXT2_FEATURE_INCOMPAT_FILETYPE \
 									   | EXT4_FEATURE_INCOMPAT_EXTENTS  \
 									   | EXT4_FEATURE_INCOMPAT_FLEX_BG \
 									   | EXT2_FEATURE_INCOMPAT_META_BG \
 									   | EXT4_FEATURE_INCOMPAT_64BIT \
 									   | EXT4_FEATURE_INCOMPAT_ENCRYPT)
-	/* List of rationales for the ignored "incompatible" features:
-	 * needs_recovery: Not really back-incompatible - was added as such to forbid
-	 *                 ext2 drivers from mounting an ext3 volume with a dirty
-	 *                 journal because they will ignore the journal, but the next
-	 *                 ext3 driver to mount the volume will find the journal and
-	 *                 replay it, potentially corrupting the metadata written by
-	 *                 the ext2 drivers. Safe to ignore for this RO driver.
-	 * mmp:            Not really back-incompatible - was added as such to
-	 *                 avoid multiple read-write mounts. Safe to ignore for this
-	 *                 RO driver.
-	 * checksum seed:  Not really back-incompatible - was added to allow tools
-	 *                 such as tune2fs to change the UUID on a mounted metadata
-	 *                 checksummed filesystem. Safe to ignore for now since the
-	 *                 driver doesn't support checksum verification. However, it
-	 *                 has to be removed from this list if the support is added later.
-	 */
+/* List of rationales for the ignored "incompatible" features:
+ * needs_recovery: Not really back-incompatible - was added as such to forbid
+ *                 ext2 drivers from mounting an ext3 volume with a dirty
+ *                 journal because they will ignore the journal, but the next
+ *                 ext3 driver to mount the volume will find the journal and
+ *                 replay it, potentially corrupting the metadata written by
+ *                 the ext2 drivers. Safe to ignore for this RO driver.
+ * mmp:            Not really back-incompatible - was added as such to
+ *                 avoid multiple read-write mounts. Safe to ignore for this
+ *                 RO driver.
+ * checksum seed:  Not really back-incompatible - was added to allow tools
+ *                 such as tune2fs to change the UUID on a mounted metadata
+ *                 checksummed filesystem. Safe to ignore for now since the
+ *                 driver doesn't support checksum verification. However, it
+ *                 has to be removed from this list if the support is added later.
+ */
 #define EXT2_DRIVER_IGNORED_INCOMPAT ( EXT3_FEATURE_INCOMPAT_RECOVER \
 					 | EXT4_FEATURE_INCOMPAT_MMP \
 					 | EXT4_FEATURE_INCOMPAT_CSUM_SEED)
@@ -148,60 +148,7 @@
 #define EXT4_ENCRYPT_FLAG              0x800
 #define EXT4_EXTENTS_FLAG		0x80000
 
-	 /* The ext2 superblock.  */
-struct grub_ext2_sblock
-{
-	grub_uint32_t total_inodes;
-	grub_uint32_t total_blocks;
-	grub_uint32_t reserved_blocks;
-	grub_uint32_t free_blocks;
-	grub_uint32_t free_inodes;
-	grub_uint32_t first_data_block;
-	grub_uint32_t log2_block_size;
-	grub_uint32_t log2_fragment_size;
-	grub_uint32_t blocks_per_group;
-	grub_uint32_t fragments_per_group;
-	grub_uint32_t inodes_per_group;
-	grub_uint32_t mtime;
-	grub_uint32_t utime;
-	grub_uint16_t mnt_count;
-	grub_uint16_t max_mnt_count;
-	grub_uint16_t magic;
-	grub_uint16_t fs_state;
-	grub_uint16_t error_handling;
-	grub_uint16_t minor_revision_level;
-	grub_uint32_t lastcheck;
-	grub_uint32_t checkinterval;
-	grub_uint32_t creator_os;
-	grub_uint32_t revision_level;
-	grub_uint16_t uid_reserved;
-	grub_uint16_t gid_reserved;
-	grub_uint32_t first_inode;
-	grub_uint16_t inode_size;
-	grub_uint16_t block_group_number;
-	grub_uint32_t feature_compatibility;
-	grub_uint32_t feature_incompat;
-	grub_uint32_t feature_ro_compat;
-	grub_uint16_t uuid[8];
-	char volume_name[16];
-	char last_mounted_on[64];
-	grub_uint32_t compression_info;
-	grub_uint8_t prealloc_blocks;
-	grub_uint8_t prealloc_dir_blocks;
-	grub_uint16_t reserved_gdt_blocks;
-	grub_uint8_t journal_uuid[16];
-	grub_uint32_t journal_inum;
-	grub_uint32_t journal_dev;
-	grub_uint32_t last_orphan;
-	grub_uint32_t hash_seed[4];
-	grub_uint8_t def_hash_version;
-	grub_uint8_t jnl_backup_type;
-	grub_uint16_t group_desc_size;
-	grub_uint32_t default_mount_opts;
-	grub_uint32_t first_meta_bg;
-	grub_uint32_t mkfs_time;
-	grub_uint32_t jnl_blocks[17];
-};
+#include "ext2.h"
 
 /* The ext2 blockgroup.  */
 struct grub_ext2_block_group

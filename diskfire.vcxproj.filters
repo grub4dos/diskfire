@@ -337,6 +337,12 @@
     <ClCompile Include="commands\cat.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="commands\pbr.c">
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
+    <ClCompile Include="br\pbr_grldr.c">
+      <Filter>源文件\引导记录</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -506,6 +512,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="br\mbr_wee.h">
+      <Filter>头文件\引导记录</Filter>
+    </ClInclude>
+    <ClInclude Include="fs\ext2.h">
+      <Filter>头文件\文件系统</Filter>
+    </ClInclude>
+    <ClInclude Include="br\pbr_grldr.h">
       <Filter>头文件\引导记录</Filter>
     </ClInclude>
   </ItemGroup>
