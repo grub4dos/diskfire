@@ -24,30 +24,28 @@ oem_to_str(grub_uint8_t oem_name[8])
 static void
 pbr_print_info(grub_disk_t disk)
 {
-	//grub_br_t br = NULL;
+	grub_br_t br = NULL;
 	grub_uint8_t vbr[GRUB_DISK_SECTOR_SIZE];
 	const char* fs_name = grub_br_get_fs_type(disk);
 	grub_errno = GRUB_ERR_NONE;
 	if (grub_disk_read(disk, 0, 0, GRUB_DISK_SECTOR_SIZE, vbr))
 		return;
 	grub_printf("FS: %s\n", fs_name);
+	grub_printf("Reserved sectors: %llu\n", grub_br_get_fs_reserved_sectors(disk));
 	if (grub_strncmp(fs_name, "fat", 3) == 0)
 	{
 		struct grub_fat_bpb* bpb = (void*)vbr;
 		grub_printf("OEM name: %s\n", oem_to_str(bpb->oem_name));
-		grub_printf("Reserved sectors: %u\n", bpb->num_reserved_sectors);
 	}
 	else if (grub_strcmp(fs_name, "exfat") == 0)
 	{
 		struct grub_exfat_bpb* bpb = (void*)vbr;
 		grub_printf("OEM name: %s\n", oem_to_str(bpb->oem_name));
-		grub_printf("Reserved sectors: %u\n", bpb->num_reserved_sectors);
 	}
 	else if (grub_strcmp(fs_name, "ntfs") == 0)
 	{
 		struct grub_ntfs_bpb* bpb = (void*)vbr;
 		grub_printf("OEM name: %s\n", oem_to_str(bpb->oem_name));
-		grub_printf("Reserved sectors: %llu\n", grub_br_get_fs_reserved_sectors(disk));
 		grub_printf("$MFT cluster number: %llu\n", bpb->mft_lcn);
 	}
 	else if (grub_strcmp(fs_name, "ext") == 0)
@@ -58,6 +56,8 @@ pbr_print_info(grub_disk_t disk)
 		grub_printf("First data block: %u\n", sb.first_data_block);
 		grub_printf("LOG2 block size: %u\n", sb.log2_block_size);
 	}
+	br = grub_br_probe(disk);
+	grub_printf("MBR: %s\n", br ? br->desc : "UNKNOWN");
 }
 
 static grub_err_t
@@ -77,8 +77,7 @@ pbr_install(grub_disk_t disk, const char* pbr, char *options)
 	if (disk->dev->id == GRUB_DISK_WINDISK_ID)
 		hVolList = LockDriveById(disk->id);
 	br->install(disk, options);		
-	if (disk->dev->id == GRUB_DISK_WINDISK_ID)
-		UnlockDrive(hVolList);
+	UnlockDrive(hVolList);
 	return grub_errno;
 }
 
@@ -144,8 +143,7 @@ pbr_restore(grub_disk_t disk, const char* src, int keep)
 			break;
 	}
 	grub_file_close(file);
-	if (disk->dev->id == GRUB_DISK_WINDISK_ID)
-		UnlockDrive(hVolList);
+	UnlockDrive(hVolList);
 	return grub_errno;
 }
 

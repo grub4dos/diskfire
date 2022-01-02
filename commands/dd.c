@@ -121,8 +121,7 @@ cmd_dd(struct grub_command* cmd, int argc, char* argv[])
 	}
 
 fail:
-	if (out->disk->dev->id == GRUB_DISK_WINDISK_ID)
-		UnlockDrive(hVolList);
+	UnlockDrive(hVolList);
 	if (data)
 		grub_free(data);
 	if (in)
