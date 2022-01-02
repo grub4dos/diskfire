@@ -156,8 +156,23 @@ grub_br_get_fs_reserved_sectors(grub_disk_t disk)
 		reserved = bpb->num_reserved_sectors;
 	}
 	else if (grub_strcmp(fs_name, "ntfs") == 0)
-		reserved = 9; // FIXME
+	{
+		grub_file_t file = 0;
+		reserved = 16;
+		file = grub_zalloc(sizeof(struct grub_file));
+		if (!file)
+			goto out;
+		file->disk = disk;
+		if (grub_ntfs_fs.fs_open(file, "/$Boot"))
+			goto out;
+		reserved = file->size >> GRUB_DISK_SECTOR_BITS;
+		grub_ntfs_fs.fs_close(file);
+		grub_free(file);
+	}
+	else if (grub_strcmp(fs_name, "ext") == 0)
+		reserved = 2;
 out:
+	grub_errno = GRUB_ERR_NONE;
 	return reserved;
 }
 

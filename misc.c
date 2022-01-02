@@ -312,3 +312,47 @@ BOOL GetDriveInfoList(PHY_DRIVE_INFO** pDriveList, DWORD* pDriveCount)
 	free(LogLetter);
 	return TRUE;
 }
+
+HANDLE LockDriveByLetter(char Letter)
+{
+	BOOL bRet;
+	HANDLE hVolume = INVALID_HANDLE_VALUE;
+	char PhyPath[] = "\\\\.\\A:";
+	DWORD dwReturn;
+	snprintf(PhyPath, sizeof(PhyPath), "\\\\.\\%C:", Letter);
+	hVolume = CreateFileA(PhyPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+	bRet = DeviceIoControl(hVolume, FSCTL_LOCK_VOLUME, NULL, 0, NULL, 0, &dwReturn, NULL);
+	if (!bRet)
+		CHECK_CLOSE_HANDLE(hVolume);
+	return hVolume;
+}
+
+HANDLE* LockDriveById(DWORD Id)
+{
+	HANDLE* hVolList = NULL;
+	int i;
+	if (Id > gDriveCount || !gDriveList[Id].DriveLetters[0])
+		return NULL;
+	hVolList = grub_calloc(26, sizeof(HANDLE));
+	if (!hVolList)
+		return NULL;
+	for (i = 0; i < 26; i++)
+	{
+		if (!gDriveList[Id].DriveLetters[i])
+			break;
+		hVolList[i] = LockDriveByLetter(gDriveList[Id].DriveLetters[i]);
+	}
+	return hVolList;
+}
+
+void UnlockDrive(HANDLE* hList)
+{
+	int i;
+	if (!hList)
+		return;
+	for (i = 0; i < 26; i++)
+	{
+		CHECK_CLOSE_HANDLE(hList[i]);
+	}
+	grub_free(hList);
+}

@@ -5,6 +5,7 @@
 #include "fs.h"
 #include "partition.h"
 #include "command.h"
+#include "misc.h"
 
 static grub_err_t
 cmd_dd(struct grub_command* cmd, int argc, char* argv[])
@@ -15,6 +16,7 @@ cmd_dd(struct grub_command* cmd, int argc, char* argv[])
 	grub_uint32_t bs = 512;
 	grub_uint64_t count = 0, skip = 0, seek = 0;
 	grub_uint8_t* data = NULL;
+	HANDLE* hVolList = NULL;
 	for (i = 0; i < argc; i++)
 	{
 		if (grub_strncmp(argv[i], "if=", 3) == 0)
@@ -95,6 +97,9 @@ cmd_dd(struct grub_command* cmd, int argc, char* argv[])
 		count = out->size - seek;
 	}
 
+	if (out->disk->dev->id == GRUB_DISK_WINDISK_ID)
+		hVolList = LockDriveById(out->disk->id);
+
 	while (count)
 	{
 		grub_uint32_t copy_bs;
@@ -116,6 +121,8 @@ cmd_dd(struct grub_command* cmd, int argc, char* argv[])
 	}
 
 fail:
+	if (out->disk->dev->id == GRUB_DISK_WINDISK_ID)
+		UnlockDrive(hVolList);
 	if (data)
 		grub_free(data);
 	if (in)

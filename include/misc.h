@@ -40,6 +40,9 @@ HANDLE GetHandleById(DWORD Id);
 BOOL GetDriveByLetter(char Letter, DWORD* pDrive);
 UINT64 GetDriveSize(HANDLE hDisk);
 BOOL GetDriveInfoList(PHY_DRIVE_INFO** pDriveList, DWORD* pDriveCount);
+HANDLE LockDriveByLetter(char Letter);
+HANDLE* LockDriveById(DWORD Id);
+void UnlockDrive(HANDLE* hList);
 
 void SetDebug(const char* cond);
 

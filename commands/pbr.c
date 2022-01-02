@@ -10,6 +10,7 @@
 #include "exfat.h"
 #include "ntfs.h"
 #include "ext2.h"
+#include "misc.h"
 
 static const char*
 oem_to_str(grub_uint8_t oem_name[8])
@@ -46,6 +47,7 @@ pbr_print_info(grub_disk_t disk)
 	{
 		struct grub_ntfs_bpb* bpb = (void*)vbr;
 		grub_printf("OEM name: %s\n", oem_to_str(bpb->oem_name));
+		grub_printf("Reserved sectors: %llu\n", grub_br_get_fs_reserved_sectors(disk));
 		grub_printf("$MFT cluster number: %llu\n", bpb->mft_lcn);
 	}
 	else if (grub_strcmp(fs_name, "ext") == 0)
@@ -61,6 +63,7 @@ pbr_print_info(grub_disk_t disk)
 static grub_err_t
 pbr_install(grub_disk_t disk, const char* pbr, char *options)
 {
+	HANDLE* hVolList = NULL;
 	grub_br_t br = NULL;
 	grub_size_t br_len = grub_strlen(pbr) + 5; // PBR_XXX
 	char* br_name = grub_malloc(br_len);
@@ -71,7 +74,12 @@ pbr_install(grub_disk_t disk, const char* pbr, char *options)
 	grub_free(br_name);
 	if (!br)
 		return grub_error(GRUB_ERR_BAD_ARGUMENT, "unknown pbr type");
-	return br->install(disk, options);		
+	if (disk->dev->id == GRUB_DISK_WINDISK_ID)
+		hVolList = LockDriveById(disk->id);
+	br->install(disk, options);		
+	if (disk->dev->id == GRUB_DISK_WINDISK_ID)
+		UnlockDrive(hVolList);
+	return grub_errno;
 }
 
 static grub_err_t
@@ -106,6 +114,7 @@ pbr_restore(grub_disk_t disk, const char* src, int keep)
 	grub_uint8_t buf[GRUB_DISK_SECTOR_SIZE];
 	const char* fs_name = grub_br_get_fs_type(disk);
 	grub_off_t bpb_length = 0;
+	HANDLE* hVolList = NULL;
 
 	if (grub_strcmp(fs_name, "fat12") == 0 || grub_strcmp(fs_name, "fat16") == 0)
 		bpb_length = 0x3e;
@@ -121,7 +130,8 @@ pbr_restore(grub_disk_t disk, const char* src, int keep)
 	file = grub_file_open(src, GRUB_FILE_TYPE_CAT | GRUB_FILE_TYPE_NO_DECOMPRESS);
 	if (!file)
 		return grub_error(GRUB_ERR_BAD_FILENAME, "can't open %s", src);
-
+	if (disk->dev->id == GRUB_DISK_WINDISK_ID)
+		hVolList = LockDriveById(disk->id);
 	for (i = 0; i << GRUB_DISK_SECTOR_BITS < file->size; i++)
 	{
 		grub_file_read(file, buf, GRUB_DISK_SECTOR_SIZE);
@@ -134,6 +144,8 @@ pbr_restore(grub_disk_t disk, const char* src, int keep)
 			break;
 	}
 	grub_file_close(file);
+	if (disk->dev->id == GRUB_DISK_WINDISK_ID)
+		UnlockDrive(hVolList);
 	return grub_errno;
 }
 
