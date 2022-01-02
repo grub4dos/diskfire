@@ -192,4 +192,6 @@ void grub_br_init(void)
 	grub_br_register(&grub_mbr_empty);
 
 	grub_br_register(&grub_pbr_grldr);
+	grub_br_register(&grub_pbr_ntldr);
+	grub_br_register(&grub_pbr_bootmgr);
 }

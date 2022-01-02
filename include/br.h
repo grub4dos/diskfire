@@ -70,5 +70,7 @@ extern struct grub_br grub_mbr_wee;
 extern struct grub_br grub_mbr_empty;
 
 extern struct grub_br grub_pbr_grldr;
+extern struct grub_br grub_pbr_ntldr;
+extern struct grub_br grub_pbr_bootmgr;
 
 #endif

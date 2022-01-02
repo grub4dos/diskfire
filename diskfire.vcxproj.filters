@@ -343,6 +343,12 @@
     <ClCompile Include="br\pbr_grldr.c">
       <Filter>源文件\引导记录</Filter>
     </ClCompile>
+    <ClCompile Include="br\pbr_ntldr.c">
+      <Filter>源文件\引导记录</Filter>
+    </ClCompile>
+    <ClCompile Include="br\pbr_bootmgr.c">
+      <Filter>源文件\引导记录</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -518,6 +524,12 @@
       <Filter>头文件\文件系统</Filter>
     </ClInclude>
     <ClInclude Include="br\pbr_grldr.h">
+      <Filter>头文件\引导记录</Filter>
+    </ClInclude>
+    <ClInclude Include="br\pbr_bootmgr.h">
+      <Filter>头文件\引导记录</Filter>
+    </ClInclude>
+    <ClInclude Include="br\pbr_ntldr.h">
       <Filter>头文件\引导记录</Filter>
     </ClInclude>
   </ItemGroup>
