@@ -43,6 +43,7 @@ static grub_err_t exfat_install(grub_disk_t disk, grub_uint8_t options[5])
 	grub_disk_write(disk, 0, 0, 3, grldr_exfat); // jmp_boot[3]
 	grub_disk_write(disk, 0, 0x78, 0x400 - 0x78, grldr_exfat + 0x78);
 	grub_disk_write(disk, 0, 0x1e3, 5, options);
+	grub_br_write_exfat_checksum(disk);
 	return grub_errno;
 }
 

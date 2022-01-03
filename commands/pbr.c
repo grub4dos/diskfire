@@ -142,6 +142,8 @@ pbr_restore(grub_disk_t disk, const char* src, int keep)
 		if (grub_errno)
 			break;
 	}
+	if (grub_strcmp(fs_name, "exfat") == 0)
+		grub_br_write_exfat_checksum(disk);
 	grub_file_close(file);
 	UnlockDrive(hVolList);
 	return grub_errno;

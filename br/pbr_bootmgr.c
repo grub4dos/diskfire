@@ -42,6 +42,7 @@ static grub_err_t exfat_install(grub_disk_t disk)
 		return grub_error(GRUB_ERR_BAD_DEVICE, "unsupported reserved sectors");
 	grub_disk_write(disk, 0, 0, 3, bootmgr_exfat); // jmp_boot[3]
 	grub_disk_write(disk, 0, 0x78, 0x600 - 0x78, bootmgr_exfat + 0x78);
+	grub_br_write_exfat_checksum(disk);
 	return grub_errno;
 }
 

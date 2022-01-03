@@ -176,6 +176,52 @@ out:
 	return reserved;
 }
 
+/* Copyright (C) 2020  JPZ4085
+ * Based on fat32.c Copyright (C) 2009  Henrik Carlqvist */
+static uint32_t exfat_boot_checksum(const void* sector, size_t size)
+{
+	size_t i;
+	uint32_t sum = 0;
+	uint32_t block = (uint32_t)size * 11;
+
+	for (i = 0; i < block; i++)
+		/* skip volume_state and allocated_percent fields */
+		if (i != 0x6a && i != 0x6b && i != 0x70)
+			sum = ((sum << 31) | (sum >> 1)) + ((const uint8_t*)sector)[i];
+	return sum;
+}
+
+void grub_br_write_exfat_checksum(grub_disk_t disk)
+{
+	uint32_t checksum = 0;
+	unsigned i;
+
+	grub_uint8_t* vbr_buf = NULL;
+	vbr_buf = grub_calloc(11, GRUB_DISK_SECTOR_SIZE);
+	if (!vbr_buf)
+		return;
+	if (grub_disk_read(disk, 0, 0, 11 << GRUB_DISK_SECTOR_BITS, vbr_buf))
+		goto fail;
+
+	checksum = exfat_boot_checksum(vbr_buf, GRUB_DISK_SECTOR_SIZE);
+	/* Write new main VBR checksum */
+	for (i = 0; i < (GRUB_DISK_SECTOR_SIZE / sizeof(checksum)); i++)
+	{
+		if (grub_disk_write(disk, 11, i * sizeof(checksum), sizeof(checksum), &checksum))
+			break;
+	}
+	/* Write new backup VBR */
+	grub_disk_write(disk, 12, 0, 11 << GRUB_DISK_SECTOR_BITS, vbr_buf);
+	/* Write new backup VBR checksum */
+	for (i = 0; i < (GRUB_DISK_SECTOR_SIZE / sizeof(checksum)); i++)
+	{
+		if (grub_disk_write(disk, 23, i * sizeof(checksum), sizeof(checksum), &checksum))
+			break;
+	}
+fail:
+	grub_free(vbr_buf);
+}
+
 void grub_br_init(void)
 {
 	grub_br_register(&grub_mbr_nt6);

@@ -54,6 +54,8 @@ grub_br_get_fs_type(grub_disk_t disk);
 grub_disk_addr_t
 grub_br_get_fs_reserved_sectors(grub_disk_t disk);
 
+void grub_br_write_exfat_checksum(grub_disk_t disk);
+
 void grub_br_init(void);
 
 extern struct grub_br grub_mbr_nt6;
