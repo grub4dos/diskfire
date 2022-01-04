@@ -4,7 +4,6 @@
 #include "charset.h"
 
 #include "virtdisk.h"
-#include "stdio.h"
 
 static DWORD
 NTOpenVirtualDisk(PVIRTUAL_STORAGE_TYPE VirtualStorageType,
