@@ -45,6 +45,8 @@ extern struct grub_command grub_cmd_mbr;
 extern struct grub_command grub_cmd_pbr;
 extern struct grub_command grub_cmd_dd;
 extern struct grub_command grub_cmd_cat;
+extern struct grub_command grub_cmd_mount;
+extern struct grub_command grub_cmd_umount;
 
 extern struct grub_command grub_cmd_help;
 

@@ -47,6 +47,8 @@ grub_command_init(void)
 	grub_command_register(&grub_cmd_pbr);
 	grub_command_register(&grub_cmd_dd);
 	grub_command_register(&grub_cmd_cat);
+	grub_command_register(&grub_cmd_umount);
+	grub_command_register(&grub_cmd_mount);
 
 	grub_command_register(&grub_cmd_help);
 }
