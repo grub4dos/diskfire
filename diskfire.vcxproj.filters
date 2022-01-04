@@ -352,6 +352,9 @@
     <ClCompile Include="commands\mount.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="efi.c">
+      <Filter>源文件\核心</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

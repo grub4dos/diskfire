@@ -165,6 +165,7 @@
     <ClCompile Include="disk\loopback.c" />
     <ClCompile Include="disk\procdisk.c" />
     <ClCompile Include="disk\windisk.c" />
+    <ClCompile Include="efi.c" />
     <ClCompile Include="file.c" />
     <ClCompile Include="fs.c" />
     <ClCompile Include="fshelp.c" />

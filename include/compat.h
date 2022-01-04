@@ -523,4 +523,18 @@ grub_uint32_t grub_getcrc32c(grub_uint32_t crc, const void* buf, int size);
 grub_uint64_t
 grub_divmod64(grub_uint64_t n, grub_uint64_t d, grub_uint64_t* r);
 
+grub_err_t
+grub_efi_get_variable(const char* var,
+	const char* guid,
+	grub_size_t* datasize_out,
+	void** data_out,
+	grub_uint32_t* attributes);
+
+grub_err_t
+grub_efi_set_variable(const char* var,
+	const char* guid,
+	grub_size_t datasize,
+	void* data,
+	const grub_uint32_t* attributes);
+
 #endif
