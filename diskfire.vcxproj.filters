@@ -355,6 +355,9 @@
     <ClCompile Include="efi.c">
       <Filter>源文件\核心</Filter>
     </ClCompile>
+    <ClCompile Include="commands\fwgetvar.c">
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -537,6 +540,9 @@
     </ClInclude>
     <ClInclude Include="br\pbr_ntldr.h">
       <Filter>头文件\引导记录</Filter>
+    </ClInclude>
+    <ClInclude Include="include\efi.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
