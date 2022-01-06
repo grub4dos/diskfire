@@ -358,6 +358,9 @@
     <ClCompile Include="commands\fwgetvar.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="commands\fwsetvar.c">
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
