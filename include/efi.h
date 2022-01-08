@@ -407,4 +407,39 @@ grub_efi_set_variable(const char* var,
 	void* data,
 	const grub_uint32_t* attributes);
 
+char*
+grub_efi_get_filename(grub_efi_device_path_t* dp0);
+
+grub_efi_device_path_t*
+grub_efi_find_last_device_path(const grub_efi_device_path_t* dp);
+
+grub_efi_device_path_t*
+grub_efi_duplicate_device_path(const grub_efi_device_path_t* dp);
+
+int
+grub_efi_compare_device_paths(const grub_efi_device_path_t* dp1,
+	const grub_efi_device_path_t* dp2);
+
+grub_efi_device_path_t*
+grub_efi_file_device_path(grub_efi_device_path_t* dp, const char* filename);
+
+grub_efi_uintn_t
+grub_efi_get_dp_size(const grub_efi_device_path_t* dp);
+
+grub_efi_device_path_t*
+grub_efi_create_device_node(grub_efi_uint8_t node_type, grub_efi_uintn_t node_subtype,
+	grub_efi_uint16_t node_length);
+
+grub_efi_device_path_t*
+grub_efi_append_device_path(const grub_efi_device_path_t* dp1,
+	const grub_efi_device_path_t* dp2);
+
+grub_efi_device_path_t*
+grub_efi_append_device_node(const grub_efi_device_path_t* device_path,
+	const grub_efi_device_path_t* device_node);
+
+int
+grub_efi_is_child_dp(const grub_efi_device_path_t* child,
+	const grub_efi_device_path_t* parent);
+
 #endif
