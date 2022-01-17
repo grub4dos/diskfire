@@ -3,6 +3,9 @@
 #include "compat.h"
 #include "charset.h"
 #include "efi.h"
+#include "disk.h"
+#include "partition.h"
+#include "file.h"
 
 static DWORD
 NTGetFirmwareEnvironmentVariable(LPCSTR lpName, LPCSTR lpGuid, PVOID pBuffer, DWORD nSize, PDWORD pdwAttribubutes)
@@ -1029,4 +1032,80 @@ grub_efi_is_child_dp(const grub_efi_device_path_t* child,
 
 	grub_free(dp);
 	return ret;
+}
+
+grub_efi_device_path_t*
+grub_efi_convert_file_path(const char* path)
+{
+	grub_efi_device_path_t* dp = NULL;
+	grub_efi_device_path_t* fp = NULL;
+	grub_efi_hard_drive_device_path_t *hd = NULL;
+	grub_file_t file = 0;
+	grub_disk_t parent = NULL;
+	file = grub_file_open(path, GRUB_FILE_TYPE_GET_SIZE | GRUB_FILE_TYPE_NO_DECOMPRESS);
+	if (!file)
+	{
+		grub_error(GRUB_ERR_FILE_NOT_FOUND, "file open failed");
+		return NULL;
+	}
+	if (!file->disk || !file->disk->partition)
+	{
+		grub_error(GRUB_ERR_BAD_DEVICE, "no disk/partition");
+		goto fail;
+	}
+	if (grub_strcmp(file->disk->partition->partmap->name, "msdos") == 0 && file->disk->partition->offset)
+	{
+		grub_error(GRUB_ERR_BAD_DEVICE, "msdos extended partition not supported");
+		goto fail;
+	}
+	hd = (grub_efi_hard_drive_device_path_t*)
+		grub_efi_create_device_node(GRUB_EFI_MEDIA_DEVICE_PATH_TYPE,
+		GRUB_EFI_HARD_DRIVE_DEVICE_PATH_SUBTYPE,
+		sizeof(grub_efi_hard_drive_device_path_t));
+	hd->partition_number = file->disk->partition->number + 1;
+	hd->partition_start = grub_partition_get_start(file->disk->partition);
+	hd->partition_size = grub_partition_get_len(file->disk->partition);
+
+	parent = grub_disk_open(file->disk->name);
+	if (!parent)
+	{
+		grub_error(GRUB_ERR_BAD_DEVICE, "parent disk open failed");
+		goto fail;
+	}
+	if (grub_strcmp(file->disk->partition->partmap->name, "msdos") == 0)
+	{
+		
+		hd->signature_type = 0x01;
+		hd->partmap_type = 0x01;
+		if (grub_disk_read(parent, 0, 0x1b8, 4, hd->partition_signature))
+			goto fail;
+	}
+	else if (grub_strcmp(file->disk->partition->partmap->name, "gpt") == 0)
+	{
+		hd->signature_type = 0x02;
+		hd->partmap_type = 0x02;
+		if (grub_disk_read(parent, file->disk->partition->offset, file->disk->partition->index + 16, 16, hd->partition_signature))
+			goto fail;
+	}
+	else
+	{
+		grub_error(GRUB_ERR_BAD_DEVICE, "unsupported partmap");
+		goto fail;
+	}
+	fp = grub_efi_append_device_node(NULL, (grub_efi_device_path_t*)hd);
+	if (!fp)
+	{
+		grub_error(GRUB_ERR_BAD_DEVICE, "cannot create dp");
+		goto fail;
+	}
+	dp = grub_efi_file_device_path(fp, path);
+fail:
+	if (hd)
+		grub_free(hd);
+	if (fp)
+		grub_free(fp);
+	if (parent)
+		grub_disk_close(parent);
+	grub_file_close(file);
+	return dp;
 }

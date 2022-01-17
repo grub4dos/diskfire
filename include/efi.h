@@ -442,4 +442,7 @@ int
 grub_efi_is_child_dp(const grub_efi_device_path_t* child,
 	const grub_efi_device_path_t* parent);
 
+grub_efi_device_path_t*
+grub_efi_convert_file_path(const char* path);
+
 #endif
