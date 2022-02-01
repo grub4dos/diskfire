@@ -131,6 +131,7 @@
     <ClCompile Include="br\pbr_grldr.c" />
     <ClCompile Include="br\pbr_ntldr.c" />
     <ClCompile Include="command.c" />
+    <ClCompile Include="commands\bcfg.c" />
     <ClCompile Include="commands\bin2c.c" />
     <ClCompile Include="commands\blocklist.c" />
     <ClCompile Include="commands\cat.c" />

@@ -49,6 +49,7 @@ extern struct grub_command grub_cmd_mount;
 extern struct grub_command grub_cmd_umount;
 extern struct grub_command grub_cmd_fwgetvar;
 extern struct grub_command grub_cmd_fwsetvar;
+extern struct grub_command grub_cmd_bcfg;
 
 extern struct grub_command grub_cmd_help;
 

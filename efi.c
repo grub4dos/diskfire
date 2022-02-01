@@ -1084,7 +1084,7 @@ grub_efi_convert_file_path(const char* path)
 	{
 		hd->signature_type = 0x02;
 		hd->partmap_type = 0x02;
-		if (grub_disk_read(parent, file->disk->partition->offset, file->disk->partition->index + 16, 16, hd->partition_signature))
+		if (grub_disk_read(parent, file->disk->partition->offset, 16ULL + file->disk->partition->index, 16, hd->partition_signature))
 			goto fail;
 	}
 	else
