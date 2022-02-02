@@ -53,6 +53,7 @@ grub_command_init(void)
 	grub_command_register(&grub_cmd_fwgetvar);
 	grub_command_register(&grub_cmd_bcfg);
 	grub_command_register(&grub_cmd_service);
+	grub_command_register(&grub_cmd_wim);
 
 	grub_command_register(&grub_cmd_help);
 }

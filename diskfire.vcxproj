@@ -158,6 +158,7 @@
     <ClCompile Include="commands\ls.c" />
     <ClCompile Include="commands\service.c" />
     <ClCompile Include="commands\stat.c" />
+    <ClCompile Include="commands\wim.c" />
     <ClCompile Include="compat.c" />
     <ClCompile Include="crypto\adler32.c" />
     <ClCompile Include="crypto\crc32.c" />
