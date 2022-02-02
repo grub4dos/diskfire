@@ -43,6 +43,7 @@ BOOL GetDriveInfoList(PHY_DRIVE_INFO** pDriveList, DWORD* pDriveCount);
 HANDLE LockDriveByLetter(char Letter);
 HANDLE* LockDriveById(DWORD Id);
 void UnlockDrive(HANDLE* hList);
+BOOL ManageService(PCSTR pService, BOOL bStop);
 
 void SetDebug(const char* cond);
 

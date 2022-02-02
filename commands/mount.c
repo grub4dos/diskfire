@@ -3,7 +3,7 @@
 #include "command.h"
 #include "charset.h"
 
-#include "virtdisk.h"
+#include <virtdisk.h>
 
 static DWORD
 NTOpenVirtualDisk(PVIRTUAL_STORAGE_TYPE VirtualStorageType,

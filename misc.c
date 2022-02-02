@@ -356,3 +356,29 @@ void UnlockDrive(HANDLE* hList)
 	}
 	grub_free(hList);
 }
+
+BOOL ManageService(PCSTR pService, BOOL bStop)
+{
+	BOOL bResult = FALSE;
+	SC_HANDLE hManager = OpenSCManagerA(NULL, NULL, SC_MANAGER_ALL_ACCESS);
+	if (hManager)
+	{
+		SC_HANDLE hService = OpenServiceA(hManager, pService, SERVICE_START | SERVICE_STOP);
+		if (hService)
+		{
+			if (bStop)
+			{
+				SERVICE_STATUS sStatus;
+				bResult = ControlService(hService, SERVICE_CONTROL_STOP, &sStatus);
+			}
+			else
+			{
+				bResult = StartServiceA(hService, 0, NULL);
+			}
+
+			CloseServiceHandle(hService);
+		}
+		CloseServiceHandle(hManager);
+	}
+	return bResult;
+}
