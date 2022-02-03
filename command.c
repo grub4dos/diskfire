@@ -55,6 +55,7 @@ grub_command_init(void)
 	grub_command_register(&grub_cmd_service);
 	grub_command_register(&grub_cmd_wim);
 	grub_command_register(&grub_cmd_imdisk);
+	grub_command_register(&grub_cmd_lua);
 
 	grub_command_register(&grub_cmd_help);
 }

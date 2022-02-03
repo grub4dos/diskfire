@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "diskfire", "diskfire.vcxproj", "{DEA13003-7F6B-422A-8249-98C6AA9680F6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "lua\lua.vcxproj", "{0F625B26-97D8-47E3-BFF3-20B2D53DCDA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release|x64 = Release|x64
@@ -15,6 +17,10 @@ Global
 		{DEA13003-7F6B-422A-8249-98C6AA9680F6}.Release|x64.Build.0 = Release|x64
 		{DEA13003-7F6B-422A-8249-98C6AA9680F6}.Release|x86.ActiveCfg = Release|Win32
 		{DEA13003-7F6B-422A-8249-98C6AA9680F6}.Release|x86.Build.0 = Release|Win32
+		{0F625B26-97D8-47E3-BFF3-20B2D53DCDA4}.Release|x64.ActiveCfg = Release|x64
+		{0F625B26-97D8-47E3-BFF3-20B2D53DCDA4}.Release|x64.Build.0 = Release|x64
+		{0F625B26-97D8-47E3-BFF3-20B2D53DCDA4}.Release|x86.ActiveCfg = Release|Win32
+		{0F625B26-97D8-47E3-BFF3-20B2D53DCDA4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

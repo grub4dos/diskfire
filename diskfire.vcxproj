@@ -142,6 +142,10 @@
     <ClCompile Include="commands\help.c" />
     <ClCompile Include="commands\hxd.c" />
     <ClCompile Include="commands\imdisk.c" />
+    <ClCompile Include="commands\lua.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)lua\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)lua\src</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="commands\mbr.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)partmap</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)partmap</AdditionalIncludeDirectories>
@@ -308,6 +312,11 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="diskfire.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="lua\lua.vcxproj">
+      <Project>{0f625b26-97d8-47e3-bff3-20b2d53dcda4}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
