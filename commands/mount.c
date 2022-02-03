@@ -83,7 +83,6 @@ static grub_err_t
 mount_vdisk(const char* path)
 {
 	WCHAR* path16 = NULL;
-	grub_size_t len, len16;
 	VIRTUAL_STORAGE_TYPE StorageType;
 	OPEN_VIRTUAL_DISK_PARAMETERS OpenParameters;
 	ATTACH_VIRTUAL_DISK_PARAMETERS AttachParameters;
@@ -92,13 +91,9 @@ mount_vdisk(const char* path)
 	ATTACH_VIRTUAL_DISK_FLAG AttachFlag = ATTACH_VIRTUAL_DISK_FLAG_READ_ONLY |
 		ATTACH_VIRTUAL_DISK_FLAG_PERMANENT_LIFETIME;
 
-	len = grub_strlen(path);
-	len16 = len * GRUB_MAX_UTF16_PER_UTF8;
-	path16 = grub_calloc(len16 + 1, sizeof(WCHAR));
+	path16 = grub_get_utf16(path);
 	if (!path16)
 		return grub_errno;
-	len16 = grub_utf8_to_utf16(path16, len16, (grub_uint8_t*)path, len, NULL);
-	path16[len16] = 0;
 
 	grub_memset(&StorageType, 0, sizeof(StorageType));
 	grub_memset(&OpenParameters, 0, sizeof(OpenParameters));
@@ -128,19 +123,14 @@ static grub_err_t
 umount_vdisk(const char* path)
 {
 	WCHAR* path16 = NULL;
-	grub_size_t len, len16;
 	VIRTUAL_STORAGE_TYPE StorageType;
 	OPEN_VIRTUAL_DISK_PARAMETERS OpenParameters;
 	HANDLE Handle;
 	DWORD Status;
 
-	len = grub_strlen(path);
-	len16 = len * GRUB_MAX_UTF16_PER_UTF8;
-	path16 = grub_calloc(len16 + 1, sizeof(WCHAR));
+	path16 = grub_get_utf16(path);
 	if (!path16)
 		return grub_errno;
-	len16 = grub_utf8_to_utf16(path16, len16, (grub_uint8_t*)path, len, NULL);
-	path16[len16] = 0;
 
 	grub_memset(&StorageType, 0, sizeof(StorageType));
 	grub_memset(&OpenParameters, 0, sizeof(OpenParameters));

@@ -523,4 +523,6 @@ grub_uint32_t grub_getcrc32c(grub_uint32_t crc, const void* buf, int size);
 grub_uint64_t
 grub_divmod64(grub_uint64_t n, grub_uint64_t d, grub_uint64_t* r);
 
+wchar_t* grub_get_utf16(const char* path);
+
 #endif

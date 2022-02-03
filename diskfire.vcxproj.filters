@@ -370,6 +370,9 @@
     <ClCompile Include="commands\wim.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="commands\imdisk.c">
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -554,6 +557,9 @@
       <Filter>头文件\引导记录</Filter>
     </ClInclude>
     <ClInclude Include="include\efi.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imdisk.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

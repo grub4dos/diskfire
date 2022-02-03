@@ -28,28 +28,12 @@ WIMUnmountImage(PWSTR pszMountPath, PWSTR pszWimFileName, DWORD dwImageIndex, BO
 	return FALSE;
 }
 
-static wchar_t* get_utf16(const char* path)
-{
-	wchar_t* path16 = NULL;
-	grub_size_t len, len16;
-	if (!path)
-		return NULL;
-	len = grub_strlen(path);
-	len16 = len * GRUB_MAX_UTF16_PER_UTF8;
-	path16 = grub_calloc(len16 + 1, sizeof(WCHAR));
-	if (!path16)
-		return NULL;
-	len16 = grub_utf8_to_utf16(path16, len16, (grub_uint8_t*)path, len, NULL);
-	path16[len16] = 0;
-	return path16;
-}
-
 static grub_err_t
 wim_mount(const char* file, const char* dest, DWORD index, const char* temp)
 {
-	wchar_t* file16 = get_utf16(file);
-	wchar_t* dest16 = get_utf16(dest);
-	wchar_t* temp16 = get_utf16(temp);
+	wchar_t* file16 = grub_get_utf16(file);
+	wchar_t* dest16 = grub_get_utf16(dest);
+	wchar_t* temp16 = grub_get_utf16(temp);
 	if (!file16 || !dest16)
 	{
 		grub_error(GRUB_ERR_OUT_OF_MEMORY, "out of memory");
@@ -69,8 +53,8 @@ fail:
 static grub_err_t
 wim_umount(const char* file, const char* dest, DWORD index, BOOL commit)
 {
-	wchar_t* file16 = get_utf16(file);
-	wchar_t* dest16 = get_utf16(dest);
+	wchar_t* file16 = grub_get_utf16(file);
+	wchar_t* dest16 = grub_get_utf16(dest);
 	if (!dest16)
 	{
 		grub_error(GRUB_ERR_OUT_OF_MEMORY, "out of memory");

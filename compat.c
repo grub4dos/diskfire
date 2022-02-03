@@ -6,6 +6,7 @@
 #include "compat.h"
 #include "misc.h"
 #include "datetime.h"
+#include "charset.h"
 
 void*
 grub_named_list_find(grub_named_list_t head, const char* name)
@@ -563,4 +564,20 @@ grub_unixtime2datetime(grub_int64_t nix, struct grub_datetime* datetime)
 	secs_in_day %= SECPERHOUR;
 	datetime->minute = secs_in_day / SECPERMIN;
 	datetime->second = secs_in_day % SECPERMIN;
+}
+
+wchar_t* grub_get_utf16(const char* path)
+{
+	wchar_t* path16 = NULL;
+	grub_size_t len, len16;
+	if (!path)
+		return NULL;
+	len = grub_strlen(path);
+	len16 = len * GRUB_MAX_UTF16_PER_UTF8;
+	path16 = grub_calloc(len16 + 1, sizeof(WCHAR));
+	if (!path16)
+		return NULL;
+	len16 = grub_utf8_to_utf16(path16, len16, (grub_uint8_t*)path, len, NULL);
+	path16[len16] = 0;
+	return path16;
 }

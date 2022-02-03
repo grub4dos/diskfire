@@ -141,6 +141,7 @@
     <ClCompile Include="commands\hashsum.c" />
     <ClCompile Include="commands\help.c" />
     <ClCompile Include="commands\hxd.c" />
+    <ClCompile Include="commands\imdisk.c" />
     <ClCompile Include="commands\mbr.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)partmap</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)partmap</AdditionalIncludeDirectories>
@@ -274,6 +275,7 @@
     <ClInclude Include="include\file.h" />
     <ClInclude Include="include\fs.h" />
     <ClInclude Include="include\fshelp.h" />
+    <ClInclude Include="include\imdisk.h" />
     <ClInclude Include="include\misc.h" />
     <ClInclude Include="include\partition.h" />
     <ClInclude Include="minilzo\lzoconf.h" />
