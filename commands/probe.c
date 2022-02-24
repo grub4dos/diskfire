@@ -286,6 +286,46 @@ fail:
 	return GRUB_ERR_NONE;
 }
 
+static grub_err_t probe_volume(grub_disk_t disk)
+{
+	int i;
+	char path[] = "\\\\.\\C:";
+	grub_uint64_t src[U64_SECTOR_SIZE] = { 0 };
+	grub_uint64_t dst[U64_SECTOR_SIZE] = { 0 };
+	if (disk->dev->id != GRUB_DISK_WINDISK_ID || !gDriveList[disk->id].DriveLetters[0])
+		goto fail;
+	if (!disk->partition)
+		goto fail;
+	if (grub_disk_read(disk, 0, 0, sizeof(src), src) != GRUB_ERR_NONE)
+		goto fail;
+	for (i = 0; gDriveList[disk->id].DriveLetters[i] && i < 26; i++)
+	{
+		HANDLE fd = INVALID_HANDLE_VALUE;
+		DWORD dwsize = sizeof(dst);
+		grub_snprintf(path, sizeof(path), "\\\\.\\%C:", gDriveList[disk->id].DriveLetters[i]);
+		fd = CreateFileA(path, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+		if (!fd || fd == INVALID_HANDLE_VALUE)
+			continue;
+		if (!ReadFile(fd, dst, dwsize, &dwsize, NULL))
+		{
+			CHECK_CLOSE_HANDLE(fd);
+			continue;
+		}
+		if (sector_cmp(src, dst) == 0)
+		{
+			CHAR mp[4] = "A:\\";
+			CHAR vol[50];
+			mp[0] = gDriveList[disk->id].DriveLetters[i];
+			if (GetVolumeNameForVolumeMountPointA(mp, vol, sizeof(vol)))
+				grub_printf("%s", vol);
+			break;
+		}
+	}
+fail:
+	grub_errno = GRUB_ERR_NONE;
+	return GRUB_ERR_NONE;
+}
+
 static grub_err_t
 parse_probe_opt(const char* arg, grub_disk_t disk)
 {
@@ -315,6 +355,8 @@ parse_probe_opt(const char* arg, grub_disk_t disk)
 		return probe_partuuid(disk);
 	if (grub_strcmp(arg, "--flag") == 0)
 		return probe_partflag(disk);
+	if (grub_strcmp(arg, "--vol") == 0)
+		return probe_volume(disk);
 
 	return grub_error(GRUB_ERR_BAD_ARGUMENT, "invalid option %s\n", arg);
 }
@@ -398,6 +440,7 @@ help_probe(struct grub_command* cmd)
 
 	grub_printf("  --partuuid  Determine partition UUID.\n");
 	grub_printf("  --flag      Determine partition flags.\n");
+	grub_printf("  --vol       Determine partition volume path.\n");
 }
 
 struct grub_command grub_cmd_probe =
