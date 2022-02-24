@@ -4,6 +4,29 @@
 #include "charset.h"
 #include "misc.h"
 
+typedef struct _WIM_MOUNT_LIST
+{
+	WCHAR  WimPath[MAX_PATH];
+	WCHAR  MountPath[MAX_PATH];
+	DWORD  ImageIndex;
+	BOOL   MountedForRW;
+} WIM_MOUNT_LIST, *PWIM_MOUNT_LIST, *LPWIM_MOUNT_LIST, WIM_MOUNT_INFO_LEVEL0, *PWIM_MOUNT_INFO_LEVEL0, LPWIM_MOUNT_INFO_LEVEL0;
+
+typedef struct _WIM_MOUNT_INFO_LEVEL1
+{
+	WCHAR  WimPath[MAX_PATH];
+	WCHAR  MountPath[MAX_PATH];
+	DWORD  ImageIndex;
+	DWORD  MountFlags;
+} WIM_MOUNT_INFO_LEVEL1, *PWIM_MOUNT_INFO_LEVEL1, *LPWIM_MOUNT_INFO_LEVEL1;
+
+typedef enum _MOUNTED_IMAGE_INFO_LEVELS
+{
+	MountedImageInfoLevel0,
+	MountedImageInfoLevel1,
+	MountedImageInfoLevelInvalid
+} MOUNTED_IMAGE_INFO_LEVELS;
+
 static BOOL
 WIMMountImage(PWSTR pszMountPath, PWSTR pszWimFileName, DWORD dwImageIndex, PWSTR pszTempPath)
 {
@@ -27,6 +50,21 @@ WIMUnmountImage(PWSTR pszMountPath, PWSTR pszWimFileName, DWORD dwImageIndex, BO
 		return UnmountImage(pszMountPath, pszWimFileName, dwImageIndex, bCommitChanges);
 	return FALSE;
 }
+
+#if 0
+static BOOL
+WIMGetMountedImageInfo(MOUNTED_IMAGE_INFO_LEVELS fInfoLevelId,
+	PDWORD pdwImageCount, PVOID pMountInfo, DWORD cbMountInfoLength, PDWORD pcbReturnLength)
+{
+	BOOL(WINAPI * GetMountedImageInfo)(MOUNTED_IMAGE_INFO_LEVELS, PDWORD, PVOID, DWORD, PDWORD) = NULL;
+	HINSTANCE hL = LoadLibraryA("wimgapi.dll");
+	if (hL)
+		*(FARPROC*)&GetMountedImageInfo = GetProcAddress(hL, "WIMGetMountedImageInfo");
+	if (GetMountedImageInfo)
+		return GetMountedImageInfo(fInfoLevelId, pdwImageCount, pMountInfo, cbMountInfoLength, pcbReturnLength);
+	return FALSE;
+}
+#endif
 
 static grub_err_t
 wim_mount(const char* file, const char* dest, DWORD index, const char* temp)
@@ -70,6 +108,47 @@ fail:
 	return grub_errno;
 }
 
+#if 0
+static int
+wim_enum(int (*callback)(PWIM_MOUNT_LIST info, void* data), void* data)
+{
+	PWIM_MOUNT_LIST list = NULL, p;
+	DWORD len = 0, count = 0, i;
+	int ret = 0;
+	WIMGetMountedImageInfo(MountedImageInfoLevel0, &count, NULL, 0, &len);
+	if (!count || !len)
+	{
+		grub_printf("no mounted images");
+		return 0;
+	}
+	grub_printf("count: %lu\n", count);
+	list = grub_malloc(len);
+	if (!list)
+		return 0;
+	if (WIMGetMountedImageInfo(MountedImageInfoLevel0, &count, list, len, &len) == FALSE)
+	{
+		grub_printf("WIMGetMountedImageInfo failed");
+		goto fail;
+	}
+	for (i = 0, p = list; i < count; i++, p++)
+	{
+		ret = callback(p, data);
+		if (ret)
+			break;
+	}
+fail:
+	grub_free(list);
+	return ret;
+}
+
+static int wim_list(PWIM_MOUNT_LIST info, void* data)
+{
+	(void)data;
+	grub_printf("%S -> %S, @%lu, %s\n",
+		info->WimPath, info->MountPath, info->ImageIndex, info->MountedForRW ? "RW" : "R");
+	return 0;
+}
+#endif
 
 static grub_err_t cmd_wim(struct grub_command* cmd, int argc, char* argv[])
 {
@@ -77,9 +156,16 @@ static grub_err_t cmd_wim(struct grub_command* cmd, int argc, char* argv[])
 	int i = 1;
 	DWORD index = 1;
 	BOOL commit = FALSE;
+	ManageService("WimFltr", FALSE);
+#if 0
+	if (argc > 0 && grub_strcmp(argv[0], "list") == 0)
+	{
+		wim_enum(wim_list, NULL);
+		return GRUB_ERR_NONE;
+	}
+#endif
 	if (argc < 2)
 		return grub_error(GRUB_ERR_BAD_ARGUMENT, "bad argument");
-	ManageService("WimFltr", FALSE);
 	if (grub_strncmp(argv[i], "--index=", 8) == 0)
 	{
 		index = grub_strtoul(&argv[1][8], NULL, 0);
@@ -103,6 +189,9 @@ help_wim(struct grub_command* cmd)
 {
 	grub_printf("%s OPERAND ..\n", cmd->name);
 	grub_printf("WIM file operations.\nUsage:\n");
+#if 0
+	grub_printf("  wim list\n");
+#endif
 	grub_printf("  wim mount [--index=n] FILE DEST [TEMP]\n");
 	grub_printf("  wim umount [--index=n] [--commit] DEST\n");
 }
