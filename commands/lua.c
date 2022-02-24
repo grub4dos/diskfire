@@ -554,8 +554,6 @@ static int runargs(lua_State* L, char** argv, int n)
 	return 1;
 }
 
-
-
 static int handle_luainit(lua_State* L)
 {
 	const char* name = "=" LUA_INITVARVERSION;
@@ -584,7 +582,6 @@ static int pmain(lua_State* L)
 	char** argv = (char**)lua_touserdata(L, 2);
 	int script;
 	int args = collectargs(argv, &script);
-	luaL_checkversion(L);  /* check that interpreter has correct version */
 	if (args == has_error)
 	{  /* bad arg? */
 		print_usage(argv[script]);  /* 'script' has index of bad arg. */
@@ -624,13 +621,20 @@ static int pmain(lua_State* L)
 	return 1;
 }
 
+static void
+help_lua(struct grub_command* cmd);
 
 static grub_err_t
 cmd_lua(struct grub_command* cmd, int argc, char** argv)
 {
-	(void)cmd;
 	int status, result;
-	lua_State* L = luaL_newstate();  /* create state */
+	lua_State* L = NULL;
+	if (argc == 0)
+	{
+		help_lua(cmd);
+		return GRUB_ERR_NONE;
+	}
+	L = luaL_newstate();  /* create state */
 	if (L == NULL)
 		return grub_error(GRUB_ERR_OUT_OF_MEMORY, "cannot create state: not enough memory");
 	lua_pushcfunction(L, &pmain);  /* to call 'pmain' in protected mode */

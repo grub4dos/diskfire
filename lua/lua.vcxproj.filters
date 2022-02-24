@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="winapi">
+      <UniqueIdentifier>{aae83848-df2b-452c-8bf5-03a52ad0ab4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua.hpp">
@@ -92,6 +95,9 @@
     </ClInclude>
     <ClInclude Include="src\lzio.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\winapi\wutils.h">
+      <Filter>winapi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +196,12 @@
     </ClCompile>
     <ClCompile Include="src\lzio.c">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\winapi\winapi.c">
+      <Filter>winapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\winapi\wutils.c">
+      <Filter>winapi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
