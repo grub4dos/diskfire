@@ -483,7 +483,7 @@ static int collectargs(char** argv, int* first)
 {
 	int args = 0;
 	int i;
-	for (i = 1; argv[i] != NULL; i++)
+	for (i = 0; argv[i] != NULL; i++)
 	{
 		*first = i;
 		if (argv[i][0] != '-')  /* not an option? */
@@ -535,7 +535,7 @@ static int collectargs(char** argv, int* first)
 static int runargs(lua_State* L, char** argv, int n)
 {
 	int i;
-	for (i = 1; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		int option = argv[i][1];
 		lua_assert(argv[i][0] == '-');  /* already checked */
@@ -585,8 +585,6 @@ static int pmain(lua_State* L)
 	int script;
 	int args = collectargs(argv, &script);
 	luaL_checkversion(L);  /* check that interpreter has correct version */
-	if (argv[0] && argv[0][0])
-		progname = argv[0];
 	if (args == has_error)
 	{  /* bad arg? */
 		print_usage(argv[script]);  /* 'script' has index of bad arg. */

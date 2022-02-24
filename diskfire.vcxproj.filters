@@ -376,6 +376,9 @@
     <ClCompile Include="commands\lua.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="commands\luac.c">
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
