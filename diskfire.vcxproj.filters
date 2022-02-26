@@ -379,6 +379,12 @@
     <ClCompile Include="commands\luac.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="commands\shortcut.c">
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp.cpp">
+      <Filter>源文件\杂项</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

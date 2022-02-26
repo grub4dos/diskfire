@@ -55,6 +55,7 @@ extern struct grub_command grub_cmd_wim;
 extern struct grub_command grub_cmd_imdisk;
 extern struct grub_command grub_cmd_lua;
 extern struct grub_command grub_cmd_luac;
+extern struct grub_command grub_cmd_shortcut;
 
 extern struct grub_command grub_cmd_help;
 

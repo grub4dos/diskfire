@@ -168,6 +168,7 @@
     <ClCompile Include="commands\extract.c" />
     <ClCompile Include="commands\ls.c" />
     <ClCompile Include="commands\service.c" />
+    <ClCompile Include="commands\shortcut.c" />
     <ClCompile Include="commands\stat.c" />
     <ClCompile Include="commands\wim.c" />
     <ClCompile Include="compat.c" />
@@ -226,6 +227,7 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)xzembed</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="minilzo\minilzo.c" />
+    <ClCompile Include="cpp.cpp" />
     <ClCompile Include="partition.c" />
     <ClCompile Include="diskio.c" />
     <ClCompile Include="misc.c" />
