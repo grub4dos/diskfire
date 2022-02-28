@@ -385,6 +385,9 @@
     <ClCompile Include="cpp.cpp">
       <Filter>源文件\杂项</Filter>
     </ClCompile>
+    <ClCompile Include="commands\kill.c">
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -58,6 +58,7 @@ grub_command_init(void)
 	grub_command_register(&grub_cmd_lua);
 	grub_command_register(&grub_cmd_luac);
 	grub_command_register(&grub_cmd_shortcut);
+	grub_command_register(&grub_cmd_kill);
 
 	grub_command_register(&grub_cmd_help);
 }

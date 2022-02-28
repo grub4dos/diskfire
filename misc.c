@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <windows.h>
+#include <process.h>
+#include <tlhelp32.h>
 #include "misc.h"
 #include "compat.h"
 
@@ -381,4 +383,36 @@ BOOL ManageService(PCSTR pService, BOOL bStop)
 		CloseServiceHandle(hManager);
 	}
 	return bResult;
+}
+
+void
+KillProcessByName(WCHAR* pName, UINT uExitCode)
+{
+	HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
+	PROCESSENTRY32W pEntry;
+	pEntry.dwSize = sizeof(pEntry);
+	BOOL hRes = Process32FirstW(hSnapShot, &pEntry);
+	while (hRes)
+	{
+		if (_wcsicmp(pEntry.szExeFile, pName) == 0)
+		{
+			HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, 0,
+				(DWORD)pEntry.th32ProcessID);
+			if (hProcess != NULL)
+			{
+				TerminateProcess(hProcess, uExitCode);
+				CloseHandle(hProcess);
+			}
+		}
+		hRes = Process32NextW(hSnapShot, &pEntry);
+	}
+	CloseHandle(hSnapShot);
+}
+
+void
+KillProcessById(DWORD dwProcessId, UINT uExitCode)
+{
+	HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, FALSE, dwProcessId);
+	TerminateProcess(hProcess, uExitCode);
+	CloseHandle(hProcess);
 }

@@ -44,6 +44,8 @@ HANDLE LockDriveByLetter(char Letter);
 HANDLE* LockDriveById(DWORD Id);
 void UnlockDrive(HANDLE* hList);
 BOOL ManageService(PCSTR pService, BOOL bStop);
+void KillProcessByName(WCHAR* pName, UINT uExitCode);
+void KillProcessById(DWORD dwProcessId, UINT uExitCode);
 
 void SetDebug(const char* cond);
 

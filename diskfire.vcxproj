@@ -144,6 +144,7 @@
     <ClCompile Include="commands\help.c" />
     <ClCompile Include="commands\hxd.c" />
     <ClCompile Include="commands\imdisk.c" />
+    <ClCompile Include="commands\kill.c" />
     <ClCompile Include="commands\lua.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)lua\src</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)lua\src</AdditionalIncludeDirectories>
