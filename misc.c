@@ -389,22 +389,23 @@ void
 KillProcessByName(WCHAR* pName, UINT uExitCode)
 {
 	HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
-	PROCESSENTRY32W pEntry;
-	pEntry.dwSize = sizeof(pEntry);
-	BOOL hRes = Process32FirstW(hSnapShot, &pEntry);
-	while (hRes)
+	PROCESSENTRY32W pEntry = { .dwSize = sizeof(pEntry) };
+	BOOL bRet;
+	if (hSnapShot == INVALID_HANDLE_VALUE)
+		return;
+	bRet = Process32FirstW(hSnapShot, &pEntry);
+	while (bRet)
 	{
 		if (_wcsicmp(pEntry.szExeFile, pName) == 0)
 		{
-			HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, 0,
-				(DWORD)pEntry.th32ProcessID);
+			HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, 0, pEntry.th32ProcessID);
 			if (hProcess != NULL)
 			{
 				TerminateProcess(hProcess, uExitCode);
 				CloseHandle(hProcess);
 			}
 		}
-		hRes = Process32NextW(hSnapShot, &pEntry);
+		bRet = Process32NextW(hSnapShot, &pEntry);
 	}
 	CloseHandle(hSnapShot);
 }
