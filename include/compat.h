@@ -513,6 +513,10 @@ grub_stpcpy(char* dest, const char* src)
 
 grub_uint64_t grub_get_time_ms(void);
 
+grub_uint32_t grub_rand(void);
+
+void grub_srand(grub_uint32_t seed);
+
 const char*
 grub_get_human_size(grub_uint64_t size, const char* human_sizes[6], grub_uint64_t base);
 

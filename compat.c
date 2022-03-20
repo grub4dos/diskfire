@@ -372,10 +372,28 @@ grub_err_printf(const char* fmt, ...)
 	return ret;
 }
 
+//fuck
+#pragma warning(disable:4702)
+
 grub_uint64_t
 grub_get_time_ms(void)
 {
 	return GetTickCount64();
+}
+
+static grub_uint32_t next = 42;
+
+grub_uint32_t
+grub_rand(void)
+{
+	next = next * 1103515245 + 12345;
+	return (next << 16) | ((next >> 16) & 0xFFFF);
+}
+
+void
+grub_srand(grub_uint32_t seed)
+{
+	next = seed;
 }
 
 const char*

@@ -388,6 +388,9 @@
     <ClCompile Include="commands\kill.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="commands\uuid.c">
+      <Filter>源文件\命令</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
