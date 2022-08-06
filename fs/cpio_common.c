@@ -122,6 +122,7 @@ grub_cpio_rewind(struct grub_archelp_data* data)
 
 #pragma warning(push)
 #pragma warning(disable:4028)
+#pragma warning(disable:4113)
 static struct grub_archelp_ops arcops =
 {
   .find_file = grub_cpio_find_file,
