@@ -55,7 +55,7 @@ grub_file_open(const char* name, enum grub_file_type type)
 {
 	grub_disk_t disk = 0;
 	grub_file_t file = 0, last_file = 0;
-	char* device_name;
+	char* device_name = NULL;
 	const char* file_name;
 	grub_file_filter_id_t filter;
 
@@ -73,6 +73,7 @@ grub_file_open(const char* name, enum grub_file_type type)
 			goto fail;
 		disk = grub_disk_open(device_name);
 		grub_free(device_name);
+		device_name = NULL;
 		if (!disk)
 			goto fail;
 		file->disk = disk;
@@ -119,6 +120,8 @@ grub_file_open(const char* name, enum grub_file_type type)
 	return file;
 
 fail:
+	if (device_name)
+		grub_free(device_name);
 	if (disk)
 		grub_disk_close(disk);
 
