@@ -10,7 +10,8 @@ struct grub_disk;
 
 typedef int (*grub_disk_iterate_hook_t) (const char* name, void* data);
 
-typedef void (*grub_disk_read_hook_t) (grub_disk_addr_t sector, unsigned offset, unsigned length, void* data);
+typedef grub_err_t (*grub_disk_read_hook_t) (grub_disk_addr_t sector,
+	unsigned offset, unsigned length, char* buf, void* data);
 
 #define GRUB_DISK_WINDISK_ID     1
 #define GRUB_DISK_LOOPBACK_ID    2

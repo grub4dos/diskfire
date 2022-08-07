@@ -287,10 +287,11 @@ struct read_blocklist_ctx
 	grub_disk_addr_t part_start;
 };
 
-static void
+static grub_err_t
 read_blocklist(grub_disk_addr_t sector, unsigned offset,
-	unsigned length, void* ctx)
+	unsigned length, char* buf, void* ctx)
 {
+	(void)buf;
 	struct read_blocklist_ctx* c = ctx;
 
 	sector = ((sector - c->part_start) << GRUB_DISK_SECTOR_BITS) + offset;
@@ -306,7 +307,7 @@ read_blocklist(grub_disk_addr_t sector, unsigned offset,
 	{
 		c->blocks = grub_realloc(c->blocks, (c->num + BLOCKLIST_INC_STEP) * sizeof(struct grub_fs_block));
 		if (!c->blocks)
-			return;
+			return GRUB_ERR_NONE;
 	}
 
 	c->blocks[c->num].offset = sector;
@@ -315,6 +316,7 @@ read_blocklist(grub_disk_addr_t sector, unsigned offset,
 
 quit:
 	c->total_size += length;
+	return GRUB_ERR_NONE;
 }
 
 static grub_uint64_t

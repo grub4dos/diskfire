@@ -532,10 +532,10 @@ grub_disk_read_small(grub_disk_t disk, grub_disk_addr_t sector,
 	if (err)
 		return err;
 	if (disk->read_hook)
-		(disk->read_hook) (sector + (offset >> GRUB_DISK_SECTOR_BITS),
+		err = (disk->read_hook) (sector + (offset >> GRUB_DISK_SECTOR_BITS),
 			offset & (GRUB_DISK_SECTOR_SIZE - 1),
-			(unsigned)size, disk->read_hook_data);
-	return GRUB_ERR_NONE;
+			(unsigned)size, buf, disk->read_hook_data);
+	return err;
 }
 
 /* Read data from the disk.  */
@@ -632,7 +632,7 @@ grub_disk_read(grub_disk_t disk, grub_disk_addr_t sector,
 			if (disk->read_hook)
 				(disk->read_hook) (sector, 0, (unsigned)
 					(agglomerate << (GRUB_DISK_CACHE_BITS + GRUB_DISK_SECTOR_BITS)),
-					disk->read_hook_data);
+					buf, disk->read_hook_data);
 
 			sector += agglomerate << GRUB_DISK_CACHE_BITS;
 			size -= agglomerate << (GRUB_DISK_CACHE_BITS + GRUB_DISK_SECTOR_BITS);
@@ -644,7 +644,7 @@ grub_disk_read(grub_disk_t disk, grub_disk_addr_t sector,
 		{
 			if (disk->read_hook)
 				(disk->read_hook) (sector, 0, (GRUB_DISK_CACHE_SIZE << GRUB_DISK_SECTOR_BITS),
-					disk->read_hook_data);
+					buf, disk->read_hook_data);
 			sector += GRUB_DISK_CACHE_SIZE;
 			buf = (char*)buf + (GRUB_DISK_CACHE_SIZE << GRUB_DISK_SECTOR_BITS);
 			size -= (GRUB_DISK_CACHE_SIZE << GRUB_DISK_SECTOR_BITS);

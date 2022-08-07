@@ -6,12 +6,14 @@
 #include "file.h"
 #include "datetime.h"
 
-static void
-read_block_start(grub_disk_addr_t sector, unsigned offset, unsigned length, void* data)
+static grub_err_t
+read_block_start(grub_disk_addr_t sector, unsigned offset, unsigned length, char* buf, void* data)
 {
 	(void)offset;
+	(void)buf;
 	grub_disk_addr_t* start = data;
 	*start = sector + 1 - (length >> GRUB_DISK_SECTOR_BITS);
+	return GRUB_ERR_NONE;
 }
 
 static grub_disk_addr_t
