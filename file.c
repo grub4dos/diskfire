@@ -260,4 +260,5 @@ grub_file_filter_init(void)
 	grub_file_filter_register(GRUB_FILE_FILTER_LZOPIO, grub_lzopio_open);
 	grub_file_filter_register(GRUB_FILE_FILTER_VHDIO, grub_vhdio_open);
 	grub_file_filter_register(GRUB_FILE_FILTER_LZMAIO, grub_lzmaio_open);
+	grub_file_filter_register(GRUB_FILE_FILTER_ZSTDIO, grub_zstd_open);
 }

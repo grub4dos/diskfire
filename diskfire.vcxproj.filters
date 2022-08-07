@@ -400,6 +400,9 @@
     <ClCompile Include="io\lzma.c">
       <Filter>源文件\压缩</Filter>
     </ClCompile>
+    <ClCompile Include="io\zstd.c">
+      <Filter>源文件\压缩</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

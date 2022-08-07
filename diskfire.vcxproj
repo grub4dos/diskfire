@@ -232,6 +232,10 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)xzembed</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)xzembed</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="io\zstd.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)zstd</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)zstd</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="lzma\LzmaDec.c" />
     <ClCompile Include="minilzo\minilzo.c" />
     <ClCompile Include="cpp.cpp" />
