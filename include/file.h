@@ -77,7 +77,7 @@ typedef enum grub_file_filter_id
 	GRUB_FILE_FILTER_GZIO,
 	GRUB_FILE_FILTER_XZIO,
 	GRUB_FILE_FILTER_LZOPIO,
-	//GRUB_FILE_FILTER_LZMAIO,
+	GRUB_FILE_FILTER_LZMAIO,
 	GRUB_FILE_FILTER_VHDIO,
 	GRUB_FILE_FILTER_MAX,
 	GRUB_FILE_FILTER_COMPRESSION_FIRST = GRUB_FILE_FILTER_GZIO,
@@ -159,6 +159,7 @@ grub_lzopio_open(grub_file_t io, enum grub_file_type type);
 grub_file_t
 grub_vhdio_open(grub_file_t io, enum grub_file_type type);
 
-//grub_file_t grub_lzmaio_open(grub_file_t io, enum grub_file_type type);
+grub_file_t
+grub_lzmaio_open(grub_file_t io, enum grub_file_type type);
 
 #endif

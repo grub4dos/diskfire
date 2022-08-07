@@ -74,6 +74,9 @@
       <UniqueIdentifier>{5c6d69c4-696a-49fd-9ef4-abf4140056dd}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="源文件\lzma">
+      <UniqueIdentifier>{8e114a7c-b089-4525-aba5-545507480d53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="diskfire.c">
@@ -391,6 +394,12 @@
     <ClCompile Include="commands\uuid.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="lzma\LzmaDec.c">
+      <Filter>源文件\lzma</Filter>
+    </ClCompile>
+    <ClCompile Include="io\lzma.c">
+      <Filter>源文件\压缩</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -579,6 +588,12 @@
     </ClInclude>
     <ClInclude Include="include\imdisk.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lzma\LzmaDec.h">
+      <Filter>源文件\lzma</Filter>
+    </ClInclude>
+    <ClInclude Include="lzma\LzmaTypes.h">
+      <Filter>源文件\lzma</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
