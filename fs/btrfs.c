@@ -935,9 +935,9 @@ grub_btrfs_read_logical(struct grub_btrfs_data* data, grub_disk_addr_t addr,
 		}
 
 		/*
-	   * The space being allocated for a chunk should at least be able to
-	   * contain one chunk item.
-	   */
+		 * The space being allocated for a chunk should at least be able to
+		 * contain one chunk item.
+		 */
 		if (chsize < sizeof(struct grub_btrfs_chunk_item))
 		{
 			grub_dprintf("btrfs", "chunk-size too small\n");
@@ -1192,9 +1192,9 @@ grub_btrfs_read_logical(struct grub_btrfs_data* data, grub_disk_addr_t addr,
 				csize = size;
 
 			/*
-	 * The space for a chunk stripe is limited to the space provide in the super-block's
-	 * bootstrap mapping with an initial btrfs key at the start of each chunk.
-	 */
+			 * The space for a chunk stripe is limited to the space provide in the super-block's
+			 * bootstrap mapping with an initial btrfs key at the start of each chunk.
+			 */
 			grub_size_t avail_stripes = sizeof(data->sblock.bootstrap_mapping) /
 				(sizeof(struct grub_btrfs_key) + sizeof(struct grub_btrfs_chunk_stripe));
 
