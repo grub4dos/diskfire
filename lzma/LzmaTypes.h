@@ -27,6 +27,8 @@
 #ifndef __7Z_TYPES_H
 #define __7Z_TYPES_H
 
+#include "compat.h"
+
 #define SZ_OK 0
 
 #define SZ_ERROR_DATA 1
@@ -86,8 +88,7 @@ typedef unsigned long long int UInt64;
 #ifdef _LZMA_NO_SYSTEM_SIZE_T
 typedef UInt32 SizeT;
 #else
-#include <stddef.h>
-typedef size_t SizeT;
+typedef grub_size_t SizeT;
 #endif
 
 typedef int Bool;
