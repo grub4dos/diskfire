@@ -118,6 +118,7 @@ extern struct grub_fs grub_hfsplus_fs;
 extern struct grub_fs grub_btrfs_fs;
 extern struct grub_fs grub_reiserfs_fs;
 extern struct grub_fs grub_procfs_fs;
+extern struct grub_fs grub_zip_fs;
 
 void grub_fs_init(void);
 

@@ -77,6 +77,9 @@
     <Filter Include="源文件\lzma">
       <UniqueIdentifier>{8e114a7c-b089-4525-aba5-545507480d53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\miniz">
+      <UniqueIdentifier>{e3c4cdbe-8681-464a-9198-24e5c2c5184d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="diskfire.c">
@@ -403,6 +406,12 @@
     <ClCompile Include="io\zstd.c">
       <Filter>源文件\压缩</Filter>
     </ClCompile>
+    <ClCompile Include="miniz\miniz.c">
+      <Filter>源文件\miniz</Filter>
+    </ClCompile>
+    <ClCompile Include="fs\zip.c">
+      <Filter>源文件\文件系统</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -597,6 +606,9 @@
     </ClInclude>
     <ClInclude Include="lzma\LzmaTypes.h">
       <Filter>源文件\lzma</Filter>
+    </ClInclude>
+    <ClInclude Include="miniz\miniz.h">
+      <Filter>源文件\miniz</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
