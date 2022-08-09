@@ -89,11 +89,24 @@ struct grub_packed_guid
 PRAGMA_END_PACKED
 typedef struct grub_packed_guid grub_packed_guid_t;
 
+int grub_debug_enabled(const char* condition);
+
 int grub_printf(const char* fmt, ...);
+
+void grub_real_dprintf(const char* file, const int line, const char* condition,
+	const char* fmt, ...);
+
+#define grub_dprintf(condition, ...) grub_real_dprintf(__FILE__, __LINE__, condition, __VA_ARGS__)
+
+int grub_vprintf(const char* fmt, va_list ap);
+
+int grub_vsnprintf(char* str, grub_size_t n, const char* fmt, va_list ap);
 
 int grub_snprintf(char* str, grub_size_t n, const char* fmt, ...);
 
-void grub_dprintf(const char* cond, const char* fmt, ...);
+char* grub_xvasprintf(const char* fmt, va_list ap);
+
+char* grub_xasprintf(const char* fmt, ...);
 
 static inline grub_uint16_t grub_swap_bytes16(grub_uint16_t _x)
 {
@@ -314,7 +327,6 @@ void grub_error_push (void);
 int grub_error_pop (void);
 void grub_print_error (void);
 extern int grub_err_printed_errors;
-int grub_err_printf(const char* fmt, ...);
 
 static inline void*
 grub_malloc(grub_size_t size)
@@ -360,6 +372,52 @@ static inline void*
 grub_memset(void* s, int c, grub_size_t len)
 {
 	return memset(s, c, len);
+}
+
+/* Copied from gnulib.
+   Written by Bruno Haible <bruno@clisp.org>, 2005. */
+static inline char*
+grub_strstr(const char* haystack, const char* needle)
+{
+	/* Be careful not to look at the entire extent of haystack or needle
+	   until needed.  This is useful because of these two cases:
+		 - haystack may be very long, and a match of needle found early,
+		 - needle may be very long, and not even a short initial segment of
+		 needle may be found in haystack.  */
+	if (*needle != '\0')
+	{
+		/* Speed up the following searches of needle by caching its first
+		character.  */
+		char b = *needle++;
+
+		for (;; haystack++)
+		{
+			if (*haystack == '\0')
+				/* No match.  */
+				return 0;
+			if (*haystack == b)
+				/* The first character matches.  */
+			{
+				const char* rhaystack = haystack + 1;
+				const char* rneedle = needle;
+
+				for (;; rhaystack++, rneedle++)
+				{
+					if (*rneedle == '\0')
+						/* Found a match.  */
+						return (char*)haystack;
+					if (*rhaystack == '\0')
+						/* No match.  */
+						return 0;
+					if (*rhaystack != *rneedle)
+						/* Nothing in this round.  */
+						break;
+				}
+			}
+		}
+	}
+	else
+		return (char*)haystack;
 }
 
 static inline int
@@ -491,6 +549,8 @@ grub_size_t grub_strlen(const char* s);
 char* grub_strchr(const char* s, int c);
 
 char* grub_strrchr(const char* s, int c);
+
+int grub_iswordseparator(int c);
 
 int grub_strword(const char* haystack, const char* needle);
 

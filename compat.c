@@ -65,56 +65,6 @@ grub_calloc(grub_size_t nmemb, grub_size_t size)
 	return grub_zalloc(sz);
 }
 
-int
-grub_snprintf(char* str, grub_size_t n, const char* fmt, ...)
-{
-	va_list ap;
-	int ret;
-	va_start(ap, fmt);
-	ret = vsnprintf(str, n, fmt, ap);
-	va_end(ap);
-	return ret;
-}
-
-int
-grub_printf(const char* fmt, ...)
-{
-	va_list ap;
-	int ret;
-	va_start(ap, fmt);
-	ret = vprintf(fmt, ap);
-	va_end(ap);
-	return ret;
-}
-
-static char debug_cond[128];
-
-void SetDebug(const char* cond)
-{
-	ZeroMemory(debug_cond, sizeof(debug_cond));
-	if (!cond)
-		return;
-	snprintf(debug_cond, sizeof(debug_cond), "%s", cond);
-}
-
-static int
-grub_debug_enabled(const char* condition)
-{
-	if (grub_strword(debug_cond, "all") || grub_strword(debug_cond, condition))
-		return 1;
-	return 0;
-}
-
-void grub_dprintf(const char* cond, const char* fmt, ...)
-{
-	va_list ap;
-	if (!grub_debug_enabled(cond))
-		return;
-	va_start(ap, fmt);
-	vprintf(fmt, ap);
-	va_end(ap);
-}
-
 char*
 grub_strcpy(char* dst, const char* src)
 {
@@ -192,7 +142,7 @@ grub_strrchr(const char* s, int c)
 	return p;
 }
 
-static int
+int
 grub_iswordseparator(int c)
 {
 	return (grub_isspace(c) || c == ',' || c == ';' || c == '|' || c == '&');
@@ -286,7 +236,7 @@ grub_error(grub_err_t n, const char* fmt, ...)
 	grub_errno = n;
 
 	va_start(ap, fmt);
-	vsnprintf(grub_errmsg, sizeof(grub_errmsg), fmt, ap);
+	grub_vsnprintf(grub_errmsg, sizeof(grub_errmsg), fmt, ap);
 	va_end(ap);
 
 	return n;
@@ -348,7 +298,7 @@ grub_print_error(void)
 	{
 		if (grub_errno != GRUB_ERR_NONE)
 		{
-			grub_err_printf("error: %s.\n", grub_errmsg);
+			grub_printf("error: %s.\n", grub_errmsg);
 			grub_err_printed_errors++;
 		}
 	} while (grub_error_pop());
@@ -356,20 +306,9 @@ grub_print_error(void)
 	/* If there was an assert while using error stack, report about it.  */
 	if (grub_error_stack_assert)
 	{
-		grub_err_printf("assert: error stack overflow detected!\n");
+		grub_printf("assert: error stack overflow detected!\n");
 		grub_error_stack_assert = 0;
 	}
-}
-
-int
-grub_err_printf(const char* fmt, ...)
-{
-	va_list ap;
-	int ret;
-	va_start(ap, fmt);
-	ret = vfprintf(stderr, fmt, ap);
-	va_end(ap);
-	return ret;
 }
 
 //fuck

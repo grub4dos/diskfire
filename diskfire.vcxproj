@@ -252,6 +252,7 @@
     <ClCompile Include="partmap\dfly.c" />
     <ClCompile Include="partmap\gpt.c" />
     <ClCompile Include="partmap\msdos.c" />
+    <ClCompile Include="printf.c" />
     <ClCompile Include="xzembed\xz_dec_bcj.c" />
     <ClCompile Include="xzembed\xz_dec_lzma2.c" />
     <ClCompile Include="xzembed\xz_dec_stream.c" />

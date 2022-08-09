@@ -10,7 +10,6 @@
 
 PHY_DRIVE_INFO* gDriveList = NULL;
 DWORD gDriveCount = 0;
-UINT gCodePage = 0;
 
 static
 grub_off_t build_time_read (struct grub_file* file, void* data, grub_size_t sz)
@@ -46,8 +45,6 @@ int main(int argc, char *argv[])
 		grub_error(GRUB_ERR_ACCESS_DENIED, "permission denied\n");
 		goto fini;
 	}
-	gCodePage = GetConsoleOutputCP();
-	SetConsoleOutputCP(CP_UTF8);
 	SetDebug("");
 	if (!GetDriveInfoList(&gDriveList, &gDriveCount))
 	{
@@ -93,6 +90,5 @@ fini:
 		grub_print_error();
 	if (gDriveList)
 		free(gDriveList);
-	SetConsoleOutputCP(gCodePage);
 	return grub_errno;
 }

@@ -51,6 +51,5 @@ void SetDebug(const char* cond);
 
 extern PHY_DRIVE_INFO* gDriveList;
 extern DWORD gDriveCount;
-extern UINT gCodePage;
 
 #endif

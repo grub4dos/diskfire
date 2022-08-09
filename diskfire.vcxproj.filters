@@ -412,6 +412,9 @@
     <ClCompile Include="fs\zip.c">
       <Filter>源文件\文件系统</Filter>
     </ClCompile>
+    <ClCompile Include="printf.c">
+      <Filter>源文件\核心</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
