@@ -35,10 +35,40 @@ static void procfs_init(void)
 	proc_add("zero", NULL, dd_zero_read);
 }
 
-int main(int argc, char *argv[])
+static char** args_init(int argc, wchar_t* u16_argv[])
 {
 	int i;
+	char** u8_argv = calloc (argc, sizeof(char*));
+	if (!u8_argv)
+		exit(-1);
+	for (i = 0; i < argc; i++)
+	{
+		int len = WideCharToMultiByte(CP_UTF8, 0, u16_argv[i], -1, NULL, 0, NULL, NULL);
+		if (len <= 0)
+			exit(-1);
+		u8_argv[i] = malloc(len);
+		len = WideCharToMultiByte(CP_UTF8, 0, u16_argv[i], -1, u8_argv[i], len, NULL, NULL);
+		if (len <= 0)
+			exit(-1);
+	}
+	return u8_argv;
+}
+
+static void args_fini(int argc, char* u8_argv[])
+{
+	int i;
+	for (i = 0; i < argc; i++)
+	{
+		free(u8_argv[i]);
+	}
+}
+
+int wmain(int argc, wchar_t *argv[])
+{
+	int i;
+	char** u8_argv = NULL;
 	grub_command_t p = NULL;
+	u8_argv = args_init(argc, argv);
 	if (IsAdmin() != TRUE
 		|| ObtainPrivileges(SE_SYSTEM_ENVIRONMENT_NAME) != ERROR_SUCCESS)
 	{
@@ -65,30 +95,31 @@ int main(int argc, char *argv[])
 	}
 	for (i = 1; i < argc; i++)
 	{
-		if (_strnicmp(argv[i], "-d=", 3) == 0 && argv[i][3])
+		if (_strnicmp(u8_argv[i], "-d=", 3) == 0 && u8_argv[i][3])
 		{
-			SetDebug(&argv[i][3]);
+			SetDebug(&u8_argv[i][3]);
 		}
-		else if (_strnicmp(argv[i], "-m=", 3) == 0 && argv[i][3])
+		else if (_strnicmp(u8_argv[i], "-m=", 3) == 0 && u8_argv[i][3])
 		{
-			if (loopback_add(&argv[i][3]))
+			if (loopback_add(&u8_argv[i][3]))
 				goto fini;
 		}
-		else if ((p = grub_command_find(argv[i])) != NULL)
+		else if ((p = grub_command_find(u8_argv[i])) != NULL)
 		{
 			int new_argc = argc - i - 1;
-			char** new_argv = new_argc ? &argv[i + 1] : NULL;
+			char** new_argv = new_argc ? &u8_argv[i + 1] : NULL;
 			p->func(p, new_argc, new_argv);
 			goto fini;
 		}
 		else
 			break;
 	}
-	grub_error(GRUB_ERR_BAD_ARGUMENT, "Unknown command %s\n", argv[1]);
+	grub_error(GRUB_ERR_BAD_ARGUMENT, "Unknown command %s\n", u8_argv[1]);
 fini:
 	if (grub_errno)
 		grub_print_error();
 	if (gDriveList)
 		free(gDriveList);
+	args_fini(argc, u8_argv);
 	return grub_errno;
 }

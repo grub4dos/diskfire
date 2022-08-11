@@ -138,6 +138,7 @@
     <ClCompile Include="commands\blocklist.c" />
     <ClCompile Include="commands\cat.c" />
     <ClCompile Include="commands\dd.c" />
+    <ClCompile Include="commands\echo.c" />
     <ClCompile Include="commands\fwgetvar.c" />
     <ClCompile Include="commands\fwsetvar.c" />
     <ClCompile Include="commands\hashsum.c" />

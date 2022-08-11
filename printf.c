@@ -132,11 +132,26 @@ grub_real_dprintf(const char* file, const int line, const char* condition,
 
 static void grub_xputs(const char* str)
 {
+	int ret;
+	char* ansi_str = NULL;
+	UINT code_page = GetConsoleOutputCP();
 	wchar_t* ws = grub_get_utf16(str);
 	if (!ws)
 		return;
-	wprintf(ws, L"%s");
+	ret = WideCharToMultiByte(code_page, 0, ws, -1, NULL, 0, NULL, NULL);
+	if (ret <= 0)
+		goto fail;
+	ansi_str = grub_malloc(ret);
+	if (!ansi_str)
+		goto fail;
+	ret = WideCharToMultiByte(code_page, 0, ws, -1, ansi_str, ret, NULL, NULL);
+	if (ret <= 0)
+		goto fail;
+	printf("%s", ansi_str);
+fail:
 	grub_free(ws);
+	if (ansi_str)
+		grub_free(ansi_str);
 }
 
 int
