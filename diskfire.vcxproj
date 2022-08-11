@@ -213,8 +213,8 @@
     <ClCompile Include="fs\procfs.c" />
     <ClCompile Include="fs\reiserfs.c" />
     <ClCompile Include="fs\squash4.c">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)minilzo;$(SolutionDir)xzembed</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)minilzo;$(SolutionDir)xzembed</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)minilzo;$(SolutionDir)xzembed;$(SolutionDir)zstd</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)minilzo;$(SolutionDir)xzembed;$(SolutionDir)zstd</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="fs\tar.c" />
     <ClCompile Include="fs\udf.c" />

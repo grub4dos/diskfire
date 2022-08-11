@@ -28,6 +28,8 @@
 #include "minilzo.h"
 #include "xz.h"
 #include "xz_stream.h"
+#define ZSTD_STATIC_LINKING_ONLY
+#include "zstd.h"
 
 /*
   object         format      Pointed by
@@ -190,8 +192,11 @@ enum
 enum
 {
 	COMPRESSION_ZLIB = 1,
+	COMPRESSION_LZMA = 2,
 	COMPRESSION_LZO = 3,
 	COMPRESSION_XZ = 4,
+	COMPRESSION_LZ4 = 5,
+	COMPRESSION_ZSTD = 6,
 };
 
 
@@ -387,6 +392,34 @@ xz_decompress(char* inbuf, grub_size_t insize, grub_off_t off,
 	return ret;
 }
 
+static grub_ssize_t
+zstd_decompress(char* inbuf, grub_size_t insize, grub_off_t off,
+	char* outbuf, grub_size_t len, struct grub_squash_data* data)
+{
+	(void)data;
+	size_t res;
+	size_t usize = len + off;
+	grub_uint8_t* udata;
+
+	if (usize < 0x20000)
+		usize = 0x20000;
+	udata = grub_malloc(usize);
+	if (!udata)
+		return -1;
+
+	res = ZSTD_decompress(udata, usize, inbuf, insize);
+
+	if (ZSTD_isError(res))
+	{
+		grub_error(GRUB_ERR_BAD_FS, "incorrect compressed chunk");
+		grub_free(udata);
+		return -1;
+	}
+	grub_memcpy(outbuf, udata + off, len);
+	grub_free(udata);
+	return len;
+}
+
 static struct grub_squash_data*
 squash_mount(grub_disk_t disk)
 {
@@ -448,6 +481,9 @@ squash_mount(grub_disk_t disk)
 			grub_free(data);
 			return NULL;
 		}
+		break;
+	case grub_cpu_to_le16_compile_time(COMPRESSION_ZSTD):
+		data->decompress = zstd_decompress;
 		break;
 	default:
 		grub_free(data);
