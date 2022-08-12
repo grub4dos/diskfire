@@ -213,8 +213,8 @@
     <ClCompile Include="fs\procfs.c" />
     <ClCompile Include="fs\reiserfs.c" />
     <ClCompile Include="fs\squash4.c">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)minilzo;$(SolutionDir)xzembed;$(SolutionDir)zstd</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)minilzo;$(SolutionDir)xzembed;$(SolutionDir)zstd</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)lz4;$(SolutionDir)minilzo;$(SolutionDir)xzembed;$(SolutionDir)zstd</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)lz4;$(SolutionDir)minilzo;$(SolutionDir)xzembed;$(SolutionDir)zstd</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="fs\tar.c" />
     <ClCompile Include="fs\udf.c" />
@@ -241,6 +241,8 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)zstd</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)zstd</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="lz4\lz4.c" />
+    <ClCompile Include="lz4\lz4frame.c" />
     <ClCompile Include="lzma\LzmaDec.c" />
     <ClCompile Include="minilzo\minilzo.c" />
     <ClCompile Include="cpp.cpp" />
@@ -254,6 +256,7 @@
     <ClCompile Include="partmap\gpt.c" />
     <ClCompile Include="partmap\msdos.c" />
     <ClCompile Include="printf.c" />
+    <ClCompile Include="xxhash\xxhash.c" />
     <ClCompile Include="xzembed\xz_dec_bcj.c" />
     <ClCompile Include="xzembed\xz_dec_lzma2.c" />
     <ClCompile Include="xzembed\xz_dec_stream.c" />
@@ -262,7 +265,6 @@
     <ClCompile Include="zstd\error_private.c" />
     <ClCompile Include="zstd\fse_decompress.c" />
     <ClCompile Include="zstd\huf_decompress.c" />
-    <ClCompile Include="zstd\xxhash.c" />
     <ClCompile Include="zstd\zstd_common.c" />
     <ClCompile Include="zstd\zstd_decompress.c" />
   </ItemGroup>
@@ -308,6 +310,9 @@
     <ClInclude Include="include\imdisk.h" />
     <ClInclude Include="include\misc.h" />
     <ClInclude Include="include\partition.h" />
+    <ClInclude Include="lz4\lz4.h" />
+    <ClInclude Include="lz4\lz4frame.h" />
+    <ClInclude Include="lz4\lz4frame_static.h" />
     <ClInclude Include="lzma\LzmaDec.h" />
     <ClInclude Include="lzma\LzmaTypes.h" />
     <ClInclude Include="minilzo\lzoconf.h" />
@@ -318,6 +323,7 @@
     <ClInclude Include="partmap\gpt_partition.h" />
     <ClInclude Include="partmap\msdos_partition.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="xxhash\xxhash.h" />
     <ClInclude Include="xzembed\xz.h" />
     <ClInclude Include="xzembed\xz_config.h" />
     <ClInclude Include="xzembed\xz_lzma2.h" />
@@ -331,7 +337,6 @@
     <ClInclude Include="zstd\fse.h" />
     <ClInclude Include="zstd\huf.h" />
     <ClInclude Include="zstd\mem.h" />
-    <ClInclude Include="zstd\xxhash.h" />
     <ClInclude Include="zstd\zstd.h" />
     <ClInclude Include="zstd\zstd_errors.h" />
     <ClInclude Include="zstd\zstd_internal.h" />

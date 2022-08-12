@@ -80,6 +80,12 @@
     <Filter Include="源文件\miniz">
       <UniqueIdentifier>{e3c4cdbe-8681-464a-9198-24e5c2c5184d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\xxhash">
+      <UniqueIdentifier>{679bcdec-e98c-41ea-9721-1370eaa269b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\lz4">
+      <UniqueIdentifier>{44d0590d-8dd1-43b5-90b5-c79b52c977b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="diskfire.c">
@@ -259,9 +265,6 @@
     <ClCompile Include="zstd\huf_decompress.c">
       <Filter>源文件\zstd</Filter>
     </ClCompile>
-    <ClCompile Include="zstd\xxhash.c">
-      <Filter>源文件\zstd</Filter>
-    </ClCompile>
     <ClCompile Include="zstd\zstd_common.c">
       <Filter>源文件\zstd</Filter>
     </ClCompile>
@@ -418,6 +421,15 @@
     <ClCompile Include="commands\echo.c">
       <Filter>源文件\命令</Filter>
     </ClCompile>
+    <ClCompile Include="xxhash\xxhash.c">
+      <Filter>源文件\xxhash</Filter>
+    </ClCompile>
+    <ClCompile Include="lz4\lz4.c">
+      <Filter>源文件\lz4</Filter>
+    </ClCompile>
+    <ClCompile Include="lz4\lz4frame.c">
+      <Filter>源文件\lz4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -541,9 +553,6 @@
     <ClInclude Include="zstd\mem.h">
       <Filter>源文件\zstd</Filter>
     </ClInclude>
-    <ClInclude Include="zstd\xxhash.h">
-      <Filter>源文件\zstd</Filter>
-    </ClInclude>
     <ClInclude Include="zstd\zstd.h">
       <Filter>源文件\zstd</Filter>
     </ClInclude>
@@ -615,6 +624,18 @@
     </ClInclude>
     <ClInclude Include="miniz\miniz.h">
       <Filter>源文件\miniz</Filter>
+    </ClInclude>
+    <ClInclude Include="xxhash\xxhash.h">
+      <Filter>源文件\xxhash</Filter>
+    </ClInclude>
+    <ClInclude Include="lz4\lz4.h">
+      <Filter>源文件\lz4</Filter>
+    </ClInclude>
+    <ClInclude Include="lz4\lz4frame.h">
+      <Filter>源文件\lz4</Filter>
+    </ClInclude>
+    <ClInclude Include="lz4\lz4frame_static.h">
+      <Filter>源文件\lz4</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
