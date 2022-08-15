@@ -427,9 +427,6 @@
     <ClCompile Include="lz4\lz4.c">
       <Filter>源文件\lz4</Filter>
     </ClCompile>
-    <ClCompile Include="lz4\lz4frame.c">
-      <Filter>源文件\lz4</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -629,12 +626,6 @@
       <Filter>源文件\xxhash</Filter>
     </ClInclude>
     <ClInclude Include="lz4\lz4.h">
-      <Filter>源文件\lz4</Filter>
-    </ClInclude>
-    <ClInclude Include="lz4\lz4frame.h">
-      <Filter>源文件\lz4</Filter>
-    </ClInclude>
-    <ClInclude Include="lz4\lz4frame_static.h">
       <Filter>源文件\lz4</Filter>
     </ClInclude>
   </ItemGroup>

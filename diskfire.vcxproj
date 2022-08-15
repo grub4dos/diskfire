@@ -242,7 +242,6 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)zstd</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="lz4\lz4.c" />
-    <ClCompile Include="lz4\lz4frame.c" />
     <ClCompile Include="lzma\LzmaDec.c" />
     <ClCompile Include="minilzo\minilzo.c" />
     <ClCompile Include="cpp.cpp" />
@@ -311,8 +310,6 @@
     <ClInclude Include="include\misc.h" />
     <ClInclude Include="include\partition.h" />
     <ClInclude Include="lz4\lz4.h" />
-    <ClInclude Include="lz4\lz4frame.h" />
-    <ClInclude Include="lz4\lz4frame_static.h" />
     <ClInclude Include="lzma\LzmaDec.h" />
     <ClInclude Include="lzma\LzmaTypes.h" />
     <ClInclude Include="minilzo\lzoconf.h" />
