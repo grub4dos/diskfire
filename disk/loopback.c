@@ -178,3 +178,26 @@ struct grub_disk_dev grub_loopback_dev =
 	.disk_write = loopback_write,
 	.next = 0
 };
+
+static grub_err_t cmd_loopback(struct grub_command* cmd, int argc, char* argv[])
+{
+	(void)cmd;
+	if (argc < 1)
+		return grub_error(GRUB_ERR_BAD_ARGUMENT, "missing file name");
+	return loopback_add(argv[0]);
+}
+
+static void
+help_loopback(struct grub_command* cmd)
+{
+	grub_printf("%s FILE\n", cmd->name);
+	grub_printf("Make a virtual drive from a file.\n");
+}
+
+struct grub_command grub_cmd_loopback =
+{
+	.name = "loopback",
+	.func = cmd_loopback,
+	.help = help_loopback,
+	.next = 0,
+};

@@ -59,6 +59,7 @@ extern struct grub_command grub_cmd_shortcut;
 extern struct grub_command grub_cmd_kill;
 extern struct grub_command grub_cmd_uuid;
 extern struct grub_command grub_cmd_echo;
+extern struct grub_command grub_cmd_loopback;
 
 extern struct grub_command grub_cmd_help;
 

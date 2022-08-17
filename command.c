@@ -61,6 +61,7 @@ grub_command_init(void)
 	grub_command_register(&grub_cmd_kill);
 	grub_command_register(&grub_cmd_uuid);
 	grub_command_register(&grub_cmd_echo);
+	grub_command_register(&grub_cmd_loopback);
 
 	grub_command_register(&grub_cmd_help);
 }
