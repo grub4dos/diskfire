@@ -817,9 +817,25 @@
 ** without modifying the main part of the file.
 */
 
+#if defined(_WIN64)
+typedef unsigned __int64 grub_size_t;
+#else
+typedef _W64 unsigned long grub_size_t;
+#endif
 
+int grub_printf(const char* fmt, ...);
 
+int grub_vprintf(const char* fmt, va_list ap);
 
+int grub_vsnprintf(char* str, grub_size_t n, const char* fmt, va_list ap);
+
+int grub_snprintf(char* str, grub_size_t n, const char* fmt, ...);
+
+#undef l_sprintf
+#define l_sprintf(s,sz,f,i)	grub_snprintf(s,sz,f,i)
+#define lua_writestring(s,l)   grub_printf((s))
+#define lua_writeline()        (grub_printf("\n"))
+#define lua_writestringerror(s,p) grub_printf((s), (p))
 
 #endif
 
