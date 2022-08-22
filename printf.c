@@ -130,7 +130,7 @@ grub_real_dprintf(const char* file, const int line, const char* condition,
 
 #define PREALLOC_SIZE 255
 
-static void grub_xputs(const char* str)
+void grub_xputs_console(const char* str)
 {
 	int ret;
 	char* ansi_str = NULL;
@@ -153,6 +153,8 @@ fail:
 	if (ansi_str)
 		grub_free(ansi_str);
 }
+
+void (*grub_xputs) (const char* str) = grub_xputs_console;
 
 int
 grub_vprintf(const char* fmt, va_list ap)

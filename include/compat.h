@@ -89,6 +89,10 @@ struct grub_packed_guid
 PRAGMA_END_PACKED
 typedef struct grub_packed_guid grub_packed_guid_t;
 
+void grub_xputs_console(const char* str);
+
+extern void (*grub_xputs) (const char* str);
+
 int grub_debug_enabled(const char* condition);
 
 int grub_printf(const char* fmt, ...);

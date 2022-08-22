@@ -44,10 +44,9 @@
    is not left on the stack. The value returned is the number of values left on
    the stack. */
 int
-push_result(lua_State* L)
+push_result(lua_State* L, int num_results)
 {
 	int saved_errno;
-	int num_results;
 
 	saved_errno = grub_errno;
 	grub_errno = 0;
@@ -56,18 +55,18 @@ push_result(lua_State* L)
 	lua_pushinteger(L, saved_errno);
 	lua_pushinteger(L, saved_errno);
 	lua_setglobal(L, "grub_errno");
+	num_results++;
 
 	if (saved_errno)
 	{
 		/* Push once for setfield, and again to leave on the stack */
 		lua_pushstring(L, grub_errmsg);
 		lua_pushstring(L, grub_errmsg);
-		num_results = 2;
+		num_results++;
 	}
 	else
 	{
 		lua_pushnil(L);
-		num_results = 1;
 	}
 
 	lua_setglobal(L, "grub_errmsg");
@@ -161,7 +160,7 @@ df_enum_device(lua_State* L)
 {
 	luaL_checktype(L, 1, LUA_TFUNCTION);
 	grub_disk_iterate(df_enum_device_iter, L);
-	return push_result(L);
+	return push_result(L, 0);
 }
 
 static int
@@ -210,10 +209,18 @@ df_enum_file(lua_State* L)
 		grub_disk_close(disk);
 	}
 	grub_free(device_name);
-	return push_result(L);
+	return push_result(L, 0);
 }
 
 //int luaopen_winapi(lua_State* L);
+
+static luaL_Buffer df_xputs_buf;
+
+static void
+df_xputs(const char* str)
+{
+	luaL_addstring(&df_xputs_buf, str);
+}
 
 static int
 df_cmd(lua_State* L)
@@ -223,6 +230,7 @@ df_cmd(lua_State* L)
 	const char* cmd;
 	cmd = luaL_checkstring(L, 1);
 	argc = lua_gettop(L) - 1;
+	luaL_buffinit(L, &df_xputs_buf);
 	if (argc <= 0)
 		goto exec;
 	argv = calloc(argc, sizeof(char*));
@@ -242,15 +250,18 @@ df_cmd(lua_State* L)
 		}
 	}
 exec:
+	grub_xputs = df_xputs;
 	grub_command_execute(cmd, argc, argv);
+	grub_xputs = grub_xputs_console;
 fail:
+	luaL_pushresult(&df_xputs_buf);
 	if (argv)
 	{
 		for (i = 0; (argv[i] != NULL) && (i < argc); i++)
 			free(argv[i]);
 		free(argv);
 	}
-	return push_result(L);
+	return push_result(L, 1);
 }
 
 static const luaL_Reg dflib[] =
