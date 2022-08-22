@@ -131,9 +131,6 @@
     <ClCompile Include="src\lgc.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\linit.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\liolib.c">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -186,6 +183,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\lzio.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\linit.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
