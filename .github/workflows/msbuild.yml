@@ -34,6 +34,7 @@ jobs:
         move x64\Release\diskfire.exe diskfire\diskfire_x64.exe
         move Win32\Release\diskfire.exe diskfire\diskfire_x86.exe
         copy LICENSE diskfire\LICENSE
+        copy example.lua diskfire\example.lua
 
     - uses: thedoctor0/zip-release@master
       with:
