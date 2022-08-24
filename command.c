@@ -63,6 +63,7 @@ grub_command_init(void)
 	grub_command_register(&grub_cmd_echo);
 	grub_command_register(&grub_cmd_loopback);
 	grub_command_register(&grub_cmd_fslabel);
+	grub_command_register(&grub_cmd_mkfs);
 
 	grub_command_register(&grub_cmd_help);
 }

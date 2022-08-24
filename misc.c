@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <process.h>
 #include <tlhelp32.h>
+#include <locale.h>
 #include "misc.h"
 #include "compat.h"
 
@@ -416,4 +417,107 @@ KillProcessById(DWORD dwProcessId, UINT uExitCode)
 	HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, FALSE, dwProcessId);
 	TerminateProcess(hProcess, uExitCode);
 	CloseHandle(hProcess);
+}
+
+/* http://msdn.microsoft.com/en-us/library/windows/desktop/aa383357.aspx */
+typedef enum
+{
+	FPF_COMPRESSED = 0x01
+} FILE_SYSTEM_PROP_FLAG;
+
+static MEDIA_TYPE
+GetMediaType(CONST WCHAR* DriveRoot)
+{
+	HANDLE hDrive = INVALID_HANDLE_VALUE;
+	DWORD dwReturn = sizeof(DISK_GEOMETRY);
+	DISK_GEOMETRY diskGeometry = { 0 };
+	WCHAR* wDrive = NULL;
+	size_t wDriveLen = wcslen(DriveRoot) + 5;
+	wDrive = calloc(wDriveLen, sizeof(WCHAR));
+	if (!wDrive)
+		return Unknown;
+	swprintf(wDrive, wDriveLen, L"\\\\.\\%s", DriveRoot);
+	hDrive = CreateFileW(wDrive, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+	if (hDrive == INVALID_HANDLE_VALUE)
+		goto fail;
+	DeviceIoControl(hDrive, IOCTL_DISK_GET_DRIVE_GEOMETRY, NULL, 0, &diskGeometry, dwReturn, &dwReturn, NULL);
+fail:
+	if (hDrive != INVALID_HANDLE_VALUE)
+		CloseHandle(hDrive);
+	free(wDrive);
+	return diskGeometry.MediaType;
+}
+
+BOOL
+FmifsFormatEx(CONST WCHAR* DriveRoot, WCHAR* FileSystemTypeName,
+	WCHAR* Label, BOOL QuickFormat, BOOL EnableCompression,
+	ULONG DesiredUnitAllocationSize,
+	FILE_SYSTEM_CALLBACK Callback)
+{
+	BOOL bRet = FALSE;
+	WCHAR* wDrive = NULL;
+	size_t szDriveLen = wcslen(DriveRoot);
+	VOID(WINAPI * NtFormatEx)(WCHAR * DriveRoot,
+		MEDIA_TYPE MediaType, WCHAR * FileSystemTypeName,
+		WCHAR * Label, BOOL QuickFormat, ULONG DesiredUnitAllocationSize,
+		FILE_SYSTEM_CALLBACK Callback) = NULL;
+	BOOLEAN(WINAPI * NtEnableVolumeCompression)(WCHAR * DriveRoot, ULONG CompressionFlags) = NULL;
+	// LoadLibrary("fmifs.dll") appears to changes the locale, which can lead to
+	// problems with tolower(). Make sure we restore the locale. For more details,
+	// see https://sourceforge.net/p/mingw/mailman/message/29269040/
+	char* locale = setlocale(LC_ALL, NULL);
+	HMODULE hL = LoadLibraryW(L"fmifs.dll");
+	setlocale(LC_ALL, locale);
+	if (hL)
+	{
+		*(FARPROC*)&NtFormatEx = GetProcAddress(hL, "FormatEx");
+		*(FARPROC*)&NtEnableVolumeCompression = GetProcAddress(hL, "EnableVolumeCompression");
+	}
+	if (!NtFormatEx || !NtEnableVolumeCompression)
+	{
+		grub_error(GRUB_ERR_ACCESS_DENIED, "fmifs.dll load error");
+		return FALSE;
+	}
+	wDrive = calloc(szDriveLen + 3, sizeof(WCHAR));
+	if (!wDrive)
+	{
+		grub_error(GRUB_ERR_OUT_OF_MEMORY, "out of memory");
+		return FALSE;
+	}
+	if (szDriveLen < 2)
+	{
+		/* 'X' -> 'X:' */
+		swprintf(wDrive, szDriveLen + 3, L"%c:", DriveRoot[0]);
+		szDriveLen += 1;
+	}
+	else if (DriveRoot[szDriveLen - 1] == L'\\')
+	{
+		/* 'X:\' -> 'X:' */
+		wcsncpy_s(wDrive, szDriveLen + 3, DriveRoot, szDriveLen);
+		wDrive[szDriveLen - 1] = L'\0';
+		szDriveLen -= 1;
+	}
+	else
+	{
+		wcsncpy_s(wDrive, szDriveLen + 3, DriveRoot, szDriveLen + 1);
+	}
+
+	if (DesiredUnitAllocationSize < 0x200)
+	{
+		// 0 is FormatEx's value for default, which we need to use for UDF
+		DesiredUnitAllocationSize = 0;
+	}
+
+	NtFormatEx(wDrive, GetMediaType(wDrive), FileSystemTypeName, Label, QuickFormat, DesiredUnitAllocationSize, Callback);
+	if (EnableCompression)
+	{
+		wDrive[szDriveLen] = L'\\';
+		wDrive[szDriveLen + 1] = L'\0';
+		if (NtEnableVolumeCompression(wDrive, FPF_COMPRESSED))
+			bRet = TRUE;
+		else
+			grub_error(GRUB_ERR_BAD_DEVICE, "cannot enable NTFS compression");
+	}
+	free(wDrive);
+	return bRet;
 }
