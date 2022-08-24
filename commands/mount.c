@@ -19,7 +19,7 @@ NTOpenVirtualDisk(PVIRTUAL_STORAGE_TYPE VirtualStorageType,
 		OPEN_VIRTUAL_DISK_FLAG Flags,
 		POPEN_VIRTUAL_DISK_PARAMETERS Parameters,
 		PHANDLE Handle) = NULL;
-	HINSTANCE hL = LoadLibraryA("VirtDisk.dll");
+	HMODULE hL = LoadLibraryW(L"VirtDisk.dll");
 	if (hL)
 		*(FARPROC*)&NT6OpenVirtualDisk = GetProcAddress(hL, "OpenVirtualDisk");
 	if (NT6OpenVirtualDisk)
@@ -41,7 +41,7 @@ NTAttachVirtualDisk(HANDLE VirtualDiskHandle,
 		ULONG ProviderSpecificFlags,
 		PATTACH_VIRTUAL_DISK_PARAMETERS Parameters,
 		LPOVERLAPPED Overlapped) = NULL;
-	HINSTANCE hL = LoadLibraryA("VirtDisk.dll");
+	HMODULE hL = LoadLibraryW(L"VirtDisk.dll");
 	if (hL)
 		*(FARPROC*)&NT6AttachVirtualDisk = GetProcAddress(hL, "AttachVirtualDisk");
 	if (NT6AttachVirtualDisk)
@@ -56,7 +56,7 @@ NTGetVirtualDiskPhysicalPath(HANDLE VirtualDiskHandle, PULONG DiskPathSizeInByte
 	DWORD (WINAPI * NT6GetVirtualDiskPhysicalPath)(HANDLE VirtualDiskHandle,
 		PULONG DiskPathSizeInBytes,
 		PWSTR DiskPath) = NULL;
-	HINSTANCE hL = LoadLibraryA("VirtDisk.dll");
+	HMODULE hL = LoadLibraryW(L"VirtDisk.dll");
 	if (hL)
 		*(FARPROC*)&NT6GetVirtualDiskPhysicalPath = GetProcAddress(hL, "GetVirtualDiskPhysicalPath");
 	if (NT6GetVirtualDiskPhysicalPath)
@@ -71,7 +71,7 @@ NTDetachVirtualDisk(HANDLE VirtualDiskHandle, DETACH_VIRTUAL_DISK_FLAG Flags, UL
 	DWORD(WINAPI * NT6DetachVirtualDisk) (HANDLE VirtualDiskHandle,
 		DETACH_VIRTUAL_DISK_FLAG Flags,
 		ULONG ProviderSpecificFlags) = NULL;
-	HINSTANCE hL = LoadLibraryA("VirtDisk.dll");
+	HMODULE hL = LoadLibraryW(L"VirtDisk.dll");
 	if (hL)
 		*(FARPROC*)&NT6DetachVirtualDisk = GetProcAddress(hL, "DetachVirtualDisk");
 	if (NT6DetachVirtualDisk)

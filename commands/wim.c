@@ -31,7 +31,7 @@ static BOOL
 WIMMountImage(PWSTR pszMountPath, PWSTR pszWimFileName, DWORD dwImageIndex, PWSTR pszTempPath)
 {
 	BOOL(WINAPI * MountImage)(PWSTR, PWSTR, DWORD, PWSTR) = NULL;
-	HINSTANCE hL = LoadLibraryA("wimgapi.dll");
+	HMODULE hL = LoadLibraryW(L"wimgapi.dll");
 	if (hL)
 		*(FARPROC*)&MountImage = GetProcAddress(hL, "WIMMountImage");
 	if (MountImage)
@@ -43,7 +43,7 @@ static BOOL
 WIMUnmountImage(PWSTR pszMountPath, PWSTR pszWimFileName, DWORD dwImageIndex, BOOL bCommitChanges)
 {
 	BOOL(WINAPI * UnmountImage)(PWSTR, PWSTR, DWORD, BOOL) = NULL;
-	HINSTANCE hL = LoadLibraryA("wimgapi.dll");
+	HMODULE hL = LoadLibraryW(L"wimgapi.dll");
 	if (hL)
 		*(FARPROC*)&UnmountImage = GetProcAddress(hL, "WIMUnmountImage");
 	if (UnmountImage)
@@ -57,7 +57,7 @@ WIMGetMountedImageInfo(MOUNTED_IMAGE_INFO_LEVELS fInfoLevelId,
 	PDWORD pdwImageCount, PVOID pMountInfo, DWORD cbMountInfoLength, PDWORD pcbReturnLength)
 {
 	BOOL(WINAPI * GetMountedImageInfo)(MOUNTED_IMAGE_INFO_LEVELS, PDWORD, PVOID, DWORD, PDWORD) = NULL;
-	HINSTANCE hL = LoadLibraryA("wimgapi.dll");
+	HMODULE hL = LoadLibraryW(L"wimgapi.dll");
 	if (hL)
 		*(FARPROC*)&GetMountedImageInfo = GetProcAddress(hL, "WIMGetMountedImageInfo");
 	if (GetMountedImageInfo)
